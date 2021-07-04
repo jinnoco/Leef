@@ -90,14 +90,6 @@
 				3CD8F50C268D841000DF694B /* Controllers */,
 				3CD8F4C2268A093F00DF694B /* AppDelegate.swift */,
 				3CD8F4C4268A093F00DF694B /* SceneDelegate.swift */,
-				3CD8F4D9268A0AFB00DF694B /* LoginViewController.swift */,
-				3CD8F51D268F185800DF694B /* SelectViewController.swift */,
-				3CD8F514268F0D2A00DF694B /* TimelineViewController.swift */,
-				3CD8F517268F0DCF00DF694B /* TimelineCell.swift */,
-				3CD8F51A268F0FFD00DF694B /* UIViewExtension.swift */,
-				3CD8F511268DF5F500DF694B /* SecondPageViewController.swift */,
-				3CD8F4C6268A093F00DF694B /* ViewController.swift */,
-				3CD8F509268D60F400DF694B /* ColorExtension.swift */,
 				3CD8F4CB268A094E00DF694B /* Assets.xcassets */,
 				3CD8F4CD268A094E00DF694B /* LaunchScreen.storyboard */,
 				3CD8F4D0268A094E00DF694B /* Info.plist */,
@@ -109,6 +101,11 @@
 		3CD8F50C268D841000DF694B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3CD8F4C6268A093F00DF694B /* ViewController.swift */,
+				3CD8F4D9268A0AFB00DF694B /* LoginViewController.swift */,
+				3CD8F514268F0D2A00DF694B /* TimelineViewController.swift */,
+				3CD8F51D268F185800DF694B /* SelectViewController.swift */,
+				3CD8F511268DF5F500DF694B /* SecondPageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -116,6 +113,7 @@
 		3CD8F50D268D843700DF694B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3CD8F517268F0DCF00DF694B /* TimelineCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -123,6 +121,8 @@
 		3CD8F50E268D844000DF694B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3CD8F509268D60F400DF694B /* ColorExtension.swift */,
+				3CD8F51A268F0FFD00DF694B /* UIViewExtension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

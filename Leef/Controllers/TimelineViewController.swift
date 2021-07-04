@@ -12,13 +12,16 @@ class TimelineViewController: UIViewController {
     let tableView = UITableView()
     let cellIdentifier = "timelineCell"
     
+    var username = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "タイムライン"
-        
+
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.title = username
         navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createButtonTapped))
-    
+        navigationItem.hidesBackButton = true
        configureTableView()
         
     }
