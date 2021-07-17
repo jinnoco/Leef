@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C6C7A1C2691851F00674FBE /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C7A1B2691851F00674FBE /* PostViewController.swift */; };
+		3C6C7A1E2691854D00674FBE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C7A1D2691854D00674FBE /* User.swift */; };
+		3C6C7A24269312F200674FBE /* PlaceHolderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C7A23269312F200674FBE /* PlaceHolderTextView.swift */; };
+		3C6C7A262694890000674FBE /* SendDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C7A252694890000674FBE /* SendDBModel.swift */; };
+		3C6C7A282694F82000674FBE /* SetupExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C7A272694F82000674FBE /* SetupExtension.swift */; };
 		3CD8F4C3268A093F00DF694B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD8F4C2268A093F00DF694B /* AppDelegate.swift */; };
 		3CD8F4C5268A093F00DF694B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD8F4C4268A093F00DF694B /* SceneDelegate.swift */; };
 		3CD8F4C7268A093F00DF694B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD8F4C6268A093F00DF694B /* ViewController.swift */; };
@@ -25,6 +30,11 @@
 
 /* Begin PBXFileReference section */
 		0AC8706C2833D62FE83CE24E /* Pods-Leef.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leef.debug.xcconfig"; path = "Target Support Files/Pods-Leef/Pods-Leef.debug.xcconfig"; sourceTree = "<group>"; };
+		3C6C7A1B2691851F00674FBE /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		3C6C7A1D2691854D00674FBE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3C6C7A23269312F200674FBE /* PlaceHolderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderTextView.swift; sourceTree = "<group>"; };
+		3C6C7A252694890000674FBE /* SendDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendDBModel.swift; sourceTree = "<group>"; };
+		3C6C7A272694F82000674FBE /* SetupExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupExtension.swift; sourceTree = "<group>"; };
 		3CD8F4BF268A093F00DF694B /* Leef.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leef.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CD8F4C2268A093F00DF694B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3CD8F4C4268A093F00DF694B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +116,7 @@
 				3CD8F514268F0D2A00DF694B /* TimelineViewController.swift */,
 				3CD8F51D268F185800DF694B /* SelectViewController.swift */,
 				3CD8F511268DF5F500DF694B /* SecondPageViewController.swift */,
+				3C6C7A1B2691851F00674FBE /* PostViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -123,6 +134,10 @@
 			children = (
 				3CD8F509268D60F400DF694B /* ColorExtension.swift */,
 				3CD8F51A268F0FFD00DF694B /* UIViewExtension.swift */,
+				3C6C7A1D2691854D00674FBE /* User.swift */,
+				3C6C7A23269312F200674FBE /* PlaceHolderTextView.swift */,
+				3C6C7A252694890000674FBE /* SendDBModel.swift */,
+				3C6C7A272694F82000674FBE /* SetupExtension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -255,11 +270,16 @@
 				3CD8F4C7268A093F00DF694B /* ViewController.swift in Sources */,
 				3CD8F4C3268A093F00DF694B /* AppDelegate.swift in Sources */,
 				3CD8F512268DF5F600DF694B /* SecondPageViewController.swift in Sources */,
+				3C6C7A282694F82000674FBE /* SetupExtension.swift in Sources */,
+				3C6C7A262694890000674FBE /* SendDBModel.swift in Sources */,
+				3C6C7A24269312F200674FBE /* PlaceHolderTextView.swift in Sources */,
 				3CD8F518268F0DCF00DF694B /* TimelineCell.swift in Sources */,
 				3CD8F515268F0D2A00DF694B /* TimelineViewController.swift in Sources */,
 				3CD8F51B268F0FFD00DF694B /* UIViewExtension.swift in Sources */,
+				3C6C7A1E2691854D00674FBE /* User.swift in Sources */,
 				3CD8F4C5268A093F00DF694B /* SceneDelegate.swift in Sources */,
 				3CD8F50A268D60F400DF694B /* ColorExtension.swift in Sources */,
+				3C6C7A1C2691851F00674FBE /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

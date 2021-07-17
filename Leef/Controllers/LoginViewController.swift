@@ -12,8 +12,10 @@ import WebKit
 
 class LoginViewController: UIViewController {
     
-    var mainColor = MainColor()
+    var color = MainColor()
     var provider: OAuthProvider?
+    
+    var sendDBModel = SendDBModel()
 
     let loginButton = UIButton()
     let signupButton = UIButton()
@@ -29,7 +31,7 @@ class LoginViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         
-        view.backgroundColor = mainColor.whiteColor
+        view.backgroundColor = color.whiteColor
         
         configureLoginButton()
         configureSignupButton()
@@ -43,7 +45,7 @@ class LoginViewController: UIViewController {
     
     func configureLoginButton() {
         view.addSubview(loginButton)
-        loginButton.backgroundColor = mainColor.blueColor
+        loginButton.backgroundColor = color.blueColor
         loginButton.layer.cornerRadius = 20
         loginButton.setTitle("Twitterでログイン", for: .normal)
         loginButton.addTarget(self, action: #selector(twitterLogin), for: .touchUpInside)
@@ -75,36 +77,58 @@ class LoginViewController: UIViewController {
     
     
     @objc func twitterLogin() {
+        /*
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["force_login":"true"]
         provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
-
+            
+            if error != nil {
+                return
+            }
+            
             //ActivityIndicatorView
             startIndicater()
-                    //ログイン処理
-                    Auth.auth().signIn(with: credential!) { (result, error) in
-
-                        if error != nil {
-                            print("error: ", error as Any)
-                            return
-                        }
-
-            stopIndicater()
-        
-        print("tapped!!")
-        
-        //画面遷移
-        let timelineViewController = TimelineViewController()
-        navigationController?.pushViewController(timelineViewController, animated: true)
-//         timelineViewController.modalPresentationStyle = .fullScreen
-//         timelineViewController.modalTransitionStyle = .flipHorizontal
-//         timelineViewController.username = (result?.user.displayName!)!
-//         present(timelineViewController, animated: true, completion: nil)
-         
-        
+            
+            //ログイン処理
+            if credential != nil {
+                
+                Auth.auth().signIn(with: credential!) { (result, error) in
+                    
+                    if error != nil {
+                        print("error: ", error as Any)
+                        return
                     }
-
-                })
+                    
+                    stopIndicater()
+                    
+                    print("tapped!!")
+                    
+                    let user = Auth.auth().currentUser
+                    
+                    if let user = user {
+                        let imageURL = user.photoURL
+                        let urlString = imageURL?.absoluteString
+                        
+                        //                    sendDBModel.sendProfileImageData(url: urlString!)
+                        print("urlString: \(urlString)")
+                        print("imageURL: \(imageURL)")
+                        
+                        sendDBModel.sendProfileImageData(url: urlString!)
+                        
+                        //   UserDefaults.standard.setValue(image, forKey: "userImage")
+                        //     print("image type: ", type(of: image))
+                    }
+                    */
+                    
+                    //画面遷移
+                    let timelineViewController = TimelineViewController()
+                    navigationController?.pushViewController(timelineViewController, animated: true)
+//
+//                }
+//            }
+//
+//
+//        })
 
         
         
@@ -115,7 +139,7 @@ class LoginViewController: UIViewController {
     
     
     @objc func twitterSignup() {
-       
+       print("sign up!!")
     }
     
     

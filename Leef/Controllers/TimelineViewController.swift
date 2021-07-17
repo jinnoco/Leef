@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class TimelineViewController: UIViewController {
 
@@ -14,25 +15,46 @@ class TimelineViewController: UIViewController {
     
     var username = String()
     
+
+//    let tabBar = UITabBar()
+    
+    var cell = [TimelineCell]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+      
+//        printURL()
         
 
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.title = username
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createButtonTapped))
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(toNewPostPage))
         navigationItem.hidesBackButton = true
        configureTableView()
         
     }
     
-    @objc func createButtonTapped() {
-        print("createButtonTapped")
+    @objc func toNewPostPage() {
+        print("toNewPostPage")
+        let postViewController = PostViewController()
+        postViewController.modalPresentationStyle = .fullScreen
+        present(postViewController, animated: true, completion: nil)
     }
+    
+//    func printURL() {
+//        let user = Auth.auth().currentUser
+//        if let user = user {
+//            let imageURL = user.photoURL
+//            print("imageURL: ", imageURL)
+//            print("type", type(of: imageURL))
+//        }
+//    }
 
     func configureTableView() {
         view.addSubview(tableView)
         setupTableView()
+        tableView.rowHeight = 280
         tableView.register(TimelineCell.self, forCellReuseIdentifier: cellIdentifier)
     }
     
@@ -53,6 +75,7 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        cell.selectionStyle = .none
         return cell
     }
     
