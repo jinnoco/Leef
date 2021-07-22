@@ -12,12 +12,12 @@ import Firebase
 
 class PostViewController: UIViewController {
     
-    var color = MainColor()
+    let color = MainColor()
     
-    var sendDBModel = SendDBModel()
-    
-    let topLabel = UILabel()
    
+    
+    //UI
+    let topLabel = UILabel()
     var image = UIImageView()
     let imageLabel = UILabel()
     let label = UILabel()
@@ -25,16 +25,23 @@ class PostViewController: UIViewController {
     let createButton = UIButton()
     let cancelButton = UIButton()
     
+    
+    //database
+    let sendDBModel = SendDBModel()
+//    var username = String()
+    var userImageString = String()
+//    var postImageData = Data()
+//    var comment = String()
+//    var postDate = Timestamp()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = color.whiteColor
-        
-//        print(image.image ?? "nil")
 
-        
-//        configureProfileImage()
+        if UserDefaults.standard.object(forKey: "userImage") !=  nil {
+            userImageString = UserDefaults.standard.object(forKey: "userImage") as! String
+        }
         
         configureTopLabel()
         configureCancelButton()
@@ -54,9 +61,12 @@ class PostViewController: UIViewController {
     }
     
     func setupTopLabel() {
+        
+        let posTop = view.frame.size.height * 0.1
+        
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        topLabel.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
+        topLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: posTop).isActive = true
     }
     
     func configureCancelButton() {
@@ -79,12 +89,12 @@ class PostViewController: UIViewController {
     func configureCreateButton() {
         view.addSubview(createButton)
         setupCreateButton()
-        createButton.setTitle("追加", for: .normal)
+        createButton.setTitle("投稿", for: .normal)
         createButton.setTitleColor(color.whiteColor, for: .normal)
         createButton.backgroundColor = color.blueColor
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         createButton.layer.cornerRadius = 15.0
-        createButton.addTarget(self, action: #selector(create), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(send), for: .touchUpInside)
    
     }
     
@@ -196,11 +206,16 @@ class PostViewController: UIViewController {
         textView.heightAnchor.constraint(equalToConstant: 100).isActive =  true
     }
     
-    @objc func create() {
+    @objc func send() {
         print("createButtonTapped!!")
         
-        let data = image.image?.jpegData(compressionQuality: 0.1)
-        sendDBModel.sendImageData(data: data!)
+        let postImage = image.image?.jpegData(compressionQuality: 0.01)
+        let user = (Auth.auth().currentUser?.displayName)!
+        let sendDBModel = SendDBModel(username: user, userImageData: userImageString, postImageData: postImage!, comment: textView.text!)
+        
+        sendDBModel.sendPostData()
+        
+        
         
 
     }

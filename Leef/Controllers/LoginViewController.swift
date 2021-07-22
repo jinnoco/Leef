@@ -121,9 +121,11 @@ class LoginViewController: UIViewController {
                     */
                     
                     //画面遷移
-                    let timelineViewController = TimelineViewController()
-                    navigationController?.pushViewController(timelineViewController, animated: true)
-//
+//                    let timelineViewController = TimelineViewController()
+//                    navigationController?.pushViewController(timelineViewController, animated: true)
+        
+                    let mainTabVC = MainTabBarController()
+                    navigationController?.pushViewController(mainTabVC, animated: true)
 //                }
 //            }
 //

@@ -11,28 +11,28 @@ import Firebase
 class TimelineViewController: UIViewController {
 
     let tableView = UITableView()
-    let cellIdentifier = "timelineCell"
+    let timelineCellId = "timelineCell"
     
     var username = String()
     
-
-//    let tabBar = UITabBar()
-    
-    var cell = [TimelineCell]()
+    var post = [TimelineCell]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
         
-      
-//        printURL()
+       configureNav()
+       configureTableView()
         
+    }
+    
 
+    func configureNav() {
+        navigationItem.title = "タイムライン"
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.title = username
         navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(toNewPostPage))
         navigationItem.hidesBackButton = true
-       configureTableView()
-        
     }
     
     @objc func toNewPostPage() {
@@ -54,8 +54,8 @@ class TimelineViewController: UIViewController {
     func configureTableView() {
         view.addSubview(tableView)
         setupTableView()
-        tableView.rowHeight = 280
-        tableView.register(TimelineCell.self, forCellReuseIdentifier: cellIdentifier)
+
+        tableView.register(TimelineCell.self, forCellReuseIdentifier: timelineCellId)
     }
     
     func setupTableView() {
@@ -74,7 +74,7 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: timelineCellId, for: indexPath)
         cell.selectionStyle = .none
         return cell
     }
@@ -85,5 +85,6 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(selectViewController, animated: true)
     }
     
+
     
 }

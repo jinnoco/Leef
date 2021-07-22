@@ -19,14 +19,18 @@ class TimelineCell: UITableViewCell {
     var text = UITextView()
     
     let user = Auth.auth().currentUser
+    
+    
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         //Cell setup
-        configureUsername()
-        configureDate()
         configureImage()
         configureProfileImage()
+        configureUsername()
+        configureDate()
+       
     }
     
     required init?(coder: NSCoder) {
@@ -38,14 +42,15 @@ class TimelineCell: UITableViewCell {
         setupUsername()
         
         let displayName = user?.displayName
+        
         username.text = displayName ?? "username"
         
     }
     
     func setupUsername() {
         username.translatesAutoresizingMaskIntoConstraints = false
-        username.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
-        username.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 75).isActive = true
+        username.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
+        username.leadingAnchor.constraint(equalTo: image.leadingAnchor).isActive = true
         
     }
     
@@ -60,24 +65,27 @@ class TimelineCell: UITableViewCell {
     func setupDate() {
         date.translatesAutoresizingMaskIntoConstraints = false
         date.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 100).isActive = true
-        date.centerYAnchor.constraint(equalTo: username.centerYAnchor).isActive = true
+        date.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
     }
     
     func configureImage() {
         addSubview(image)
         image.backgroundColor = .lightGray
         image.layer.cornerRadius = 10
+        
         setupImage()
     }
     
     func setupImage() {
+        
+        let imageHeight = frame.size.height * 3
+        let imageWidth = imageHeight * (4/3)
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.leadingAnchor.constraint(equalTo: username.leadingAnchor).isActive = true
-//        image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-////        image.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        image.topAnchor.constraint(equalTo: username.bottomAnchor, constant: 20).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 256).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 192).isActive = true
+        image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        image.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
+        image.heightAnchor.constraint(equalToConstant: imageHeight).isActive = true
+        image.widthAnchor.constraint(equalToConstant: imageWidth).isActive = true
+       
     }
     
     func configureProfileImage() {
@@ -111,8 +119,8 @@ class TimelineCell: UITableViewCell {
     
     func setupPrfileImage() {
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-//        profileImage.topAnchor.constraint(equalTo: username.topAnchor).isActive = true
-        profileImage.centerYAnchor.constraint(equalTo: username.centerYAnchor).isActive = true
+        profileImage.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
+        profileImage.bottomAnchor.constraint(equalTo:  image.topAnchor).isActive = true
         profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         profileImage.widthAnchor.constraint(equalToConstant: 44).isActive = true
         profileImage.heightAnchor.constraint(equalToConstant: 44).isActive = true

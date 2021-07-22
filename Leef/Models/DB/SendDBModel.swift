@@ -10,13 +10,25 @@ import Firebase
 
 class SendDBModel {
     
+    var username = String()
+    var userImageData = String()
+    var postImageData = Data()
+    var comment =  String()
+    
+    let db = Firestore.firestore()
+    
     //送信機能
     
     init() {
         
     }
     
-    
+    init(username: String, userImageData: String, postImageData: Data, comment: String) {
+        self.username = username
+        self.userImageData = userImageData
+        self.postImageData  = postImageData
+        self.comment = comment
+    }
     
 //    func sendProfileImageData(imageURL: URL) {
 //        let user = Auth.auth().currentUser
@@ -36,12 +48,39 @@ class SendDBModel {
 //        }
 //    }
     
+    func sendPostData() {
+        
+        let imageRef = Storage.storage().reference().child("PostImages")
+            .child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
+        
+        imageRef.putData(postImageData, metadata: nil) { metadata, error in
+            if error != nil {
+                print("sendError", error)
+                return
+            }
+            
+            imageRef.downloadURL { [self] url, error in
+                if error != nil {
+                    
+                    return
+                }
+                
+                self.db.collection("post").document().setData(["username" : self.username,
+                                                               "userImageData" : self.userImageData,
+                                                               "postImageData" : url?.absoluteString as Any,
+                                                               "comment": self.comment])
+            }
+        
+        }
+        
+    }
+    
     //FireStorage
     func sendImageData(data: Data) {
         let image = UIImage(data: data)
         let postImage = image?.jpegData(compressionQuality: 0.1)
         
-        let imageRef = Storage.storage().reference().child("postImage").child("\(UUID().uuidString + String(Date.timeIntervalBetween1970AndReferenceDate)).jpg")
+        let imageRef = Storage.storage().reference().child("postImage").child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
         
         imageRef.putData(postImage!, metadata: nil) { metadata, error in
             if error != nil {
@@ -59,7 +98,7 @@ class SendDBModel {
         }
     }
     
-    //URLからImage
+    //URLからImageに変換
     func getImageByUrl(url: String) -> UIImage{
         let url = URL(string: url)
         do {
