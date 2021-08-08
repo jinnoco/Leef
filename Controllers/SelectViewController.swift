@@ -214,9 +214,11 @@ class SelectViewController: UIViewController {
     
     @objc func share() {
         //ActivityViewControllerを表示しSNSにシェア
-        let postImage = imageView.image
-        let postText = textView.text
-        let activityItems = [postImage as Any, postText as Any] as [Any]
+        let shareImage = imageView.image //投稿された画像
+        let text = textView.text //投稿された文章
+        let username = userId //投稿者のTwitterアカウント
+        let shareText = "\(text ?? "")\n@\(username)"
+        let activityItems = [shareImage as Any, shareText as Any] as [Any]
         
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
