@@ -7,123 +7,142 @@
 
 import UIKit
 import Firebase
+import Nuke
+import SoftUIView
 
 class TimelineCell: UITableViewCell {
     
-    var sendDBModel = SendDBModel()
     
+    
+    let background = UIView()
     var username = UILabel()
-    var date = UILabel()
     var profileImage = UIImageView()
-    var image = UIImageView()
-    var text = UITextView()
+//    var timelineImageView = FlexibleHeightImageView(frame: .zero)
+    var timelineImageView = UIImageView()
+    var dateLabel = UILabel()
     
+    
+    let sendDBModel = SendDBModel()
+    let loadDBModel = LoadDBModel()
+    let color = MainColor()
     let user = Auth.auth().currentUser
+    let timeline = TimelineViewController()
     
     
+
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+  
         //Cell setup
-        configureImage()
+        
+        addSubview(background)
+        addSubview(timelineImageView)
+        addSubview(username)
+        addSubview(dateLabel)
+        addSubview(profileImage)
+        
+        configureBackground()
         configureProfileImage()
         configureUsername()
-        configureDate()
-       
+        configureTimelineImageView()
+        configureDateLabel()
+        
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
-    func configureUsername() {
-        addSubview(username)
-        setupUsername()
-        
-        let displayName = user?.displayName
-        
-        username.text = displayName ?? "username"
-        
+  
+    func configureBackground() {
+        setBackground()
+        background.backgroundColor = color.cellColor
+        background.layer.cornerRadius = 22
+        background.layer.masksToBounds = true
+        backgroundColor = color.backColor
     }
     
-    func setupUsername() {
-        username.translatesAutoresizingMaskIntoConstraints = false
-        username.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
-        username.leadingAnchor.constraint(equalTo: image.leadingAnchor).isActive = true
-        
+    
+    func configureTimelineImageView() {
+        setTimelineImage()
+        timelineImageView.contentMode = .scaleAspectFill
+        timelineImageView.backgroundColor = color.whiteColor
+        timelineImageView.clipsToBounds = true
+        timelineImageView.layer.cornerRadius = 15
     }
     
-    func configureDate() {
-        addSubview(date)
-        setupDate()
-        date.text = "7月6日"
-        date.textColor = .lightGray
-        
-    }
-    
-    func setupDate() {
-        date.translatesAutoresizingMaskIntoConstraints = false
-        date.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 100).isActive = true
-        date.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive = true
-    }
-    
-    func configureImage() {
-        addSubview(image)
-        image.backgroundColor = .lightGray
-        image.layer.cornerRadius = 10
-        
-        setupImage()
-    }
-    
-    func setupImage() {
-        
-        let imageHeight = frame.size.height * 3
-        let imageWidth = imageHeight * (4/3)
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        image.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
-        image.heightAnchor.constraint(equalToConstant: imageHeight).isActive = true
-        image.widthAnchor.constraint(equalToConstant: imageWidth).isActive = true
-       
-    }
     
     func configureProfileImage() {
-        addSubview(profileImage)
-        setupPrfileImage()
+        setPrfileImage()
         profileImage.backgroundColor = .lightGray
+        profileImage.clipsToBounds = true
         profileImage.layer.cornerRadius = 22
         
-//        let data = UserDefaults.standard.object(forKey: "userImage")
-//        let image = UIImage(data: data! as! Data)
-//        profileImage.image = image
-//        if let user = user {
-//            let imageURL = user.photoURL
-//            let urlString = imageURL?.absoluteString
-//            profileImage.image = sendDBModel.getImageByUrl(url: urlString!)
-//        }
+    }
+    
+    
+    func setBackground() {
+        background.translatesAutoresizingMaskIntoConstraints                                    = false
+        background.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive              = true
+        background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive       = true
+        background.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25).isActive      = true
+        background.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25).isActive   = true
+    }
+    
+    
+    func setTimelineImage() {
+//        timelineImageView.translatesAutoresizingMaskIntoConstraints                                         = false
+//        timelineImageView.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20).isActive   = true
+//        timelineImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive           = true
+//        timelineImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive        = true
+//        timelineImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -70).isActive            = true
+        
+        
+        timelineImageView.translatesAutoresizingMaskIntoConstraints                                         = false
+        timelineImageView.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20).isActive   = true
+        timelineImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive           = true
+        timelineImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive        = true
+        timelineImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -70).isActive            = true
+        timelineImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+    }
+    
+
+    
+    func configureUsername() {
+        setUsername()
+        username.font = UIFont(name: "AvenirNext-Bold", size: 15)
+        username.textColor = color.darkGrayColor
+    }
+
+    func setUsername() {
+        username.translatesAutoresizingMaskIntoConstraints                                              = false
+        username.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor).isActive                 = true
+        username.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 20).isActive  = true
 
     }
 
-//    func getImageByUrl(url: String) -> UIImage{
-//        let url = URL(string: url)
-//        do {
-//            let data = try Data(contentsOf: url!)
-//            return UIImage(data: data)!
-//        } catch let err {
-//            print("Error : \(err.localizedDescription)")
-//        }
-//
-//        return UIImage()
-//    }
-    
-    func setupPrfileImage() {
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        profileImage.bottomAnchor.constraint(equalTo:  image.topAnchor).isActive = true
-        profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
-        profileImage.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        profileImage.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    func configureDateLabel() {
+        setDateLabel()
+        dateLabel.textColor = color.darkGrayColor
+    }
+
+    func setDateLabel() {
+        dateLabel.translatesAutoresizingMaskIntoConstraints                                             = false
+        dateLabel.leadingAnchor.constraint(equalTo: timelineImageView.leadingAnchor).isActive           = true
+        dateLabel.topAnchor.constraint(equalTo: timelineImageView.bottomAnchor, constant: 15).isActive  = true
+    }
+
+    func setPrfileImage() {
+        profileImage.translatesAutoresizingMaskIntoConstraints                                 = false
+        profileImage.topAnchor.constraint(equalTo: topAnchor, constant: 35).isActive           = true
+        profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35).isActive   = true
+        profileImage.widthAnchor.constraint(equalToConstant: 44).isActive                      = true
+        profileImage.heightAnchor.constraint(equalToConstant: 44).isActive                     = true
     }
     
 }
+

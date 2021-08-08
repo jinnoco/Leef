@@ -6,36 +6,29 @@
 //
 
 import UIKit
+import NeumorphismTab
 
-class MainTabBarController: UITabBarController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        setupTab()
-      
-    }
+class MainTabBarController: NeumorphismTabBarController {
     
-   
-    func setupTab() {
+    var color = MainColor()
+    
+    override func setupView() {
         
-//        var viewControllers = [UIViewController]()
-
+        let timeline = NeumorphismTabBarItem(icon: UIImage(systemName: "newspaper")!, title: "")
+        let myPage = NeumorphismTabBarItem(icon: UIImage(systemName: "person.crop.circle")!, title: "")
+        
+        view.backgroundColor = color.backColor
         
         let timelineViewController = TimelineViewController()
-        timelineViewController.tabBarItem = UITabBarItem(title: "タイムライン", image: UIImage(systemName: "newspaper"), tag: 0)
         let timelineNVC = UINavigationController(rootViewController: timelineViewController)
-                
+        
         let myPageViewController = MyPageViewController()
-        myPageViewController.tabBarItem = UITabBarItem(title: "マイページ", image: UIImage(systemName: "person.crop.circle"), tag: 1)
         let myPageNVC = UINavigationController(rootViewController: myPageViewController)
-
+        
+        setTabBar(items: [timeline, myPage])
         setViewControllers([timelineNVC, myPageNVC], animated: false)
         
-//        self.viewControllers = viewControllers.map{ UINavigationController(rootViewController: $0)}
-//        self.setViewControllers(viewControllers, animated: false)
     }
-
-
-    
 }

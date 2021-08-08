@@ -8,156 +8,169 @@
 import UIKit
 import FirebaseAuth
 import NVActivityIndicatorView
-import WebKit
+import SoftUIView
+import Lottie
 
 class LoginViewController: UIViewController {
     
-    var color = MainColor()
+    let color = MainColor()
     var provider: OAuthProvider?
-    
     var sendDBModel = SendDBModel()
-
-    let loginButton = UIButton()
-    let signupButton = UIButton()
+    let indicater = Indicater()
     
+    //UI
+    let loginButton = SoftUIView()
+    let signupButton = SoftUIView()
+    var animationView = AnimationView()
     var activityIndicaterView: NVActivityIndicatorView!
     
-    var webview: WKWebView!
+    
+    
+    override func loadView() {
+        super.loadView()
+        
+        configureAnimation()
+        configureLoginButton()
+        configureSignupButton()
+        indicater.configureIndicater(to: view)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("loginViewController")
-        
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        view.backgroundColor = color.whiteColor
-        
-        configureLoginButton()
-        configureSignupButton()
-        configureIndicater()
+        view.backgroundColor = color.backColor
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["lang":"ja"]
-
-       
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animationView.play()
+    }
+    
+    func configureAnimation() {
+        
+        view.addSubview(animationView)
+        animationView = AnimationView(name: "lf30_editor_5wqgyqlx")
+        animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
+        animationView.center = self.view.center
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.play()
+        
     }
     
     func configureLoginButton() {
         view.addSubview(loginButton)
-        loginButton.backgroundColor = color.blueColor
-        loginButton.layer.cornerRadius = 20
-        loginButton.setTitle("Twitterでログイン", for: .normal)
+        loginButton.mainColor = color.backColor.cgColor
+        loginButton.darkShadowColor = color.darkShadow.cgColor
+        loginButton.lightShadowColor = color.lightShadow.cgColor
+        loginButton.cornerRadius = 20
+        
+        //Button内にLabelを配置
+        let label = UILabel()
+        loginButton.setContentView(label)
+        label.text = "Twitterでログイン"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor).isActive =  true
+        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        label.textColor = color.blueColor
         loginButton.addTarget(self, action: #selector(twitterLogin), for: .touchUpInside)
-        setupLoginButton()
-    }
-
-    func  setupLoginButton() {
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 200).isActive = true
-        loginButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        setLoginButton()
     }
     
     func configureSignupButton() {
         view.addSubview(signupButton)
-        signupButton.setTitle("アカウントを作成", for: .normal)
-        signupButton.setTitleColor(.black, for: .normal)
+        signupButton.mainColor = color.backColor.cgColor
+        signupButton.darkShadowColor = color.darkShadow.cgColor
+        signupButton.lightShadowColor = color.lightShadow.cgColor
+        signupButton.cornerRadius = 20
+        
+        //Button内にLabelを配置
+        let label = UILabel()
+        signupButton.setContentView(label)
+        label.text = "アカウントを作成"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerXAnchor.constraint(equalTo: signupButton.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: signupButton.centerYAnchor).isActive =  true
+        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        label.textColor = color.darkGrayColor
         signupButton.addTarget(self, action: #selector(twitterSignup), for: .touchUpInside)
-        setupSignupButton()
+        setSignupButton()
     }
     
     
-    func setupSignupButton() {
-        signupButton.translatesAutoresizingMaskIntoConstraints = false
-        signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signupButton.centerYAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 30).isActive = true
+    
+    func  setLoginButton() {
+        loginButton.translatesAutoresizingMaskIntoConstraints                                       = false
+        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                  = true
+        loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 200).isActive   = true
+        loginButton.widthAnchor.constraint(equalToConstant: 250).isActive                           = true
+        loginButton.heightAnchor.constraint(equalToConstant: 40).isActive                           = true
+    }
+    
+
+    
+    
+    func setSignupButton() {
+        signupButton.translatesAutoresizingMaskIntoConstraints                                              = false
+        signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                         = true
+        signupButton.centerYAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 45).isActive     = true
+        signupButton.widthAnchor.constraint(equalToConstant: 250).isActive                                  = true
+        signupButton.heightAnchor.constraint(equalToConstant: 40).isActive                                  = true
     }
     
     
     @objc func twitterLogin() {
-        /*
+        
+        //ログイン処理
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["force_login":"true"]
         provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
             
             if error != nil {
+                print("ログイン処理エラー: \(error.debugDescription)")
                 return
             }
             
-            //ActivityIndicatorView
-            startIndicater()
+            indicater.startIndicater()
             
-            //ログイン処理
             if credential != nil {
-                
                 Auth.auth().signIn(with: credential!) { (result, error) in
-                    
                     if error != nil {
-                        print("error: ", error as Any)
+                        print("ログイン処理エラー: \(error.debugDescription)")
                         return
                     }
+                    //@usernameを取得しUserDefaultsに保存
+                    print("result?.additionalUserInfo?.providerID -> Twitter @username: \(result?.additionalUserInfo?.profile!["screen_name"])")
+                    let userId = result?.additionalUserInfo?.profile!["screen_name"] as! String
+                    UserDefaults.standard.setValue(userId, forKey: "userId")
                     
-                    stopIndicater()
-                    
-                    print("tapped!!")
-                    
-                    let user = Auth.auth().currentUser
-                    
-                    if let user = user {
-                        let imageURL = user.photoURL
-                        let urlString = imageURL?.absoluteString
-                        
-                        //                    sendDBModel.sendProfileImageData(url: urlString!)
-                        print("urlString: \(urlString)")
-                        print("imageURL: \(imageURL)")
-                        
-                        sendDBModel.sendProfileImageData(url: urlString!)
-                        
-                        //   UserDefaults.standard.setValue(image, forKey: "userImage")
-                        //     print("image type: ", type(of: image))
-                    }
-                    */
+                    indicater.stopIndicater()
                     
                     //画面遷移
-//                    let timelineViewController = TimelineViewController()
-//                    navigationController?.pushViewController(timelineViewController, animated: true)
-        
                     let mainTabVC = MainTabBarController()
                     navigationController?.pushViewController(mainTabVC, animated: true)
-//                }
-//            }
-//
-//
-//        })
-
-        
-        
-        
+                }
+            }
+        })
+    }
+    
+   @objc func twitterSignup() {
+        //Twiiterアカウント作成ページに遷移
+        let url = NSURL(string: "https://twitter.com/?lang=ja")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
     }
     
     
-    
-    
-    @objc func twitterSignup() {
-       print("sign up!!")
-    }
-    
-    
-    func configureIndicater() {
-        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        activityIndicaterView = NVActivityIndicatorView(frame: frame, type: .ballRotateChase, color: .lightGray, padding: .none)
-        activityIndicaterView.center = self.view.center
-        view.addSubview(activityIndicaterView)
-    }
-
-    func startIndicater() {
-        activityIndicaterView.startAnimating()
-    }
-    
-    func stopIndicater() {
-        activityIndicaterView.stopAnimating()
-    }
     
 }
+
+
+

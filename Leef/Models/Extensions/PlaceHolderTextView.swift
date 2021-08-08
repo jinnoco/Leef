@@ -7,7 +7,7 @@
 
 import UIKit
 
-@IBDesignable class PlaceHolderTextView: UITextView {
+class PlaceHolderTextView: UITextView {
 
      var placeHolder: String = "" {
         willSet {
