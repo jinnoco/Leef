@@ -19,6 +19,7 @@ class LoginViewController: UIViewController {
     let indicater = Indicater()
     
     //UI
+    let titleImageView = UIImageView()
     let loginButton = SoftUIView()
     let signupButton = SoftUIView()
     var animationView = AnimationView()
@@ -30,6 +31,7 @@ class LoginViewController: UIViewController {
         super.loadView()
         
         configureAnimation()
+        configureTitleImageView()
         configureLoginButton()
         configureSignupButton()
         indicater.configureIndicater(to: view)
@@ -51,16 +53,31 @@ class LoginViewController: UIViewController {
         animationView.play()
     }
     
+    func configureTitleImageView() {
+        view.addSubview(titleImageView)
+        setTitleImageView()
+        titleImageView.image = UIImage(named: "LeefApp_title")
+        titleImageView.contentMode = .scaleAspectFit
+    }
+    
+    func setTitleImageView() {
+        let height = view.frame.size.height * 0.07
+        let topConstant = view.frame.size.height * 0.2
+        titleImageView.translatesAutoresizingMaskIntoConstraints = false
+        titleImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        titleImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        titleImageView.topAnchor.constraint(equalTo: view.topAnchor, constant:topConstant).isActive = true
+    }
+    
     func configureAnimation() {
         
-        view.addSubview(animationView)
-        animationView = AnimationView(name: "lf30_editor_5wqgyqlx")
+        animationView = AnimationView(name: "lf30_editor_mtdla6kp")
         animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
         animationView.play()
-        
+        view.addSubview(animationView)
     }
     
     func configureLoginButton() {
