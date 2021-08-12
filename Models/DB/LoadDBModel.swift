@@ -18,7 +18,7 @@ class LoadDBModel {
     var myDataSet = [MyDataSet]()
     let db = Firestore.firestore()
     
-    let myUid = Auth.auth().currentUser?.uid
+    var myUid = Auth.auth().currentUser?.uid
     
     var loadDelegate: LoadDelegate?
     
@@ -66,8 +66,10 @@ class LoadDBModel {
     
     
     func loadMyPostData() {
+        
+        print("myUid: \(myUid)")
         db.collection("post").order(by: "postDate").addSnapshotListener { [self]snapshot, error in
-            
+           
             self.myDataSet = []
             
             if error != nil {
@@ -76,7 +78,7 @@ class LoadDBModel {
             }
             
             if let snapshotDoc = snapshot?.documents {
-                
+               
                 for doc in snapshotDoc {
                     
                     let data = doc.data()
@@ -95,17 +97,14 @@ class LoadDBModel {
   
                             self.myDataSet.append(newMyDataSet)
                             self.myDataSet.reverse()
-                            self.loadDelegate?.doneLoad(check: 2)
+
                         }
                     }
-                   
-                    
                 }
-                print("myDataSetデータ受信完了")
-//                self.loadDelegate?.doneLoad(check: 2)
-                print("自分の投稿: \(myDataSet.count)件")
             }
-            
+            print("myDataSetデータ受信完了")
+            print("自分の投稿: \(myDataSet.count)件")
+            self.loadDelegate?.doneLoad(check: 2)
         }
     }
 }
