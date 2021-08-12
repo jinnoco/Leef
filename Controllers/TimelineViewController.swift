@@ -22,6 +22,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
     //UI
     let tableView = UITableView()
     let timelineCellId = "timelineCell"
+    let titleImage  = UIImageView()
     
 
        
@@ -57,15 +58,24 @@ class TimelineViewController: UIViewController, LoadDelegate {
         self.navigationController?.hidesBarsOnSwipe = true
     }
     
+    
+    
     func doneLoad(check: Int) {
         //ロード処理が完了したらreloadDataを実行
         if check == 1 {
             tableView.reloadData()
         }
     }
+    
+    
 
     func configureNav() {
-        navigationItem.title = "タイムライン"
+        let image = UIImage(named: "titleImage")
+        titleImage.image = image
+        titleImage.contentMode = .scaleAspectFit
+        navigationItem.titleView = titleImage
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+        navigationItem.leftBarButtonItem?.tintColor = .clear
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = color.backColor
         navigationController?.navigationBar.tintColor = color.darkGrayColor
@@ -230,17 +240,32 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     
     
     @objc func showAlert(){
-        let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
         
-        alertController.addAction(UIAlertAction(title: "カメラで撮影", style: .default, handler: { action in
-            self.openCamera()
-        }))
-        alertController.addAction(UIAlertAction(title: "ライブラリから選択", style: .default, handler: { action in
-            self.openLibrary()
-        }))
-        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        if Auth.auth().currentUser?.uid != nil {
+            let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(title: "カメラで撮影", style: .default, handler: { action in
+                self.openCamera()
+            }))
+            alertController.addAction(UIAlertAction(title: "ライブラリから選択", style: .default, handler: { action in
+                self.openLibrary()
+            }))
+            alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+        } else {
+            
+            let alertController = UIAlertController(title: "確認", message: "投稿機能を利用するにはログインが必要です", preferredStyle: .alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+            
+            
+        }
         
-        self.present(alertController, animated: true, completion: nil)
+       
         
     }
     
