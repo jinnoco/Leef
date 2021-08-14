@@ -36,10 +36,8 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
 
-        //全体のPosDataをロード
+        //全体のPostDataをロード
         loadDBModel.loadPostData()
         tableView.reloadData()
         
@@ -68,22 +66,30 @@ class TimelineViewController: UIViewController, LoadDelegate {
     }
     
     
-
+    //NavigationBar
     func configureNav() {
-        let image = UIImage(named: "titleImage")
+        //navigationBarを表示
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        //rightBarButtonItem(投稿作成)
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
+        //titleに画像をセット
+        let image = UIImage(named: "navigationBarTitleImage")
         titleImage.image = image
         titleImage.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImage
+        //clearのleftBarButtonItemをセットして画像が左によらないようにする
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
         navigationItem.leftBarButtonItem?.tintColor = .clear
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.barTintColor = color.backColor
-        navigationController?.navigationBar.tintColor = color.darkGrayColor
+        //色を設定
+        navigationController?.navigationBar.barTintColor = color.backColor //背景
+        navigationController?.navigationBar.tintColor = color.darkGrayColor //アイテム
+        //下線を消す
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController!.navigationBar.titleTextAttributes = [.foregroundColor: color.darkGrayColor]
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
-        navigationItem.hidesBackButton = true
+        //スワイプで隠す
         navigationController?.hidesBarsOnSwipe = true
+        //戻るボタン非表示
+        navigationItem.hidesBackButton = true
+        //遷移先の戻るボタンのテキストを消す
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
@@ -172,7 +178,6 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tapped cell")
      
         //値を渡して画面遷移
         let selectViewController = SelectViewController()
@@ -242,6 +247,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     @objc func showAlert(){
         
         if Auth.auth().currentUser?.uid != nil {
+            
             let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "カメラで撮影", style: .default, handler: { action in
