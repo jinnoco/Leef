@@ -16,26 +16,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        if Auth.auth().currentUser?.uid != nil  {
-            
+
+        //初回起動判定
+        let userDefaults = UserDefaults.standard
+        let firstLunchKey = "firstLunchKey"
+        let lunched = userDefaults.bool(forKey: firstLunchKey)
+        
+        if lunched {
+            //2回目以降
             let mainTabVC = MainTabBarController()
             window = UIWindow(windowScene: scene as! UIWindowScene)
             window?.rootViewController = mainTabVC
             window?.makeKeyAndVisible()
-            
+
         } else {
+
+            UserDefaults.standard.set(true, forKey: firstLunchKey)
             
+            //初回起動
             let loginVC = LoginViewController()
             let nc = UINavigationController(rootViewController: loginVC)
             window = UIWindow(windowScene: scene as! UIWindowScene)
             window?.rootViewController = nc
             window?.makeKeyAndVisible()
-            
+
         }
-        
-        
-        
-        
         
 
         

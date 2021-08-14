@@ -16,15 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        //Firebaseセットアップ
         FirebaseApp.configure()
-        let loginVC = LoginViewController()
-        let nc = UINavigationController(rootViewController: loginVC)
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = nc
-        window?.makeKeyAndVisible()
-        
-        
-        
+    
         return true
     }
 
