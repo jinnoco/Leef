@@ -11,10 +11,8 @@ import SoftUIView
 import NVActivityIndicatorView
 
 class PostPageViewController: UIViewController {
-
-    var color = MainColor()
-    let screenSize = UIScreen.main.bounds.size
-    let indicater = Indicater()
+    
+    
     
     //UI
     var postImageView = UIImageView()
@@ -24,7 +22,10 @@ class PostPageViewController: UIViewController {
     let cancelButton = SoftUIView()
     let textView = UITextView()
     let postButtonLabel = UILabel()
+    
     var textViewY: CGFloat?
+    var color = MainColor()
+    let screenSize = UIScreen.main.bounds.size
     
     let db = Firestore.firestore()
     
@@ -34,7 +35,7 @@ class PostPageViewController: UIViewController {
         configureTopLabel()
         configureCancelButton()
         configurePostButton()
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,16 +44,14 @@ class PostPageViewController: UIViewController {
         configurePostImageView()
         configureTextView()
         
-        //タップ不可
+        //初期状態ではタップ不可
         postButton.isEnabled = false
         postButtonLabel.textColor = color.darkGrayColor
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        indicater.configureIndicater(to: view)
-        
+                
         view.backgroundColor = color.backColor
         textView.delegate = self
         
@@ -67,8 +66,8 @@ class PostPageViewController: UIViewController {
     
     @objc func keyboardWillShow(_ notification:NSNotification){
         let keyboardHeight = ((notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as Any) as AnyObject).cgRectValue.height
-        textViewY = textView.top //textViewのY位置を取得
-        textView.frame.origin.y = screenSize.height - keyboardHeight - textView.frame.height - 20
+        textViewY = textView.top //ここでtextViewの元のY位置を取得
+        textView.frame.origin.y = screenSize.height - keyboardHeight - textView.frame.height - 20 //textViewを動かす
     }
     
     @objc func keyboardWillHide(_ notification:NSNotification){
@@ -79,7 +78,7 @@ class PostPageViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        textView.resignFirstResponder()
+        textView.resignFirstResponder() //タップでキーボードを閉じる
     }
     
     
@@ -105,6 +104,8 @@ class PostPageViewController: UIViewController {
         cancelButton.mainColor = color.backColor.cgColor
         cancelButton.darkShadowColor = color.darkShadow.cgColor
         cancelButton.lightShadowColor = color.lightShadow.cgColor
+        let buttonHeght = view.frame.size.height * 0.05
+        cancelButton.cornerRadius = buttonHeght / 2
         //Button内にLabelを表示
         let label = UILabel()
         cancelButton.setContentView(label)
@@ -123,7 +124,8 @@ class PostPageViewController: UIViewController {
         postButton.mainColor = color.backColor.cgColor
         postButton.darkShadowColor = color.darkShadow.cgColor
         postButton.lightShadowColor = color.lightShadow.cgColor
-        postButton.layer.cornerRadius = 15.0
+        let buttonHeght = view.frame.size.height * 0.05
+        postButton.cornerRadius = buttonHeght / 2
         postButton.setContentView(postButtonLabel)
         postButtonLabel.text = "投稿"
         postButtonLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -135,7 +137,7 @@ class PostPageViewController: UIViewController {
         
     }
     
- 
+    
     
     func configureTextView() {
         view.addSubview(textView)
@@ -144,7 +146,7 @@ class PostPageViewController: UIViewController {
         textView.text = "コメントを入力..."
         textView.textColor = .lightGray
         textView.layer.cornerRadius = 15
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) //内側に余白をつける
         textView.sizeToFit()
     }
     
@@ -211,18 +213,18 @@ class PostPageViewController: UIViewController {
     
     @objc func send() {
         //データのnilテェック
-    if let postImageData = postImage.jpegData(compressionQuality: 1.0),
-        let comment = textView.text,
-        let uid = Auth.auth().currentUser?.uid,
-        let username = Auth.auth().currentUser?.displayName,
-        let profileImageURL = Auth.auth().currentUser?.photoURL,
-        let userId = UserDefaults.standard.string(forKey: "userId") {
-        //SendDBModelに格納
-        let sendDBModel = SendDBModel(username: username, uid: uid, postImageData: postImageData, comment: comment, profileImageURLString: profileImageURL.absoluteString, userId: userId)
-        //FireStoreに送信
-        sendDBModel.sendData()
-       }
-
+        if let postImageData = postImage.jpegData(compressionQuality: 1.0),
+           let comment = textView.text,
+           let uid = Auth.auth().currentUser?.uid,
+           let username = Auth.auth().currentUser?.displayName,
+           let profileImageURL = Auth.auth().currentUser?.photoURL,
+           let userId = UserDefaults.standard.string(forKey: "userId") {
+            //SendDBModelに格納
+            let sendDBModel = SendDBModel(username: username, uid: uid, postImageData: postImageData, comment: comment, profileImageURLString: profileImageURL.absoluteString, userId: userId)
+            //FireStoreに送信
+            sendDBModel.sendData()
+        }
+        
         dismiss(animated: true, completion: nil)
         
     }
@@ -237,8 +239,10 @@ class PostPageViewController: UIViewController {
     
 }
 
+//textViewに関する処理
 extension PostPageViewController: UITextViewDelegate {
     
+    //textViewに入力されたらPlaceHolderを消し本文の色を黒にする
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == "コメントを入力..." {
             textView.text = ""
@@ -246,6 +250,7 @@ extension PostPageViewController: UITextViewDelegate {
         }
     }
     
+    //textViewが空白だったらPlaceHolderを表示し文字をグレーにする
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "コメントを入力..."
@@ -254,7 +259,7 @@ extension PostPageViewController: UITextViewDelegate {
     }
     
     
-    
+    //textViewにPlaceHolderがある場合、空白の場合は投稿ボタンを押せないようにしボタンの文字色をグレーにする
     func textViewDidChangeSelection(_ textView: UITextView) {
         if textView.text == "コメントを入力..." || textView.text == "" {
             postButton.isEnabled = false
