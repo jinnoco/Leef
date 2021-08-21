@@ -25,6 +25,8 @@ class SelectViewController: UIViewController {
     var textView = UITextView()
     var twitterButton = SoftUIView()
     var shareButton = SoftUIView()
+    
+    var doc = String()
    
     
     override func loadView() {
@@ -67,6 +69,11 @@ class SelectViewController: UIViewController {
         setUsername()
         username.font = UIFont(name: "AvenirNext-Bold", size: 18)
         username.textColor = color.darkGrayColor
+        username.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tappedUsername))
+        username.addGestureRecognizer(tap)
+        
+        
     }
     
     func configureImageView() {
@@ -74,6 +81,8 @@ class SelectViewController: UIViewController {
         setImageView()
         imageView.loadImage(with: postImageString)
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 15
         imageView.setupImageViewer()
     }
     
@@ -132,6 +141,8 @@ class SelectViewController: UIViewController {
         label.font = UIFont(name: "AvenirNext-Bold", size: 13)
         label.textColor = color.darkGrayColor
     }
+    
+    
     
     func setProfileImage() {
         profileImageView.translatesAutoresizingMaskIntoConstraints                                      = false
@@ -201,6 +212,52 @@ class SelectViewController: UIViewController {
 
     }
     
+    @objc func tappedUsername() {
+        
+        let alertController = UIAlertController(title: "不適切なコンテンツですか？", message: "", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { actiom in
+            self.toReportPage()
+        }))
+        alertController.addAction(UIAlertAction(title: "投稿をブロック", style: .destructive, handler: { [self] action in
+            self.showConfirmAlert()
+        }))
+        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func showConfirmAlert() {
+        let alertController = UIAlertController(title: "", message: "投稿をブロックしてもよろしいですか？", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "ブロック", style: .destructive, handler: { [self] action in
+            self.removePost(postDocPass: doc)
+        }))
+        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    //ブラウザのユーザー通報ページに遷移
+    func toReportPage() {
+        let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com/")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
+    }
+    
+    
+    //投稿非表示(削除)処理
+    func removePost(postDocPass: String) {
+        db.collection("post").document(doc).delete() { error in
+            if error != nil {
+                print("投稿削除エラー: \(error.debugDescription)")
+            } else {
+                print("削除しました")
+            }
+        }
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc func toTwitterWebPage() {
         // 外部ブラウザまたはTwitterアプリで投稿者のページを開く
         let userId = userId
@@ -209,16 +266,17 @@ class SelectViewController: UIViewController {
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     
-    
     }
+    
+    
     
     @objc func share() {
         //ActivityViewControllerを表示しSNSにシェア
         let shareImage = imageView.image //投稿された画像
         let text = textView.text //投稿された文章
         let username = userId //投稿者のTwitterアカウント
-        let shareText = "\(text ?? "")\n@\(username)"
-        let activityItems = [shareImage as Any, shareText as Any] as [Any]
+        let shareTextWithUsername = "\(text ?? "")\n@\(username)"
+        let activityItems = [shareImage as Any, shareTextWithUsername as Any] as [Any]
         
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
