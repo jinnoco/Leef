@@ -13,10 +13,7 @@ import Lottie
 class MyPageViewController: UIViewController, LoadDelegate {
     
     
-    var color = MainColor()
-    var loadDBModel = LoadDBModel()
-    let db = Firestore.firestore()
-    var provider: OAuthProvider?
+    
     
     var tableView = UITableView()
     let postedCellId = "postedCellId"
@@ -24,14 +21,18 @@ class MyPageViewController: UIViewController, LoadDelegate {
     var loginUserImage = UIImageView()
     var loginUsername = UILabel()
     let label = UILabel()
-    
-    var profileImageString = String()
-    
-    let indicater = Indicater()
-    
     var animationView = AnimationView()
     
     
+    var profileImageString = String()
+    let indicater = Indicater()
+    var color = MainColor()
+    var loadDBModel = LoadDBModel()
+    let db = Firestore.firestore()
+   
+    var userWithTwitter = Auth.auth().currentUser?.displayName
+    
+    var user: String?
     
     override func loadView() {
         super.loadView()
@@ -41,7 +42,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
         configureLoginUserImage()
         configureLoginUsername()
         configureNav()
-        
         indicater.configureIndicater(to: view)
         
     }
@@ -49,12 +49,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print("viewDidLoad")
-        
-        self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["lang":"ja"]
-        
+      
         loadDBModel.loadDelegate = self
         tableView.delegate = self
         tableView.dataSource = self
@@ -65,19 +60,28 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         
+//        let user = Auth.auth().currentUser?.displayName
+        userWithTwitter = Auth.auth().currentUser?.displayName
         
-        //ログインテェック
-        let userUid = Auth.auth().currentUser?.uid
-        if userUid != nil {
-            loadDBModel.myUid = userUid
-            loadDBModel.loadMyPostData()
-        } else {
+        if userWithTwitter != nil {
+            //ログインテェック
+            let userUid = Auth.auth().currentUser?.uid
+            if userUid != nil {
+                loadDBModel.myUid = userUid
+                loadDBModel.loadMyPostData()
+            } else {
+                tableView.removeFromSuperview()
+                configureAnimation()
+                configureLabel()
+            }
+
+        } else if userWithTwitter == nil  {
             tableView.removeFromSuperview()
             configureAnimation()
             configureLabel()
         }
+                
         
         
     }
@@ -100,7 +104,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        print("viewDidDisappear")
         animationView.removeFromSuperview()
         label.removeFromSuperview()
     }
@@ -117,12 +120,15 @@ class MyPageViewController: UIViewController, LoadDelegate {
         navigationController?.navigationBar.tintColor = color.darkGrayColor
     }
     
+    
     func changeNavRightBar() {
-        let user = Auth.auth().currentUser?.uid
-        if user == nil {
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "ログイン", style: .plain, target: self, action: #selector(showLoginAlert))
-        } else {
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "ログアウト", style: .plain, target: self, action: #selector(showAlert))
+//        let user = Auth.auth().currentUser?.displayName
+//        twitterId = Auth.auth().currentUser?.displayName
+        
+        if userWithTwitter == nil {
+            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+        } else if userWithTwitter != nil {
+            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
         }
     }
     
@@ -152,13 +158,25 @@ class MyPageViewController: UIViewController, LoadDelegate {
     func configureLoginUserImage() {
         view.addSubview(loginUserImage)
         setLoginUserImage()
-        let user = Auth.auth().currentUser
-        if user != nil {
-            let photoURL = user?.photoURL
-            loginUserImage.loadImage(with: photoURL!)
-        } else {
+        
+        
+//        let user = Auth.auth().currentUser?.displayName
+        
+        if userWithTwitter != nil {
+            
+            let user = Auth.auth().currentUser
+            if user != nil {
+                let photoURL = user?.photoURL
+                loginUserImage.loadImage(with: photoURL!)
+            } else {
+                loginUserImage.image = UIImage(named: "NoUser")
+            }
+            
+        } else if userWithTwitter == nil {
+            print("Twitterログインではない")
             loginUserImage.image = UIImage(named: "NoUser")
         }
+
         loginUserImage.backgroundColor = color.lightGrayColor
         loginUserImage.clipsToBounds = true
         loginUserImage.layer.cornerRadius = (view.frame.size.height * 0.05) / 2
@@ -167,7 +185,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     func configureLoginUsername(){
         view.addSubview(loginUsername)
         setLoginUsername()
-        loginUsername.text = Auth.auth().currentUser?.displayName ?? "ログインしていません"
+        loginUsername.text = Auth.auth().currentUser?.displayName ?? "Twitter連携を完了してください"
         loginUsername.font = UIFont(name: "AvenirNext-Bold", size: 15)
         loginUsername.textColor = color.darkGrayColor
         
@@ -236,10 +254,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     @objc func showLoginAlert(){
-        print("ログインする")
         
         let modalViewController = ModalViewController()
-        modalViewController.modalPresentationStyle = .fullScreen
+        //        modalViewController.modalPresentationStyle = .fullScreen
         present(modalViewController, animated: true, completion: nil)
         
         
@@ -247,20 +264,33 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func setView() {
+        print("setview")
         
-        let user = Auth.auth().currentUser
-        if let user = user {
-            let photoURL = user.photoURL
-            loginUserImage.loadImage(with: photoURL!)
-            loginUsername.text = user.displayName
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "ログアウト", style: .plain, target: self, action: #selector(showAlert))
+        userWithTwitter = Auth.auth().currentUser?.displayName
+        
+        if userWithTwitter != nil {
+            
+            let user = Auth.auth().currentUser
+            if let user = user {
+                    let photoURL = user.photoURL
+                    loginUserImage.loadImage(with: photoURL!)
+                    loginUsername.text = user.displayName
+                    navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+                } else {
+                    navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+                }
+            
+        } else if userWithTwitter == nil {
+            print("Twitter連携なしユーザー")
+            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         }
+        
+  
     }
-    
-    
-    @objc func showAlert() {
-        let alertController = UIAlertController(title: "", message: "ログアウトしてもよろしいですか？", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "ログアウト", style: .default, handler: { action in
+        
+    @objc func showLogoutAlert() {
+        let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { action in
             //ログアウト処理
             self.logout()
             
@@ -282,9 +312,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
             try firebaseAuth.signOut()
             print("ログアウトしました")
             
-            loginUsername.text = "ログインしていません"
+            loginUsername.text = "Twitter連携を完了してください"
             loginUserImage.image = UIImage(named: "NoUser")
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ログイン", style: .plain, target: self, action: #selector(showLoginAlert))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
             
         } catch let error as NSError {
             print("ログアウトエラー: \(error.debugDescription)")
