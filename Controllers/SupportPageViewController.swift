@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import Firebase
+import Lottie
 import SoftUIView
 
 
 class SupportPageViewController: UIViewController {
     
     var color = MainColor()
+    
+    var animationView = AnimationView()
 
      //Twitter連携
     var twitterButton = SoftUIView()
@@ -24,10 +28,14 @@ class SupportPageViewController: UIViewController {
     //お問い合わせ
    let contactButton = SoftUIView()
     
+    var userWithTwitter = Auth.auth().currentUser?.displayName
+    
     
     override func loadView() {
         super.loadView()
-        configureLoginButton()
+        
+        configureAnimation()
+        
         configureTOSButton()
         configurePrivacyPolicyButton()
         configureReportButton()
@@ -43,44 +51,40 @@ class SupportPageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.barTintColor = color.backColor
-    }
-    
-    
-    
-    func configureLoginButton() {
-        view.addSubview(twitterButton)
-        twitterButton.mainColor = color.backColor.cgColor
-        twitterButton.darkShadowColor = color.darkShadow.cgColor
-        twitterButton.lightShadowColor = color.lightShadow.cgColor
-        twitterButton.cornerRadius = 20
         
-        //Button内にLabelを配置
-        let label = UILabel()
-        twitterButton.setContentView(label)
-        label.text = "Twitter連携"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: twitterButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: twitterButton.centerYAnchor).isActive =  true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.blueColor
-        twitterButton.addTarget(self, action: #selector(isLoginCheck), for: .touchUpInside)
-        setTwitterButton()
-    }
-   
-    func setTwitterButton() {
-        twitterButton.translatesAutoresizingMaskIntoConstraints = false
-        twitterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        twitterButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        twitterButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        twitterButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        animationView.play()
+ 
     }
     
-    @objc func isLoginCheck() {
-        print("isLoginCheck")
+    
+    func configureAnimation() {
+        
+        animationView = AnimationView(name: "41384-customer-support-animation")
+        animationView.center = self.view.center
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.play()
+        view.addSubview(animationView)
+        setAnimationView()
+        
     }
+    
+    func setAnimationView() {
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        let width = view.frame.size.width / 2
+        let height = view.frame.size.height / 3
+        animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
+        animationView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        animationView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        
+    }
+    
+
     
     func configureTOSButton() {
         view.addSubview(tosButton)
@@ -105,13 +109,17 @@ class SupportPageViewController: UIViewController {
     func setTOSButton() {
         tosButton.translatesAutoresizingMaskIntoConstraints = false
         tosButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        tosButton.topAnchor.constraint(equalTo: twitterButton.bottomAnchor,  constant: 20).isActive = true
+        tosButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20).isActive = true
         tosButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
         tosButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     @objc func toTOSPage() {
         print("toTOSPage")
+        let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
     }
     
     
@@ -146,6 +154,10 @@ class SupportPageViewController: UIViewController {
 
     @objc func toPrivacyPolicyPage() {
         print("toPrivacyPolicyPage")
+        let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
     }
     
     
@@ -179,6 +191,10 @@ class SupportPageViewController: UIViewController {
 
     @objc func toReportPage() {
         print("toReportPage")
+        let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
     }
     
     //let contactButton = SoftUIView()
@@ -213,6 +229,10 @@ class SupportPageViewController: UIViewController {
     
     @objc func toContactPage() {
         print("toContactPage")
+        let url = NSURL(string: "https://twitter.com/LeefApp_")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
     }
     
     
