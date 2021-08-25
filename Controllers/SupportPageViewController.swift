@@ -15,34 +15,26 @@ class SupportPageViewController: UIViewController {
     
     var color = MainColor()
     
+    //UI
     var animationView = AnimationView()
-
-     //Twitter連携
-    var twitterButton = SoftUIView()
-     //利用規約
-    let tosButton = SoftUIView()
-     //プライバシーポリシー
-    let privacyPolicyButton = SoftUIView()
-     //通報
-     let reportButton = SoftUIView()
-    //お問い合わせ
-   let contactButton = SoftUIView()
+    let tosButton = SoftUIView() //利用規約
+    let privacyPolicyButton = SoftUIView() //プライバシーポリシー
+    let reportButton = SoftUIView() //通報ページ
+    let contactButton = SoftUIView() //お問い合わせ
     
-    var userWithTwitter = Auth.auth().currentUser?.displayName
     
     
     override func loadView() {
         super.loadView()
         
         configureAnimation()
-        
         configureTOSButton()
         configurePrivacyPolicyButton()
         configureReportButton()
         configureContactButton()
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,12 +49,11 @@ class SupportPageViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = color.backColor
         
         animationView.play()
- 
+        
     }
     
     
     func configureAnimation() {
-        
         animationView = AnimationView(name: "41384-customer-support-animation")
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
@@ -70,21 +61,8 @@ class SupportPageViewController: UIViewController {
         animationView.play()
         view.addSubview(animationView)
         setAnimationView()
-        
     }
     
-    func setAnimationView() {
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        let width = view.frame.size.width / 2
-        let height = view.frame.size.height / 3
-        animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
-        animationView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        animationView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        
-    }
-    
-
     
     func configureTOSButton() {
         view.addSubview(tosButton)
@@ -92,7 +70,6 @@ class SupportPageViewController: UIViewController {
         tosButton.darkShadowColor = color.darkShadow.cgColor
         tosButton.lightShadowColor = color.lightShadow.cgColor
         tosButton.cornerRadius = 20
-        
         //Button内にLabelを配置
         let label = UILabel()
         tosButton.setContentView(label)
@@ -105,32 +82,15 @@ class SupportPageViewController: UIViewController {
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         setTOSButton()
     }
-   
-    func setTOSButton() {
-        tosButton.translatesAutoresizingMaskIntoConstraints = false
-        tosButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        tosButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20).isActive = true
-        tosButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        tosButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-
-    @objc func toTOSPage() {
-        print("toTOSPage")
-        let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
-        }
-    }
     
     
-    
+ 
     func configurePrivacyPolicyButton() {
         view.addSubview(privacyPolicyButton)
         privacyPolicyButton.mainColor = color.backColor.cgColor
         privacyPolicyButton.darkShadowColor = color.darkShadow.cgColor
         privacyPolicyButton.lightShadowColor = color.lightShadow.cgColor
         privacyPolicyButton.cornerRadius = 20
-        
         //Button内にLabelを配置
         let label = UILabel()
         privacyPolicyButton.setContentView(label)
@@ -143,23 +103,8 @@ class SupportPageViewController: UIViewController {
         privacyPolicyButton.addTarget(self, action: #selector(toPrivacyPolicyPage), for: .touchUpInside)
         setPrivacyPolicyButton()
     }
-   
-    func setPrivacyPolicyButton() {
-        privacyPolicyButton.translatesAutoresizingMaskIntoConstraints = false
-        privacyPolicyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor,  constant: 20).isActive = true
-        privacyPolicyButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        privacyPolicyButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-
-    @objc func toPrivacyPolicyPage() {
-        print("toPrivacyPolicyPage")
-        let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
-        }
-    }
     
+   
     
     func configureReportButton() {
         view.addSubview(reportButton)
@@ -167,7 +112,6 @@ class SupportPageViewController: UIViewController {
         reportButton.darkShadowColor = color.darkShadow.cgColor
         reportButton.lightShadowColor = color.lightShadow.cgColor
         reportButton.cornerRadius = 20
-        
         //Button内にLabelを配置
         let label = UILabel()
         reportButton.setContentView(label)
@@ -180,31 +124,15 @@ class SupportPageViewController: UIViewController {
         reportButton.addTarget(self, action: #selector(toReportPage), for: .touchUpInside)
         setReportButton()
     }
-   
-    func setReportButton() {
-        reportButton.translatesAutoresizingMaskIntoConstraints = false
-        reportButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor,  constant: 20).isActive = true
-        reportButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        reportButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-
-    @objc func toReportPage() {
-        print("toReportPage")
-        let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
-        }
-    }
     
-    //let contactButton = SoftUIView()
+    
+    
     func configureContactButton() {
         view.addSubview(contactButton)
         contactButton.mainColor = color.backColor.cgColor
         contactButton.darkShadowColor = color.darkShadow.cgColor
         contactButton.lightShadowColor = color.lightShadow.cgColor
         contactButton.cornerRadius = 20
-        
         //Button内にLabelを配置
         let label = UILabel()
         contactButton.setContentView(label)
@@ -217,18 +145,79 @@ class SupportPageViewController: UIViewController {
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
         setContactButton()
     }
-   
-    func setContactButton() {
-        contactButton.translatesAutoresizingMaskIntoConstraints = false
-        contactButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor,  constant: 20).isActive = true
-        contactButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        contactButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    
+    
+    
+    func setAnimationView() {
+        animationView.translatesAutoresizingMaskIntoConstraints                             = false
+        let width = view.frame.size.width / 2
+        let height = view.frame.size.height / 3
+        animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive        = true
+        animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive  = true
+        animationView.widthAnchor.constraint(equalToConstant: width).isActive               = true
+        animationView.heightAnchor.constraint(equalToConstant: height).isActive             = true
+        
     }
-
+    
+    func setTOSButton() {
+        tosButton.translatesAutoresizingMaskIntoConstraints                                         = false
+        tosButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
+        tosButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20).isActive  = true
+        tosButton.widthAnchor.constraint(equalToConstant: 250).isActive                             = true
+        tosButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
+    }
+    
+    func setPrivacyPolicyButton() {
+        privacyPolicyButton.translatesAutoresizingMaskIntoConstraints                                       = false
+        privacyPolicyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                  = true
+        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor,  constant: 20).isActive   = true
+        privacyPolicyButton.widthAnchor.constraint(equalToConstant: 250).isActive                           = true
+        privacyPolicyButton.heightAnchor.constraint(equalToConstant: 40).isActive                           = true
+    }
+    
+    func setReportButton() {
+        reportButton.translatesAutoresizingMaskIntoConstraints                                                  = false
+        reportButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                             = true
+        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor,  constant: 20).isActive    = true
+        reportButton.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
+        reportButton.heightAnchor.constraint(equalToConstant: 40).isActive                                      = true
+    }
+    
+    func setContactButton() {
+        contactButton.translatesAutoresizingMaskIntoConstraints                                         = false
+        contactButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
+        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor,  constant: 20).isActive  = true
+        contactButton.widthAnchor.constraint(equalToConstant: 250).isActive                             = true
+        contactButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
+    }
+    
+    
+    
+    //外部ブラウザに画面遷移
+    
+    @objc func toTOSPage() {
+        let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
+    }
+    
+    @objc func toPrivacyPolicyPage() {
+        let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
+    }
+    
+    @objc func toReportPage() {
+        let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com")
+        if UIApplication.shared.canOpenURL(url! as URL){
+            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        }
+    }
+    
     
     @objc func toContactPage() {
-        print("toContactPage")
         let url = NSURL(string: "https://twitter.com/LeefApp_")
         if UIApplication.shared.canOpenURL(url! as URL){
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
