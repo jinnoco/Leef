@@ -26,6 +26,7 @@ class SelectViewController: UIViewController {
     var twitterButton = SoftUIView()
     var shareButton = SoftUIView()
     
+    
     var doc = String()
    
     
@@ -94,6 +95,7 @@ class SelectViewController: UIViewController {
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 15
         textView.textColor = color.darkGrayColor
+        textView.font = UIFont(name: "Helvetica", size: 15)
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.backgroundColor = color.whiteColor
     }
@@ -276,7 +278,7 @@ class SelectViewController: UIViewController {
         let text = textView.text //投稿された文章
         let username = userId //投稿者のTwitterアカウント
         let shareTextWithUsername = "\(text ?? "")\n@\(username)"
-        let activityItems = [shareImage as Any, shareTextWithUsername as Any] as [Any]
+        let activityItems = [shareImage as Any, shareTextWithUsername] as [Any]
         
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
