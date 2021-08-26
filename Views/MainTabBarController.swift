@@ -12,12 +12,15 @@ import NeumorphismTab
 
 class MainTabBarController: NeumorphismTabBarController {
     
+
+    
     var color = MainColor()
     
     override func setupView() {
         
         let timeline = NeumorphismTabBarItem(icon: UIImage(systemName: "newspaper")!, title: "")
         let myPage = NeumorphismTabBarItem(icon: UIImage(systemName: "person.crop.circle")!, title: "")
+        let supportPage = NeumorphismTabBarItem(icon: UIImage(systemName: "info.circle")!, title: "")
         
         view.backgroundColor = color.backColor
         
@@ -27,8 +30,11 @@ class MainTabBarController: NeumorphismTabBarController {
         let myPageViewController = MyPageViewController()
         let myPageNVC = UINavigationController(rootViewController: myPageViewController)
         
-        setTabBar(items: [timeline, myPage])
-        setViewControllers([timelineNVC, myPageNVC], animated: false)
+        let supportPageViewController = SupportPageViewController()
+        let supportPageNVC = UINavigationController(rootViewController: supportPageViewController)
+        
+        setTabBar(items: [timeline, myPage, supportPage])
+        setViewControllers([timelineNVC, myPageNVC, supportPageNVC], animated: false)
         
     }
 }
