@@ -22,6 +22,7 @@ class PostPageViewController: UIViewController {
     let cancelButton = SoftUIView()
     let textView = UITextView()
     let postButtonLabel = UILabel()
+    let sampleText = "コメントを入力...\n\n例)\n・写真の食材の詳細\n・廃棄までの期限\n・お店の情報、宣伝"
     
     var textViewY: CGFloat?
     var color = MainColor()
@@ -143,8 +144,8 @@ class PostPageViewController: UIViewController {
         view.addSubview(textView)
         setTextView()
         textView.backgroundColor = color.whiteColor
-        textView.text = "コメントを入力..."
-        textView.textColor = .lightGray
+        textView.text = sampleText
+        textView.textColor = .lightGray //placeholderの色
         textView.layer.cornerRadius = 15
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) //内側に余白をつける
         textView.sizeToFit()
@@ -244,7 +245,7 @@ extension PostPageViewController: UITextViewDelegate {
     
     //textViewに入力されたらPlaceHolderを消し本文の色を黒にする
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "コメントを入力..." {
+        if textView.text == sampleText {
             textView.text = ""
             textView.textColor = .black
         }
@@ -253,7 +254,7 @@ extension PostPageViewController: UITextViewDelegate {
     //textViewが空白だったらPlaceHolderを表示し文字をグレーにする
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
-            textView.text = "コメントを入力..."
+            textView.text = sampleText
             textView.textColor = .lightGray
         }
     }
@@ -261,7 +262,7 @@ extension PostPageViewController: UITextViewDelegate {
     
     //textViewにPlaceHolderがある場合、空白の場合は投稿ボタンを押せないようにしボタンの文字色をグレーにする
     func textViewDidChangeSelection(_ textView: UITextView) {
-        if textView.text == "コメントを入力..." || textView.text == "" {
+        if textView.text == sampleText || textView.text == "" {
             postButton.isEnabled = false
             postButtonLabel.textColor =  color.darkGrayColor
         } else {
