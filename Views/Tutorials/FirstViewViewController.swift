@@ -20,21 +20,24 @@ class FirstViewController: UIViewController {
     let button = SoftUIView()
     var animationView = AnimationView()
     
-    
-    override func loadView() {
-        super.loadView()
-        
-        configureAnimation()
-        configureTitleImageView()
-        configurebutton()
-        indicater.configureIndicater(to: view)
-    }
+//    
+//    override func loadView() {
+//        super.loadView()
+//        
+//        configureAnimation()
+//        configureTitleImageView()
+//        configurebutton()
+//        indicater.configureIndicater(to: view)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.setNavigationBarHidden(true, animated: true)
         view.backgroundColor = color.backColor
+        
+        configureAnimation()
+        configureTitleImageView()
+        configurebutton()
         
         
     }
@@ -42,27 +45,28 @@ class FirstViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        animationView.play()
     }
     
     func configureTitleImageView() {
         view.addSubview(titleImageView)
-        setTitleImageView()
-        titleImageView.image = UIImage(named: "LeefApp_title")
+        titleImageView.image = UIImage(named: "LeefTitleImage")
         titleImageView.contentMode = .scaleAspectFit
+        setTitleImageView()
     }
     
     
     
-    func configureAnimation() {
+    private func configureAnimation() {
         
         animationView = AnimationView(name: "lf30_editor_mtdla6kp")
         animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
+        animationView.backgroundBehavior = .pauseAndRestore
         animationView.play()
         view.addSubview(animationView)
+       
     }
     
     func configurebutton() {
@@ -71,7 +75,6 @@ class FirstViewController: UIViewController {
         button.darkShadowColor = color.darkShadow.cgColor
         button.lightShadowColor = color.lightShadow.cgColor
         button.cornerRadius = 20
-        
         //Button内にLabelを配置
         let label = UILabel()
         button.setContentView(label)
@@ -88,11 +91,10 @@ class FirstViewController: UIViewController {
     
     
     func setTitleImageView() {
-        let height = view.frame.size.height * 0.07
-        let topConstant = view.frame.size.height * 0.2
+        let topConstant = view.frame.size.height * 0.13
         titleImageView.translatesAutoresizingMaskIntoConstraints                                        = false
         titleImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                   = true
-        titleImageView.heightAnchor.constraint(equalToConstant: height).isActive                        = true
+        titleImageView.heightAnchor.constraint(equalToConstant: 120).isActive                        = true
         titleImageView.topAnchor.constraint(equalTo: view.topAnchor, constant:topConstant).isActive     = true
     }
     
@@ -106,8 +108,8 @@ class FirstViewController: UIViewController {
     
     
     @objc func pushPage() {
-        let loginViewController = LoginViewController()
-        navigationController?.pushViewController(loginViewController, animated: true)
+
+        dismiss(animated: true, completion: nil)
         
     }
     
