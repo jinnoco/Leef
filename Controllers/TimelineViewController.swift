@@ -36,7 +36,9 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
+        print(Auth.auth().currentUser?.displayName ?? "Twitter??")
         //全体のPostDataをロード
         loadDBModel.loadPostData()
         tableView.reloadData()
@@ -51,11 +53,26 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        print("viewWillAppear")
         tableView.reloadData()
         self.navigationController?.hidesBarsOnSwipe = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        //初回起動判定
+        let userDefaults = UserDefaults.standard
+        let firstLunchKey = "TimelineWalkthroughFirstLunchKey"
+        let lunched = userDefaults.bool(forKey: firstLunchKey)
+
+        if lunched {
+            return
+        } else {
+            //初回起動の場合はmodalでwalkthroughを表示
+            UserDefaults.standard.set(true, forKey: firstLunchKey)
+            let walkthrough = WalkthroughViewController()
+            present(walkthrough, animated: true, completion: nil)
+        }
+    }
     
     
     func doneLoad(check: Int) {
@@ -187,6 +204,8 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         selectViewController.textView.text = loadDBModel.dataSets[indexPath.row].comment
         selectViewController.userId = loadDBModel.dataSets[indexPath.row].userId
         
+        selectViewController.doc = loadDBModel.dataSets[indexPath.row].docId
+        
         navigationController?.pushViewController(selectViewController, animated: true)
 
     }
@@ -246,7 +265,9 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     
     @objc func showAlert(){
         
-        if Auth.auth().currentUser?.uid != nil {
+        let user = Auth.auth().currentUser?.displayName
+        
+        if user != nil {
             
             let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
             
@@ -260,9 +281,9 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
             
             self.present(alertController, animated: true, completion: nil)
             
-        } else {
+        } else if user == nil {
             
-            let alertController = UIAlertController(title: "確認", message: "投稿機能を利用するにはログインが必要です", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "確認", message: "投稿機能を利用するにはTwitterアカウントを連携してください", preferredStyle: .alert)
             
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
