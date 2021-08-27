@@ -37,8 +37,6 @@ class LoginViewController: UIViewController {
     //利用規約同意テェック判定
     var checked = false
     
-    
-    
     override func loadView() {
         super.loadView()
         
@@ -53,6 +51,10 @@ class LoginViewController: UIViewController {
         indicater.configureIndicater(to: view)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
