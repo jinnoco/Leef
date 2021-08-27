@@ -27,6 +27,9 @@ class SelectViewController: UIViewController {
     var shareButton = SoftUIView()
     
     
+    
+    let alertButton = UIButton()
+    
     var doc = String()
    
     
@@ -39,6 +42,8 @@ class SelectViewController: UIViewController {
         configureImageView()
         configureProfileImage()
         configureUsename()
+        
+        configureAlertButton()
         
     }
     
@@ -70,12 +75,26 @@ class SelectViewController: UIViewController {
         setUsername()
         username.font = UIFont(name: "AvenirNext-Bold", size: 18)
         username.textColor = color.darkGrayColor
-        username.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tappedUsername))
-        username.addGestureRecognizer(tap)
-        
-        
     }
+    
+    
+    func configureAlertButton() {
+        view.addSubview(alertButton)
+        alertButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
+        alertButton.tintColor  = color.darkGrayColor
+        alertButton.addTarget(self, action: #selector(tappedAlertButton), for: .touchUpInside)
+        setAlertButton()
+    }
+    
+
+    func setAlertButton() {
+        alertButton.translatesAutoresizingMaskIntoConstraints                                   = false
+        alertButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive  = true
+        alertButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive       = true
+
+    }
+    
+
     
     func configureImageView() {
         view.addSubview(imageView)
@@ -95,7 +114,7 @@ class SelectViewController: UIViewController {
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 15
         textView.textColor = color.darkGrayColor
-        textView.font = UIFont(name: "Helvetica", size: 15)
+//        textView.font = UIFont(name: "Helvetica", size: 15)
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.backgroundColor = color.whiteColor
     }
@@ -214,8 +233,8 @@ class SelectViewController: UIViewController {
 
     }
     
-    @objc func tappedUsername() {
-        
+    @objc func tappedAlertButton() {
+        print("tappedAlertButton")
         let alertController = UIAlertController(title: "不適切なコンテンツですか？", message: "", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { actiom in
             self.toReportPage()
@@ -226,8 +245,9 @@ class SelectViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
-        
     }
+    
+
     
     func showConfirmAlert() {
         let alertController = UIAlertController(title: "", message: "投稿をブロックしてもよろしいですか？", preferredStyle: .alert)
