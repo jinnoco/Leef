@@ -1,13 +1,14 @@
 //
-//  PostPageTutorialViewController.swift
+//  ContactDescriptionViewController.swift
 //  Leef
 //
-//  Created by J on 2021/08/26.
+//  Created by J on 2021/08/30.
 //
 
 import UIKit
 
-class PostPageTutorialViewController: UIViewController {
+class ContactDescriptionViewController: UIPageViewController {
+
     
     let tutorialImageView = UIImageView()
     var color = MainColor()
@@ -17,13 +18,12 @@ class PostPageTutorialViewController: UIViewController {
 
         view.backgroundColor = color.backColor
         configureTutorialImageView()
-        
     }
     
     func configureTutorialImageView() {
         view.addSubview(tutorialImageView)
         tutorialImageView.contentMode = .scaleAspectFit
-        tutorialImageView.image = UIImage(named: "PostPageTutorial")
+        tutorialImageView.image = UIImage(named: "Contact_Description")
         setTutorialImageView()
     }
     

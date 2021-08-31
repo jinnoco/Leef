@@ -108,8 +108,8 @@ class FirstViewController: UIViewController {
     
     
     @objc func pushPage() {
-
-        dismiss(animated: true, completion: nil)
+        let loginViewController = LoginViewController()
+        navigationController?.pushViewController(loginViewController, animated: true)
         
     }
     

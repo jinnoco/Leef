@@ -1,14 +1,14 @@
 //
-//  SelectPageTutorialViewController.swift
+//  TwitterConnectDescriptionViewController.swift
 //  Leef
 //
-//  Created by J on 2021/08/26.
+//  Created by J on 2021/08/30.
 //
 
 import UIKit
 
-class SelectPageTutorialViewController: UIViewController {
-    
+class TwitterConnectDescriptionViewController: UIPageViewController {
+
     let tutorialImageView = UIImageView()
     var color = MainColor()
 
@@ -23,7 +23,7 @@ class SelectPageTutorialViewController: UIViewController {
     func configureTutorialImageView() {
         view.addSubview(tutorialImageView)
         tutorialImageView.contentMode = .scaleAspectFit
-        tutorialImageView.image = UIImage(named: "SelectPageTutorial")
+        tutorialImageView.image = UIImage(named: "TwitterConnect_Description")
         setTutorialImageView()
     }
     
