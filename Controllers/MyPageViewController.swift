@@ -12,18 +12,14 @@ import Lottie
 
 class MyPageViewController: UIViewController, LoadDelegate {
     
-    
-    
-    
+    //UI
     var tableView = UITableView()
-    let postedCellId = "postedCellId"
-    var loginText = UILabel()
     var loginUserImage = UIImageView()
     var loginUsername = UILabel()
-    let label = UILabel()
+    let noPostTextlabel = UILabel()
     var animationView = AnimationView()
     
-    
+    let postedCellId = "postedCellId"
     var profileImageString = String()
     let indicater = Indicater()
     var color = MainColor()
@@ -47,6 +43,22 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+//        //初回起動判定
+        let userDefaults = UserDefaults.standard
+        let firstLunchKey = "FirstLunchKeyForMyPageTutorial"
+        let lunched = userDefaults.bool(forKey: firstLunchKey)
+        if lunched {
+            return
+        } else {
+            //初回起動の場合はmodalでtutorialを表示
+            UserDefaults.standard.set(true, forKey: firstLunchKey)
+            let myPageTutorialViewController = MyPageTutorialViewController()
+            present(myPageTutorialViewController, animated: true, completion: nil)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -61,7 +73,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        let user = Auth.auth().currentUser?.displayName
         userWithTwitter = Auth.auth().currentUser?.displayName
         
         if userWithTwitter != nil {
@@ -105,7 +116,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         super.viewDidDisappear(animated)
         
         animationView.removeFromSuperview()
-        label.removeFromSuperview()
+        noPostTextlabel.removeFromSuperview()
     }
     
     
@@ -122,8 +133,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func changeNavRightBar() {
-//        let user = Auth.auth().currentUser?.displayName
-//        twitterId = Auth.auth().currentUser?.displayName
+
         
         if userWithTwitter == nil {
             navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
@@ -146,11 +156,11 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func configureLabel() {
-        view.addSubview(label)
+        view.addSubview(noPostTextlabel)
         setLabel()
-        label.text = "まだ投稿は作成されていません"
-        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
-        label.textColor = color.darkGrayColor
+        noPostTextlabel.text = "まだ投稿は作成されていません"
+        noPostTextlabel.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        noPostTextlabel.textColor = color.darkGrayColor
         
     }
     
@@ -159,11 +169,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
         view.addSubview(loginUserImage)
         setLoginUserImage()
         
-        
-//        let user = Auth.auth().currentUser?.displayName
-        
+                
         if userWithTwitter != nil {
-            
+
             let user = Auth.auth().currentUser
             if user != nil {
                 let photoURL = user?.photoURL
@@ -171,11 +179,11 @@ class MyPageViewController: UIViewController, LoadDelegate {
             } else {
                 loginUserImage.image = UIImage(named: "NoUser")
             }
-            
+
         } else if userWithTwitter == nil {
-            print("Twitterログインではない")
             loginUserImage.image = UIImage(named: "NoUser")
         }
+
 
         loginUserImage.backgroundColor = color.lightGrayColor
         loginUserImage.clipsToBounds = true
@@ -216,9 +224,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func setLabel() {
-        label.translatesAutoresizingMaskIntoConstraints                             = false
-        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive        = true
-        label.topAnchor.constraint(equalTo: animationView.bottomAnchor).isActive    = true
+        noPostTextlabel.translatesAutoresizingMaskIntoConstraints                             = false
+        noPostTextlabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive        = true
+        noPostTextlabel.topAnchor.constraint(equalTo: animationView.bottomAnchor).isActive    = true
     }
     
     
@@ -254,12 +262,8 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     @objc func showLoginAlert(){
-        
         let modalViewController = ModalViewController()
-        //        modalViewController.modalPresentationStyle = .fullScreen
         present(modalViewController, animated: true, completion: nil)
-        
-        
     }
     
     
