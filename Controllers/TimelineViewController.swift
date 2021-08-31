@@ -13,7 +13,7 @@ import Nuke
 
 
 class TimelineViewController: UIViewController, LoadDelegate {
-
+    
     let postPageViewContorller = PostPageViewController()
     let checkPermission = CheckPermission()
     let color = MainColor()
@@ -24,11 +24,11 @@ class TimelineViewController: UIViewController, LoadDelegate {
     let timelineCellId = "timelineCell"
     let titleImage  = UIImageView()
     
-
-       
+    
+    
     override func loadView() {
         super.loadView()
-    
+        
         configureNav()
         configureTableView()
         
@@ -37,7 +37,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         print(Auth.auth().currentUser?.displayName ?? "Twitter??")
         //全体のPostDataをロード
         loadDBModel.loadPostData()
@@ -49,7 +49,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         
         checkPermission.showCheckPermission()
         
- }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -61,16 +61,16 @@ class TimelineViewController: UIViewController, LoadDelegate {
         
         //初回起動判定
         let userDefaults = UserDefaults.standard
-        let firstLunchKey = "TimelineWalkthroughFirstLunchKey"
+        let firstLunchKey = "FirstLunchKeyForTimelineTutorial"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
-
+        
         if lunched {
             return
         } else {
-            //初回起動の場合はmodalでwalkthroughを表示
+            //初回起動の場合はmodalでtutorialを表示
             UserDefaults.standard.set(true, forKey: firstLunchKey)
-            let walkthrough = WalkthroughViewController()
-            present(walkthrough, animated: true, completion: nil)
+            let timelineTutorialViewController = TimelineTutorialViewController()
+            present(timelineTutorialViewController, animated: true, completion: nil)
         }
     }
     
@@ -110,7 +110,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-
+    
     
     @objc func toNewPostPage() {
         //新規投稿作成ページに遷移
@@ -126,7 +126,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         tableView.separatorStyle = .none
         tableView.backgroundColor = color.backColor
         setTableView()
-
+        
     }
     
     func setTableView() {
@@ -140,13 +140,13 @@ class TimelineViewController: UIViewController, LoadDelegate {
     }
     
     @objc func handleRefreshControl() {
-
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.tableView.refreshControl?.endRefreshing()
         }
     }
-   
+    
 }
 
 extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
@@ -160,9 +160,9 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-   
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: timelineCellId, for: indexPath) as! TimelineCell
-    
+        
         //loadDBModel.dataSetsからそれぞれ情報を取得
         let timelineImage = cell.timelineImageView
         timelineImage.loadImage(with: loadDBModel.dataSets[indexPath.row].postImageURLString)
@@ -175,11 +175,11 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         cell.dateLabel.text = dateFormatForDateLabel(postDate: loadDBModel.dataSets[indexPath.row].postDate)
         
         cell.selectionStyle = .none
-     
+        
         return cell
-
+        
     }
-
+    
     
     func dateFormatForDateLabel(postDate: Timestamp) -> String {
         //投稿された日付をTimestampからラベル表示用に変換
@@ -191,11 +191,11 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         let dateString = formatter.string(from: postDateValue)
         return dateString
     }
-
+    
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-     
+        
         //値を渡して画面遷移
         let selectViewController = SelectViewController()
         selectViewController.username.text = loadDBModel.dataSets[indexPath.row].username
@@ -207,10 +207,10 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         selectViewController.doc = loadDBModel.dataSets[indexPath.row].docId
         
         navigationController?.pushViewController(selectViewController, animated: true)
-
+        
     }
     
-
+    
     
 }
 
@@ -253,7 +253,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
             picker.dismiss(animated: true, completion: nil)
             postPageViewContorller.modalPresentationStyle = .fullScreen
             present(postPageViewContorller, animated: true, completion: nil)
-           
+            
         }
     }
     
@@ -292,7 +292,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
             
         }
         
-       
+        
         
     }
     
