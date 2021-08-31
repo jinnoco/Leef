@@ -12,12 +12,33 @@ class TimelineTutorialViewController: UIViewController {
     let tutorialImageView = UIImageView()
     var color = MainColor()
     
+    let closeButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = color.backColor
+        configureCloseButton()
         configureTutorialImageView()
     
+    }
+    
+    func configureCloseButton() {
+        view.addSubview(closeButton)
+        closeButton.setTitle("✖️", for: .normal)
+        closeButton.tintColor = color.darkGrayColor
+        closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        setCloseButton()
+    }
+    
+    func setCloseButton() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+    }
+    
+    @objc func close() {
+        dismiss(animated: true, completion: nil)
     }
     
     func configureTutorialImageView() {
