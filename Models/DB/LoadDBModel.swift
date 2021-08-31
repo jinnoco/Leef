@@ -67,7 +67,6 @@ class LoadDBModel {
     
     func loadMyPostData() {
         
-        print("myUid: \(myUid)")
         db.collection("post").order(by: "postDate").addSnapshotListener { [self]snapshot, error in
            
             self.myDataSet = []
