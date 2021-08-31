@@ -20,23 +20,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //初回起動判定
         let userDefaults = UserDefaults.standard
-        let firstLunchKey = "LeefAppFirstLunchKey"
+        let firstLunchKey = "FirstLunchKeyForFirstView"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
-        
+
         if lunched {
             //2回目以降
             let mainTabVC = MainTabBarController()
             window = UIWindow(windowScene: scene as! UIWindowScene)
             window?.rootViewController = mainTabVC
             window?.makeKeyAndVisible()
+
         } else {
+
             UserDefaults.standard.set(true, forKey: firstLunchKey)
             //初回起動
-            let loginViewController = LoginViewController()
-            let nc = UINavigationController(rootViewController: loginViewController)
+            let walkthroughViewController = WalkthroughViewController()
+            let nc = UINavigationController(rootViewController: walkthroughViewController)
             window = UIWindow(windowScene: scene as! UIWindowScene)
             window?.rootViewController = nc
             window?.makeKeyAndVisible()
+            
         }
         
         
