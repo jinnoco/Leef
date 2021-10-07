@@ -216,14 +216,13 @@ class SupportPageViewController: UIViewController {
         }
     }
     
-    
+    //Twitterアカウントに遷移
     @objc func toContactPage() {
         let url = NSURL(string: "https://twitter.com/LeefApp_")
         if UIApplication.shared.canOpenURL(url! as URL){
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     }
-    
     
     
 }
