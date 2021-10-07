@@ -12,7 +12,7 @@ import Lottie
 
 class MyPageViewController: UIViewController, LoadDelegate {
     
-    //UI
+    // UI
     var tableView = UITableView()
     var loginUserImage = UIImageView()
     var loginUsername = UILabel()
@@ -45,7 +45,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         
-//        //初回起動判定
+       //初回起動判定
         let userDefaults = UserDefaults.standard
         let firstLunchKey = "FirstLunchKeyForMyPageTutorial"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
@@ -78,7 +78,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         userWithTwitter = Auth.auth().currentUser?.displayName
         
         if userWithTwitter != nil {
-            //ログインテェック
+            // ログインテェック
             let userUid = Auth.auth().currentUser?.uid
             if userUid != nil {
                 loadDBModel.myUid = userUid
@@ -100,7 +100,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     func doneLoad(check: Int) {
-        //LoadDBModelの処理が完了したら実行
+        // LoadDBModelの処理が完了したら実行
         if check == 2 {
             setView()
             
@@ -138,9 +138,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
 
         
         if userWithTwitter == nil {
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         } else if userWithTwitter != nil {
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
         }
     }
     
@@ -192,7 +192,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         loginUserImage.layer.cornerRadius = (view.frame.size.height * 0.05) / 2
     }
     
-    func configureLoginUsername(){
+    func configureLoginUsername() {
         view.addSubview(loginUsername)
         setLoginUsername()
         loginUsername.text = Auth.auth().currentUser?.displayName ?? "Twitter連携を完了してください"
@@ -263,7 +263,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive                      = true
     }
     
-    @objc func showLoginAlert(){
+    @objc func showLoginAlert() {
         let modalViewController = ModalViewController()
         present(modalViewController, animated: true, completion: nil)
     }
@@ -281,14 +281,14 @@ class MyPageViewController: UIViewController, LoadDelegate {
                     let photoURL = user.photoURL
                     loginUserImage.loadImage(with: photoURL!)
                     loginUsername.text = user.displayName
-                    navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+                    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
                 } else {
-                    navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+                    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
                 }
             
         } else if userWithTwitter == nil {
             print("Twitter連携なしユーザー")
-            navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         }
         
   
@@ -358,7 +358,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //DocumentIDを取得して渡す
+        // DocumentIDを取得して渡す
         let doc = loadDBModel.myDataSet[indexPath.row].docId
         showDeleteAlert(postDocPass: doc)
         
@@ -368,7 +368,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     func showDeleteAlert(postDocPass: String) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "投稿を削除", style: .destructive, handler: { [self] action in
-            //didSelectRowAtで取得したDocumentIDを渡す
+            // didSelectRowAtで取得したDocumentIDを渡す
             self.delete(doc: postDocPass)
         }))
         alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
@@ -377,7 +377,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func delete(doc: String) {
-        //didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
+        // didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
         db.collection("post").document(doc).delete() { [self] error in
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
