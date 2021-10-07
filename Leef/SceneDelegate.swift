@@ -26,7 +26,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if lunched {
             //2回目以降
             let mainTabVC = MainTabBarController()
-            window = UIWindow(windowScene: scene as! UIWindowScene)
+            
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            
+            window = UIWindow(windowScene: windowScene)
             window?.rootViewController = mainTabVC
             window?.makeKeyAndVisible()
 
@@ -36,7 +39,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             //初回起動
             let walkthroughViewController = WalkthroughViewController()
             let nc = UINavigationController(rootViewController: walkthroughViewController)
-            window = UIWindow(windowScene: scene as! UIWindowScene)
+            
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            
+            window = UIWindow(windowScene: windowScene)
             window?.rootViewController = nc
             window?.makeKeyAndVisible()
             
