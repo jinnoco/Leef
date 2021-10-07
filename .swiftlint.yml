@@ -1,7 +1,11 @@
 included:
   - Leef
+  
 excluded:
-  - Tests/SwiftLintFrameworkTests/Resources/Pods
+  - Pods
+  - Frameworks
+  - Products
+  - Target Support  Files
   
 disabled_rules:
 - trailing_whitespace
