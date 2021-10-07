@@ -15,6 +15,7 @@ class SelectViewController: UIViewController {
     let db = Firestore.firestore()
     var color = MainColor()
     var userId = String()
+    var doc = String()
     
     //UI
     var username = UILabel()
@@ -25,12 +26,9 @@ class SelectViewController: UIViewController {
     var textView = UITextView()
     var twitterButton = SoftUIView()
     var shareButton = SoftUIView()
-    
-    
-    
     let alertButton = UIButton()
     
-    var doc = String()
+   
    
     
     override func loadView() {
@@ -50,7 +48,6 @@ class SelectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = color.backColor
   }
     
@@ -115,7 +112,6 @@ class SelectViewController: UIViewController {
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 15
         textView.textColor = color.darkGrayColor
-//        textView.font = UIFont(name: "Helvetica", size: 15)
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.backgroundColor = color.whiteColor
     }
