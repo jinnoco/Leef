@@ -33,4 +33,6 @@ struct MainColor {
     
     //#EDEDED
     var cellColor = #colorLiteral(red: 0.9294117647, green: 0.9294117647, blue: 0.9294117647, alpha: 1)
+    
+    var greenColor = #colorLiteral(red: 0.2941176471, green: 0.6470588235, blue: 0.03137254902, alpha: 1)
 }
