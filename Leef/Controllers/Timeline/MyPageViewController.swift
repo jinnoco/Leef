@@ -104,7 +104,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         if check == 2 {
             setView()
             
-            if loadDBModel.myDataSet.count == 0 {
+            if loadDBModel.myDataSet.isEmpty {
                 configureAnimation()
                 configureLabel()
             } else {
@@ -310,7 +310,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         let firebaseAuth = Auth.auth()
         self.navigationController?.popViewController(animated: true)
         do {
-            if loadDBModel.myDataSet.count != 0 {
+            if loadDBModel.myDataSet.isEmpty == false {
                 tableView.removeFromSuperview()
                 configureAnimation()
                 configureLabel()
