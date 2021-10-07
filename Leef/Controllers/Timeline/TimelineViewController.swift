@@ -9,20 +9,18 @@ import UIKit
 import Firebase
 import Nuke
 import SoftUIView
-import Nuke
-
 
 class TimelineViewController: UIViewController, LoadDelegate {
     
     let postPageViewContorller = PostPageViewController()
     let checkPermission = CheckPermission()
     let color = MainColor()
-    let loadDBModel =  LoadDBModel()
+    let loadDBModel = LoadDBModel()
     
-    //UI
+    // UI
     let tableView = UITableView()
     let timelineCellId = "timelineCell"
-    let titleImage  = UIImageView()
+    let titleImage = UIImageView()
     
     
     
@@ -39,7 +37,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         
         
         print(Auth.auth().currentUser?.displayName ?? "Twitter??")
-        //全体のPostDataをロード
+        // 全体のPostDataをロード
         loadDBModel.loadPostData()
         tableView.reloadData()
         
@@ -56,10 +54,11 @@ class TimelineViewController: UIViewController, LoadDelegate {
         tableView.reloadData()
         self.navigationController?.hidesBarsOnSwipe = true
     }
+
     
     override func viewDidAppear(_ animated: Bool) {
         
-        //初回起動判定
+        // 初回起動判定
         let userDefaults = UserDefaults.standard
         let firstLunchKey = "FirstLunchKeyForTimelineTutorial"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
@@ -67,7 +66,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         if lunched {
             return
         } else {
-            //初回起動の場合はmodalでtutorialを表示
+            // 初回起動の場合はmodalでtutorialを表示
             UserDefaults.standard.set(true, forKey: firstLunchKey)
             let timelineTutorialViewController = TimelineTutorialViewController()
             present(timelineTutorialViewController, animated: true, completion: nil)
@@ -76,44 +75,44 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     
     func doneLoad(check: Int) {
-        //ロード処理が完了したらreloadDataを実行
+        // ロード処理が完了したらreloadDataを実行
         if check == 1 {
             tableView.reloadData()
         }
     }
     
     
-    //NavigationBar
+    // NavigationBar
     func configureNav() {
-        //navigationBarを表示
+        // navigationBarを表示
         navigationController?.setNavigationBarHidden(false, animated: true)
-        //rightBarButtonItem(投稿作成)
+        // rightBarButtonItem(投稿作成)
         navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
-        //titleに画像をセット
+        // titleに画像をセット
         let image = UIImage(named: "navigationBarTitleImage")
         titleImage.image = image
         titleImage.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImage
-        //clearのleftBarButtonItemをセットして画像が左によらないようにする
+        // clearのleftBarButtonItemをセットして画像が左によらないようにする
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
         navigationItem.leftBarButtonItem?.tintColor = .clear
-        //色を設定
-        navigationController?.navigationBar.barTintColor = color.backColor //背景
-        navigationController?.navigationBar.tintColor = color.darkGrayColor //アイテム
-        //下線を消す
+        // 色を設定
+        navigationController?.navigationBar.barTintColor = color.backColor // 背景
+        navigationController?.navigationBar.tintColor = color.darkGrayColor // アイテム
+        // 下線を消す
         navigationController?.navigationBar.shadowImage = UIImage()
-        //スワイプで隠す
+        // スワイプで隠す
         navigationController?.hidesBarsOnSwipe = true
-        //戻るボタン非表示
+        // 戻るボタン非表示
         navigationItem.hidesBackButton = true
-        //遷移先の戻るボタンのテキストを消す
+        // 遷移先の戻るボタンのテキストを消す
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     
     
     @objc func toNewPostPage() {
-        //新規投稿作成ページに遷移
+        // 新規投稿作成ページに遷移
         let postPageViewController = PostPageViewController()
         postPageViewController.modalPresentationStyle = .fullScreen
         present(postPageViewController, animated: true, completion: nil)
@@ -163,7 +162,7 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: timelineCellId, for: indexPath) as! TimelineCell
         
-        //loadDBModel.dataSetsからそれぞれ情報を取得
+        // loadDBModel.dataSetsからそれぞれ情報を取得
         let timelineImage = cell.timelineImageView
         timelineImage.loadImage(with: loadDBModel.dataSets[indexPath.row].postImageURLString)
         
@@ -182,12 +181,12 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func dateFormatForDateLabel(postDate: Timestamp) -> String {
-        //投稿された日付をTimestampからラベル表示用に変換
-        let postDateValue =  postDate.dateValue()
+        // 投稿された日付をTimestampからラベル表示用に変換
+        let postDateValue = postDate.dateValue()
         let  formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateFormat = "MM/dd  HH:mm" //1月1日 12:00
-        //String型に変換
+        formatter.dateFormat = "MM/dd  HH:mm" // 1月1日 12:00
+        // String型に変換
         let dateString = formatter.string(from: postDateValue)
         return dateString
     }
@@ -196,7 +195,7 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //値を渡して画面遷移
+        // 値を渡して画面遷移
         let selectViewController = SelectViewController()
         selectViewController.username.text = loadDBModel.dataSets[indexPath.row].username
         selectViewController.postImageString = loadDBModel.dataSets[indexPath.row].postImageURLString
@@ -216,10 +215,10 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func openCamera(){
+    func openCamera()  {
         let sourceType:UIImagePickerController.SourceType = .camera
-        //カメラ利用チェック
-        if UIImagePickerController.isSourceTypeAvailable(.camera){
+        // カメラ利用チェック
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             
             let cameraPicker = UIImagePickerController()
             cameraPicker.allowsEditing = true
@@ -230,10 +229,10 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     }
     
     
-    func openLibrary(){
+    func openLibrary() {
         let sourceType:UIImagePickerController.SourceType = .photoLibrary
-        //フォトライブラリ利用チェック
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+        // フォトライブラリ利用チェック
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             
             let cameraPicker = UIImagePickerController()
             cameraPicker.allowsEditing = true
@@ -246,8 +245,8 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if info[.originalImage] as? UIImage != nil{
-            //画像をセットして画面遷移
+        if info[.originalImage] as? UIImage != nil {
+            // 画像をセットして画面遷移
             let selectedImage = info[.originalImage] as! UIImage
             postPageViewContorller.postImage = selectedImage
             picker.dismiss(animated: true, completion: nil)
@@ -263,7 +262,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     }
     
     
-    @objc func showAlert(){
+    @objc func showAlert() {
         
         let user = Auth.auth().currentUser?.displayName
         
