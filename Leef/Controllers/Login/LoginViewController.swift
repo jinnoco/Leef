@@ -384,9 +384,11 @@ class LoginViewController: UIViewController {
                         return
                     }
                     //@usernameを取得しUserDefaultsに保存
-                    let userId = result?.additionalUserInfo?.profile!["screen_name"] as! String
-                    print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
-                    UserDefaults.standard.setValue(userId, forKey: "userId")
+                    if let userId = result?.additionalUserInfo?.profile!["screen_name"] as? String {
+                        print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
+                        UserDefaults.standard.setValue(userId, forKey: "userId")
+                    }
+                   
                     
                     indicater.stopIndicater()
                     
