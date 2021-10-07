@@ -54,7 +54,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         tableView.reloadData()
         self.navigationController?.hidesBarsOnSwipe = true
     }
-
+    
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -160,22 +160,29 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: timelineCellId, for: indexPath) as! TimelineCell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: timelineCellId, for: indexPath) as? TimelineCell {
+            
+            // loadDBModel.dataSetsからそれぞれ情報を取得
+            let timelineImage = cell.timelineImageView
+            timelineImage.loadImage(with: loadDBModel.dataSets[indexPath.row].postImageURLString)
+            
+            cell.username.text = loadDBModel.dataSets[indexPath.row].username
+            
+            let profileImage = cell.profileImage
+            profileImage.loadImage(with: loadDBModel.dataSets[indexPath.row].profileImageURLString)
+            
+            cell.dateLabel.text = dateFormatForDateLabel(postDate: loadDBModel.dataSets[indexPath.row].postDate)
+            
+            cell.selectionStyle = .none
+            
+            return cell
+            
+        } else {
+            
+            return UITableViewCell()
+        }
         
-        // loadDBModel.dataSetsからそれぞれ情報を取得
-        let timelineImage = cell.timelineImageView
-        timelineImage.loadImage(with: loadDBModel.dataSets[indexPath.row].postImageURLString)
         
-        cell.username.text = loadDBModel.dataSets[indexPath.row].username
-        
-        let profileImage = cell.profileImage
-        profileImage.loadImage(with: loadDBModel.dataSets[indexPath.row].profileImageURLString)
-        
-        cell.dateLabel.text = dateFormatForDateLabel(postDate: loadDBModel.dataSets[indexPath.row].postDate)
-        
-        cell.selectionStyle = .none
-        
-        return cell
         
     }
     
@@ -247,11 +254,16 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
         
         if info[.originalImage] as? UIImage != nil {
             // 画像をセットして画面遷移
-            let selectedImage = info[.originalImage] as! UIImage
-            postPageViewContorller.postImage = selectedImage
-            picker.dismiss(animated: true, completion: nil)
-            postPageViewContorller.modalPresentationStyle = .fullScreen
-            present(postPageViewContorller, animated: true, completion: nil)
+            if let selectedImage = info[.originalImage] as? UIImage {
+                postPageViewContorller.postImage = selectedImage
+                picker.dismiss(animated: true, completion: nil)
+                postPageViewContorller.modalPresentationStyle = .fullScreen
+                present(postPageViewContorller, animated: true, completion: nil)
+                
+            } else {
+                return
+            }
+            
             
         }
     }
