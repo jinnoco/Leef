@@ -341,14 +341,20 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: postedCellId, for: indexPath) as! PostedCell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: postedCellId, for: indexPath) as? PostedCell {
+            
+            let myPostImage = cell.postedImageView
+            myPostImage.loadImage(with: loadDBModel.myDataSet[indexPath.row].postImageData)
+            
+            cell.selectionStyle = .none
+
+            return cell
+            
+        } else {
+            return UITableViewCell()
+        }
         
-        let myPostImage = cell.postedImageView
-        myPostImage.loadImage(with: loadDBModel.myDataSet[indexPath.row].postImageData)
         
-        cell.selectionStyle = .none
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
