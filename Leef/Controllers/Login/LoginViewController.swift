@@ -17,12 +17,12 @@ class LoginViewController: UIViewController {
     
     fileprivate var currentNonce: String?
     
-    //UI
+    // UI
     let topLabel = UILabel()
     var imageView = UIImageView()
     let twitterLoginButton = UIButton()
     let appleLoginButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
-    let tosButton = SoftUIView() //tos = terms of service: 利用規約
+    let tosButton = SoftUIView() // tos = terms of service: 利用規約
     let withoutRegisterButton = UIButton()
     let toslabel = UILabel()
     let consentLabel = UILabel()
@@ -34,7 +34,7 @@ class LoginViewController: UIViewController {
     let loadDBModel = LoadDBModel()
     
     
-    //利用規約同意テェック判定
+    // 利用規約同意テェック判定
     var checked = false
     
     override func loadView() {
@@ -61,13 +61,13 @@ class LoginViewController: UIViewController {
         
         view.backgroundColor = color.backColor
         
-        //buttonhは初期状態では押せないようにする
+        // buttonhは初期状態では押せないようにする
         appleLoginButton.isEnabled = false
         twitterLoginButton.isEnabled = false
         withoutRegisterButton.isEnabled = false
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["lang":"ja"]
+        provider?.customParameters = ["lang" : "ja"]
         
     }
     
@@ -98,13 +98,13 @@ class LoginViewController: UIViewController {
         tosButton.lightShadowColor = color.lightShadow.cgColor
         tosButton.cornerRadius = 20
         
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         tosButton.setContentView(label)
         label.text = "利用規約"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: tosButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 13)
         label.textColor = color.darkGrayColor
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
@@ -116,7 +116,7 @@ class LoginViewController: UIViewController {
         if #available(iOS 13.0, *) {
             view.addSubview(appleLoginButton)
             setAppleLoginButton()
-            appleLoginButton.addTarget(self, action: #selector(handleTappedAppleLoginButton(_:)),for: .touchUpInside)
+            appleLoginButton.addTarget(self, action: #selector(handleTappedAppleLoginButton(_:)), for: .touchUpInside)
             appleLoginButton.cornerRadius = 20
         }
     }
@@ -306,11 +306,11 @@ class LoginViewController: UIViewController {
         switch checked {
         
         case false:
-            //テェック完了画像に変更
+            // テェック完了画像に変更
             consentButton.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
             consentButton.tintColor = color.darkGrayColor
             
-            //各ボタンの背景色を変え押せるようにする
+            // 各ボタンの背景色を変え押せるようにする
             appleLoginButton.isEnabled = true
             
             twitterLoginButton.isEnabled = true
@@ -322,7 +322,7 @@ class LoginViewController: UIViewController {
             checked = true
             
         case true:
-            //未テェック画像に変更
+            // 未テェック画像に変更
             consentButton.setImage(UIImage(systemName: "square"), for: .normal)
             
             //各ボタンの背景色を変え押せるようにする
@@ -340,7 +340,7 @@ class LoginViewController: UIViewController {
     
     
     @objc func twitterSignup() {
-        //Twiiterアカウント作成ページに遷移
+        // Twiiterアカウント作成ページに遷移
         let url = NSURL(string: "https://twitter.com/?lang=ja")
         if UIApplication.shared.canOpenURL(url! as URL){
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
@@ -383,7 +383,7 @@ class LoginViewController: UIViewController {
                         print("ログイン処理エラー: \(error.debugDescription)")
                         return
                     }
-                    //@usernameを取得しUserDefaultsに保存
+                    // @usernameを取得しUserDefaultsに保存
                     if let userId = result?.additionalUserInfo?.profile!["screen_name"] as? String {
                         print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
                         UserDefaults.standard.setValue(userId, forKey: "userId")
@@ -443,7 +443,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             if let authResult = authResult {
                 print(authResult)
                 // 画面遷移など行う
-                let mainTabBarController =  MainTabBarController()
+                let mainTabBarController = MainTabBarController()
                 self.navigationController?.pushViewController(mainTabBarController, animated: true)
             }
         }
@@ -463,4 +463,3 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     
     
 }
-
