@@ -10,6 +10,7 @@ excluded:
 disabled_rules:
 - trailing_whitespace
 - vertical_whitespace
+- line_length
   
 opt_in_rules:
   - empty_count
@@ -31,7 +32,7 @@ opt_in_rules:
   - prohibited_super_call
   - fatal_error_message
 
-line_length: 120
+
 number_separator:
   minimum_length: 5
 
