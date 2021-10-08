@@ -24,14 +24,13 @@ class MyPageViewController: UIViewController, LoadDelegate {
     let indicater = Indicater()
     var color = MainColor()
     var loadDBModel = LoadDBModel()
-    let db = Firestore.firestore()
-   
+    let database = Firestore.firestore()
+    
     var userWithTwitter = Auth.auth().currentUser?.displayName
     
     var user: String?
     
     override func loadView() {
-        super.loadView()
         
         view.backgroundColor = color.backColor
         
@@ -44,15 +43,15 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     override func viewDidAppear(_ animated: Bool) {
-        
-       //初回起動判定
+        super.viewDidAppear(animated)
+        // 初回起動判定
         let userDefaults = UserDefaults.standard
         let firstLunchKey = "FirstLunchKeyForMyPageTutorial"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
         if lunched {
             return
         } else {
-            //初回起動の場合はmodalでtutorialを表示
+            // 初回起動の場合はmodalでtutorialを表示
             UserDefaults.standard.set(true, forKey: firstLunchKey)
             let myPageTutorialViewController = MyPageTutorialViewController()
             present(myPageTutorialViewController, animated: true, completion: nil)
@@ -61,7 +60,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        
         loadDBModel.loadDelegate = self
         tableView.delegate = self
         tableView.dataSource = self
@@ -88,13 +87,13 @@ class MyPageViewController: UIViewController, LoadDelegate {
                 configureAnimation()
                 configureLabel()
             }
-
-        } else if userWithTwitter == nil  {
+            
+        } else if userWithTwitter == nil {
             tableView.removeFromSuperview()
             configureAnimation()
             configureLabel()
         }
-                
+        
         
         
     }
@@ -135,7 +134,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func changeNavRightBar() {
-
+        
         
         if userWithTwitter == nil {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
@@ -171,22 +170,22 @@ class MyPageViewController: UIViewController, LoadDelegate {
         view.addSubview(loginUserImage)
         setLoginUserImage()
         
-                
+        
         if userWithTwitter != nil {
-
+            
             let user = Auth.auth().currentUser
             if user != nil {
-                let photoURL = user?.photoURL
-                loginUserImage.loadImage(with: photoURL!)
+                guard let photoURL = user?.photoURL else { return }
+                loginUserImage.loadImage(with: photoURL)
             } else {
-                loginUserImage.image = UIImage(named: "NoUser")
+                loginUserImage.image = #imageLiteral(resourceName: "NoUser")
             }
-
+            
         } else if userWithTwitter == nil {
-            loginUserImage.image = UIImage(named: "NoUser")
+            loginUserImage.image = #imageLiteral(resourceName: "NoUser")
         }
-
-
+        
+        
         loginUserImage.backgroundColor = color.lightGrayColor
         loginUserImage.clipsToBounds = true
         loginUserImage.layer.cornerRadius = (view.frame.size.height * 0.05) / 2
@@ -217,7 +216,8 @@ class MyPageViewController: UIViewController, LoadDelegate {
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
-    @objc func handleRefreshControl() {
+    @objc
+    func handleRefreshControl() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.tableView.refreshControl?.endRefreshing()
@@ -263,7 +263,8 @@ class MyPageViewController: UIViewController, LoadDelegate {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive                      = true
     }
     
-    @objc func showLoginAlert() {
+    @objc
+    func showLoginAlert() {
         let modalViewController = ModalViewController()
         present(modalViewController, animated: true, completion: nil)
     }
@@ -278,25 +279,26 @@ class MyPageViewController: UIViewController, LoadDelegate {
             
             let user = Auth.auth().currentUser
             if let user = user {
-                    let photoURL = user.photoURL
-                    loginUserImage.loadImage(with: photoURL!)
-                    loginUsername.text = user.displayName
-                    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
-                } else {
-                    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
-                }
+                guard let photoURL = user.photoURL else { return }
+                loginUserImage.loadImage(with: photoURL)
+                loginUsername.text = user.displayName
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+            } else {
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+            }
             
         } else if userWithTwitter == nil {
             print("Twitter連携なしユーザー")
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         }
         
-  
-    }
         
-    @objc func showLogoutAlert() {
+    }
+    
+    @objc
+    func showLogoutAlert() {
         let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
             //ログアウト処理
             self.logout()
             
@@ -319,7 +321,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
             print("ログアウトしました")
             
             loginUsername.text = "Twitter連携を完了してください"
-            loginUserImage.image = UIImage(named: "NoUser")
+            loginUserImage.image = #imageLiteral(resourceName: "NoUser")
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
             
         } catch let error as NSError {
@@ -347,7 +349,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
             myPostImage.loadImage(with: loadDBModel.myDataSet[indexPath.row].postImageData)
             
             cell.selectionStyle = .none
-
+            
             return cell
             
         } else {
@@ -367,7 +369,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     func showDeleteAlert(postDocPass: String) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "投稿を削除", style: .destructive, handler: { [self] action in
+        alertController.addAction(UIAlertAction(title: "投稿を削除", style: .destructive, handler: { [self] _ in
             // didSelectRowAtで取得したDocumentIDを渡す
             self.delete(doc: postDocPass)
         }))
@@ -378,7 +380,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     
     func delete(doc: String) {
         // didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
-        db.collection("post").document(doc).delete() { [self] error in
+        database.collection("post").document(doc).delete { [self] error in
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
             } else {
@@ -391,8 +393,6 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
-    
     
     
 }
