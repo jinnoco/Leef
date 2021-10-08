@@ -35,16 +35,20 @@ class WalkthroughViewController: UIPageViewController {
         let contactDescription = ContactDescriptionViewController() as UIViewController
         let firstView = FirstViewController() as UIViewController
         
-        controllers = [leefDescription, twitterConnectDescription, postContentDescription, contactDescription ,firstView]
+        controllers = [leefDescription,
+                       twitterConnectDescription,
+                       postContentDescription,
+                       contactDescription,
+                       firstView]
         
-        //UIPageViewController設定
+        // UIPageViewController設定
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageViewController.setViewControllers([self.controllers[0]], direction: .forward, animated: true, completion: nil)
         
         self.pageViewController.dataSource = self
         self.pageViewController.delegate = self
         
-        //ViewControllerに追加
+        // ViewControllerに追加
         self.addChild(self.pageViewController)
         self.view.addSubview(self.pageViewController.view!)
     }
@@ -100,7 +104,7 @@ extension WalkthroughViewController: UIPageViewControllerDataSource {
 
 extension WalkthroughViewController: UIPageViewControllerDelegate {
     
-    //アニメーション終了後処理 追加
+    // アニメーション終了後処理 追加
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         let currentPage = pageViewController.viewControllers![0]
         self.pageControl.currentPage = self.controllers.firstIndex(of: currentPage)!
