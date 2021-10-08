@@ -9,7 +9,7 @@ import UIKit
 
 extension UIView {
     
-    func pin(to superView: UIView){
+    func pin(to superView: UIView) {
         translatesAutoresizingMaskIntoConstraints                               = false
         topAnchor.constraint(equalTo: superView.topAnchor).isActive             = true
         leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive     = true
@@ -18,15 +18,14 @@ extension UIView {
     }
     
     
-    var top : CGFloat{
-        get{
+    var top: CGFloat {
+        get {
             return self.frame.origin.y
         }
-        set{
+        set {
             var frame = self.frame
             frame.origin.y = newValue
             self.frame = frame
         }
     }
 }
-
