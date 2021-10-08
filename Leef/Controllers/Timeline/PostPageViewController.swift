@@ -14,7 +14,7 @@ class PostPageViewController: UIViewController {
     
     
     
-    //UI
+    // UI
     var postImageView = UIImageView()
     var postImage = UIImage()
     let topLabel = UILabel()
@@ -28,10 +28,9 @@ class PostPageViewController: UIViewController {
     var color = MainColor()
     let screenSize = UIScreen.main.bounds.size
     
-    let db = Firestore.firestore()
+    let database = Firestore.firestore()
     
     override func loadView() {
-        super.loadView()
         
         configureTopLabel()
         configureCancelButton()
@@ -45,7 +44,7 @@ class PostPageViewController: UIViewController {
         configurePostImageView()
         configureTextView()
         
-        //初期状態ではタップ不可
+        // 初期状態ではタップ不可
         postButton.isEnabled = false
         postButtonLabel.textColor = color.darkGrayColor
     }
@@ -56,7 +55,7 @@ class PostPageViewController: UIViewController {
         view.backgroundColor = color.backColor
         textView.delegate = self
         
-        //キーボードの表示・非表示を通知
+        // キーボードの表示・非表示を通知
         NotificationCenter.default.addObserver(self, selector: #selector(PostPageViewController.keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(PostPageViewController.keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -65,21 +64,24 @@ class PostPageViewController: UIViewController {
     
     
     
-    @objc func keyboardWillShow(_ notification:NSNotification){
-        let keyboardHeight = ((notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as Any) as AnyObject).cgRectValue.height
-        textViewY = textView.top //ここでtextViewの元のY位置を取得
-        textView.frame.origin.y = screenSize.height - keyboardHeight - textView.frame.height - 20 //textViewを動かす
+    @objc
+    func keyboardWillShow(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        let keyboardHeight = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as Any) as AnyObject).cgRectValue.height
+        textViewY = textView.top // ここでtextViewの元のY位置を取得
+        textView.frame.origin.y = screenSize.height - keyboardHeight - textView.frame.height - 20 // textViewを動かす
     }
     
-    @objc func keyboardWillHide(_ notification:NSNotification){
+    @objc
+    func keyboardWillHide(_ notification: NSNotification) {
         if let textViewY = textViewY {
-            //取得したY位置に戻す
+            // 取得したY位置に戻す
             textView.frame.origin.y = textViewY
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        textView.resignFirstResponder() //タップでキーボードを閉じる
+        textView.resignFirstResponder() // タップでキーボードを閉じる
     }
     
     
@@ -107,13 +109,13 @@ class PostPageViewController: UIViewController {
         cancelButton.lightShadowColor = color.lightShadow.cgColor
         let buttonHeght = view.frame.size.height * 0.05
         cancelButton.cornerRadius = buttonHeght / 2
-        //Button内にLabelを表示
+        // Button内にLabelを表示
         let label = UILabel()
         cancelButton.setContentView(label)
         label.text = "キャンセル"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: cancelButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 13)
         label.textColor = color.darkGrayColor
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
@@ -131,7 +133,7 @@ class PostPageViewController: UIViewController {
         postButtonLabel.text = "投稿"
         postButtonLabel.translatesAutoresizingMaskIntoConstraints = false
         postButtonLabel.centerXAnchor.constraint(equalTo: postButton.centerXAnchor).isActive = true
-        postButtonLabel.centerYAnchor.constraint(equalTo: postButton.centerYAnchor).isActive =  true
+        postButtonLabel.centerYAnchor.constraint(equalTo: postButton.centerYAnchor).isActive = true
         postButtonLabel.font = UIFont(name: "AvenirNext-Bold", size: 13)
         postButtonLabel.textColor = color.blueColor
         postButton.addTarget(self, action: #selector(send), for: .touchUpInside)
@@ -145,16 +147,16 @@ class PostPageViewController: UIViewController {
         setTextView()
         textView.backgroundColor = color.whiteColor
         textView.text = sampleText
-        textView.textColor = .lightGray //placeholderの色
+        textView.textColor = .lightGray // placeholderの色
         textView.layer.cornerRadius = 15
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) //内側に余白をつける
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // 内側に余白をつける
         textView.sizeToFit()
     }
     
     func setImage() {
         let imageHeight = view.frame.size.height * 0.3
-        let imageWidth = imageHeight * (4/3)
-        let constant =  view.frame.size.height * 0.04
+        let imageWidth = imageHeight * (4 / 3)
+        let constant = view.frame.size.height * 0.04
         postImageView.translatesAutoresizingMaskIntoConstraints                                             = false
         postImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                        = true
         postImageView.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: constant).isActive     = true
@@ -212,17 +214,18 @@ class PostPageViewController: UIViewController {
     }
     
     
-    @objc func send() {
-        //データのnilテェック
+    @objc
+    func send() {
+        // データのnilテェック
         if let postImageData = postImage.jpegData(compressionQuality: 1.0),
            let comment = textView.text,
            let uid = Auth.auth().currentUser?.uid,
            let username = Auth.auth().currentUser?.displayName,
            let profileImageURL = Auth.auth().currentUser?.photoURL,
            let userId = UserDefaults.standard.string(forKey: "userId") {
-            //SendDBModelに格納
+            // SendDBModelに格納
             let sendDBModel = SendDBModel(username: username, uid: uid, postImageData: postImageData, comment: comment, profileImageURLString: profileImageURL.absoluteString, userId: userId)
-            //FireStoreに送信
+            // FireStoreに送信
             sendDBModel.sendData()
         }
         
@@ -231,7 +234,8 @@ class PostPageViewController: UIViewController {
     }
     
     
-    @objc func cancel() {
+    @objc
+    func cancel() {
         dismiss(animated: true, completion: nil)
         postImageView.image = nil
     }
@@ -240,10 +244,10 @@ class PostPageViewController: UIViewController {
     
 }
 
-//textViewに関する処理
+// textViewに関する処理
 extension PostPageViewController: UITextViewDelegate {
     
-    //textViewに入力されたらPlaceHolderを消し本文の色を黒にする
+    // textViewに入力されたらPlaceHolderを消し本文の色を黒にする
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == sampleText {
             textView.text = ""
@@ -251,7 +255,7 @@ extension PostPageViewController: UITextViewDelegate {
         }
     }
     
-    //textViewが空白だったらPlaceHolderを表示し文字をグレーにする
+    // textViewが空白だったらPlaceHolderを表示し文字をグレーにする
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = sampleText
@@ -260,11 +264,11 @@ extension PostPageViewController: UITextViewDelegate {
     }
     
     
-    //textViewにPlaceHolderがある場合、空白の場合は投稿ボタンを押せないようにしボタンの文字色をグレーにする
+    // textViewにPlaceHolderがある場合、空白の場合は投稿ボタンを押せないようにしボタンの文字色をグレーにする
     func textViewDidChangeSelection(_ textView: UITextView) {
         if textView.text == sampleText || textView.text == "" {
             postButton.isEnabled = false
-            postButtonLabel.textColor =  color.darkGrayColor
+            postButtonLabel.textColor = color.darkGrayColor
         } else {
             postButton.isEnabled = true
             postButtonLabel.textColor = color.blueColor
@@ -275,6 +279,3 @@ extension PostPageViewController: UITextViewDelegate {
     
     
 }
-
-
-
