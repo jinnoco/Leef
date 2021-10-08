@@ -5,10 +5,8 @@
 //  Created by J on 2021/07/27.
 //
 
-import UIKit
 import Nuke
-
-
+import UIKit
 
 extension UIImageView {
     
