@@ -28,17 +28,11 @@ class FirstViewController: UIViewController {
         configureAnimation()
         configureTitleImageView()
         configurebutton()
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
     
     func configureTitleImageView() {
         view.addSubview(titleImageView)
-        titleImageView.image = UIImage(named: "LeefTitleImage")
+        titleImageView.image = #imageLiteral(resourceName: "LeefTitleImage")
         titleImageView.contentMode = .scaleAspectFit
         setTitleImageView()
     }
@@ -99,7 +93,6 @@ class FirstViewController: UIViewController {
     @objc func pushPage() {
         let loginViewController = LoginViewController()
         navigationController?.pushViewController(loginViewController, animated: true)
-        
     }
     
     
