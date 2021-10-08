@@ -10,7 +10,7 @@ import WebKit
 
 class TermsOfServiceViewController: UIViewController, WKUIDelegate {
     
-    //UI
+    // UI
     let label = UILabel()
     let textView = UITextView()
     var webView: WKWebView!
@@ -22,13 +22,12 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
         
         configureLabel()
         configureWebView()
-        
+
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = color.backColor
         loadURL()
     }
@@ -52,8 +51,8 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
     }
     
     func loadURL() {
-        let url = URL(string: "https://site-2671642-9203-8355.mystrikingly.com/") //利用規約ページURL
-        let request = URLRequest(url: url!)
+        guard let url = URL(string: "https://site-2671642-9203-8355.mystrikingly.com/") else { return } // 利用規約ページURL
+        let request = URLRequest(url: url)
         webView.load(request)
     }
     
