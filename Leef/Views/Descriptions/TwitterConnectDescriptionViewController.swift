@@ -23,16 +23,16 @@ class TwitterConnectDescriptionViewController: UIPageViewController {
     func configureTutorialImageView() {
         view.addSubview(tutorialImageView)
         tutorialImageView.contentMode = .scaleAspectFit
-        tutorialImageView.image = UIImage(named: "TwitterConnect_Description")
+        tutorialImageView.image = #imageLiteral(resourceName: "TwitterConnect_Description")
         setTutorialImageView()
     }
     
     func setTutorialImageView() {
-        tutorialImageView.translatesAutoresizingMaskIntoConstraints = false
-        tutorialImageView.topAnchor.constraint(equalTo: view.topAnchor,  constant: 10).isActive = true
-        tutorialImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        tutorialImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        tutorialImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        tutorialImageView.translatesAutoresizingMaskIntoConstraints                                         = false
+        tutorialImageView.topAnchor.constraint(equalTo: view.topAnchor,  constant: 10).isActive             = true
+        tutorialImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive      = true
+        tutorialImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive   = true
+        tutorialImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive       = true
     }
 
 }
