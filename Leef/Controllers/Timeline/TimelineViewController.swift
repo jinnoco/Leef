@@ -25,7 +25,6 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     
     override func loadView() {
-        super.loadView()
         
         configureNav()
         configureTableView()
@@ -57,7 +56,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        super.viewDidAppear(animated)
         // 初回起動判定
         let userDefaults = UserDefaults.standard
         let firstLunchKey = "FirstLunchKeyForTimelineTutorial"
@@ -87,9 +86,9 @@ class TimelineViewController: UIViewController, LoadDelegate {
         // navigationBarを表示
         navigationController?.setNavigationBarHidden(false, animated: true)
         // rightBarButtonItem(投稿作成)
-        navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
         // titleに画像をセット
-        let image = UIImage(named: "navigationBarTitleImage")
+        let image = #imageLiteral(resourceName: "navigationBarTitleImage")
         titleImage.image = image
         titleImage.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImage
@@ -111,7 +110,8 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     
     
-    @objc func toNewPostPage() {
+    @objc
+    func toNewPostPage() {
         // 新規投稿作成ページに遷移
         let postPageViewController = PostPageViewController()
         postPageViewController.modalPresentationStyle = .fullScreen
@@ -138,7 +138,8 @@ class TimelineViewController: UIViewController, LoadDelegate {
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
-    @objc func handleRefreshControl() {
+    @objc
+    func handleRefreshControl() {
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -222,8 +223,8 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func openCamera()  {
-        let sourceType:UIImagePickerController.SourceType = .camera
+    func openCamera() {
+        let sourceType: UIImagePickerController.SourceType = .camera
         // カメラ利用チェック
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             
@@ -237,7 +238,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     
     
     func openLibrary() {
-        let sourceType:UIImagePickerController.SourceType = .photoLibrary
+        let sourceType: UIImagePickerController.SourceType = .photoLibrary
         // フォトライブラリ利用チェック
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             
@@ -250,7 +251,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         
         if info[.originalImage] as? UIImage != nil {
             // 画像をセットして画面遷移
@@ -274,7 +275,8 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     }
     
     
-    @objc func showAlert() {
+    @objc
+    func showAlert() {
         
         let user = Auth.auth().currentUser?.displayName
         
@@ -282,10 +284,10 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
             
             let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
             
-            alertController.addAction(UIAlertAction(title: "カメラで撮影", style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: "カメラで撮影", style: .default, handler: { _ in
                 self.openCamera()
             }))
-            alertController.addAction(UIAlertAction(title: "ライブラリから選択", style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: "ライブラリから選択", style: .default, handler: { _ in
                 self.openLibrary()
             }))
             alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
@@ -308,4 +310,3 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     }
     
 }
-
