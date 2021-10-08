@@ -53,6 +53,7 @@ class ModalViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
         view.backgroundColor = color.backColor
         configureLabel()
@@ -62,7 +63,7 @@ class ModalViewController: UIViewController {
         configureLogoImageView()
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["lang":"ja"]
+        provider?.customParameters = ["lang": "ja"]
     }
     
     func configureLabel() {
@@ -83,13 +84,13 @@ class ModalViewController: UIViewController {
         cancelButton.darkShadowColor = color.darkShadow.cgColor
         cancelButton.lightShadowColor = color.lightShadow.cgColor
         cancelButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         cancelButton.setContentView(label)
         label.text = "キャンセル"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: cancelButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
@@ -102,13 +103,13 @@ class ModalViewController: UIViewController {
         signupButton.darkShadowColor = color.darkShadow.cgColor
         signupButton.lightShadowColor = color.lightShadow.cgColor
         signupButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         signupButton.setContentView(label)
         label.text = "アカウントを作成"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: signupButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: signupButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: signupButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         signupButton.addTarget(self, action: #selector(toSignupPage), for: .touchUpInside)
@@ -121,13 +122,13 @@ class ModalViewController: UIViewController {
         loginButton.darkShadowColor = color.darkShadow.cgColor
         loginButton.lightShadowColor = color.lightShadow.cgColor
         loginButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         loginButton.setContentView(label)
         label.text = "Twitterにログイン"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.blueColor
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
@@ -137,7 +138,7 @@ class ModalViewController: UIViewController {
     func configureLogoImageView() {
         view.addSubview(logoImageView)
         setLogoimageView()
-        logoImageView.image = UIImage(named: "LeefAppIcon")
+        logoImageView.image = #imageLiteral(resourceName: "LeefAppIcon")
         logoImageView.contentMode = .scaleAspectFit
         
     }
@@ -180,10 +181,11 @@ class ModalViewController: UIViewController {
         logoImageView.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -100).isActive = true
     }
     
-    @objc func login() {
+    @objc
+    func login() {
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["force_login":"true"]
+        provider?.customParameters = ["force_login": "true"]
         provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
             
             if error != nil {
@@ -191,28 +193,23 @@ class ModalViewController: UIViewController {
                 return
             }
             
-            //            indicater.startIndicater()
+            //indicater.startIndicater()
             
             
-            if credential != nil {
-                Auth.auth().signIn(with: credential!) { (result, error) in
+            if let credential = credential {
+                Auth.auth().signIn(with: credential) { (result, error) in
                     
                     if error != nil {
                         print("ログイン処理エラー: \(error.debugDescription)")
                         return
                     }
-                    //@usernameを取得しUserDefaultsに保存
-                    if let userId = result?.additionalUserInfo?.profile!["screen_name"] as? String {
-                        print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
-                        UserDefaults.standard.setValue(userId, forKey: "userId")
-                    } 
-                   
+                    // @usernameを取得しUserDefaultsに保存
+                    guard let userInfo = result?.additionalUserInfo?.profile else { return }
+                    let userId = userInfo["screen_name"] as? String
+                    print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
+                    UserDefaults.standard.setValue(userId, forKey: "userId")
                     
-                    
-                    //                    let myPageViewController = MyPageViewController()
-                    //                    myPageViewController.us
-                    
-                    //                    indicater.stopIndicater()
+                    //indicater.stopIndicater()
                     
                     dismiss(animated: true, completion: nil)
                     
@@ -225,15 +222,17 @@ class ModalViewController: UIViewController {
         
     }
     
-    @objc func toSignupPage() {
-        //Twiiterアカウント作成ページに遷移
-        let url = NSURL(string: "https://twitter.com/?lang=ja")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+    @objc
+    func toSignupPage() {
+        // Twiiterアカウント作成ページに遷移
+        guard let url = NSURL(string: "https://twitter.com/?lang=ja") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
-    @objc func cancel() {
+    @objc
+    func cancel() {
         dismiss(animated: true, completion: nil)
     }
     
