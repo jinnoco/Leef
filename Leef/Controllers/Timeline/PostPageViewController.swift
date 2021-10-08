@@ -31,6 +31,7 @@ class PostPageViewController: UIViewController {
     let database = Firestore.firestore()
     
     override func loadView() {
+        super.loadView()
         
         configureTopLabel()
         configureCancelButton()

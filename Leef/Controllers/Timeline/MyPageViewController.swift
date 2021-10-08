@@ -31,6 +31,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     var user: String?
     
     override func loadView() {
+        super.loadView()
         
         view.backgroundColor = color.backColor
         
@@ -299,7 +300,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     func showLogoutAlert() {
         let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
-            //ログアウト処理
+            // ログアウト処理
             self.logout()
             
         }))

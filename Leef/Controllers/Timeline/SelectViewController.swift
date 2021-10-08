@@ -34,6 +34,7 @@ class SelectViewController: UIViewController {
     
     
     override func loadView() {
+        super.loadView()
         
         configureShareButton()
         configureTwitterButton()

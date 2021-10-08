@@ -25,6 +25,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
     
     
     override func loadView() {
+        super.loadView()
         
         configureNav()
         configureTableView()
