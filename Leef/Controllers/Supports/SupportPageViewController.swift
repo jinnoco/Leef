@@ -150,7 +150,7 @@ class SupportPageViewController: UIViewController {
     
     
     func setAnimationView() {
-        animationView.translatesAutoresizingMaskIntoConstraints                             = false
+        animationView.translatesAutoresizingMaskIntoConstraints = false
         let width = view.frame.size.width / 2
         let height = view.frame.size.height / 3
         animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive        = true
@@ -171,7 +171,7 @@ class SupportPageViewController: UIViewController {
     func setPrivacyPolicyButton() {
         privacyPolicyButton.translatesAutoresizingMaskIntoConstraints                                       = false
         privacyPolicyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                  = true
-        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor, constant: 20).isActive   = true
+        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor, constant: 20).isActive    = true
         privacyPolicyButton.widthAnchor.constraint(equalToConstant: 250).isActive                           = true
         privacyPolicyButton.heightAnchor.constraint(equalToConstant: 40).isActive                           = true
     }
@@ -179,7 +179,7 @@ class SupportPageViewController: UIViewController {
     func setReportButton() {
         reportButton.translatesAutoresizingMaskIntoConstraints                                                  = false
         reportButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                             = true
-        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor, constant: 20).isActive    = true
+        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor, constant: 20).isActive     = true
         reportButton.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
         reportButton.heightAnchor.constraint(equalToConstant: 40).isActive                                      = true
     }
@@ -187,7 +187,7 @@ class SupportPageViewController: UIViewController {
     func setContactButton() {
         contactButton.translatesAutoresizingMaskIntoConstraints                                         = false
         contactButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
-        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor, constant: 20).isActive  = true
+        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor, constant: 20).isActive   = true
         contactButton.widthAnchor.constraint(equalToConstant: 250).isActive                             = true
         contactButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
@@ -197,34 +197,34 @@ class SupportPageViewController: UIViewController {
     // 外部ブラウザに画面遷移
     @objc
     func toTOSPage() {
-        let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL) {
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        guard let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
     @objc
     func toPrivacyPolicyPage() {
-        let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL) {
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        guard let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
     @objc
     func toReportPage() {
-        let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL) {
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        guard let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
     // Twitterアカウントに遷移
     @objc
     func toContactPage() {
-        let url = NSURL(string: "https://twitter.com/LeefApp_")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        guard let url = NSURL(string: "https://twitter.com/LeefApp_") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
