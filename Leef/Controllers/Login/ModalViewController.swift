@@ -27,6 +27,7 @@ class ModalViewController: UIViewController {
     var provider: OAuthProvider?
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         if #available(iOS 13.0, *) {
             presentingViewController?.beginAppearanceTransition(false, animated: animated)
