@@ -67,7 +67,7 @@ class LoginViewController: UIViewController {
         withoutRegisterButton.isEnabled = false
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["lang" : "ja"]
+        provider?.customParameters = ["lang": "ja"]
         
     }
     
@@ -84,7 +84,7 @@ class LoginViewController: UIViewController {
     func configureImageView() {
         view.addSubview(imageView)
         setImageView()
-        imageView.image = UIImage(named: "LeefAppIcon")
+        imageView.image = #imageLiteral(resourceName: "LeefAppIcon")
         imageView.contentMode = .scaleAspectFit
     }
     
