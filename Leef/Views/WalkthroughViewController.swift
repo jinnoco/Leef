@@ -56,7 +56,7 @@ class WalkthroughViewController: UIPageViewController {
     private func setPageControl() {
         
         // PageControlの配置場所
-        self.pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 100, width: UIScreen.main.bounds.width,height: 50))
+        self.pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 100, width: UIScreen.main.bounds.width, height: 50))
         // 全ページ数
         self.pageControl.numberOfPages = self.controllers.count
         // 表示ページ
@@ -106,7 +106,7 @@ extension WalkthroughViewController: UIPageViewControllerDelegate {
     
     // アニメーション終了後処理 追加
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        let currentPage = pageViewController.viewControllers![0]
+        guard let currentPage = pageViewController.viewControllers?[0] else { return }
         self.pageControl.currentPage = self.controllers.firstIndex(of: currentPage)!
     }
     
