@@ -237,7 +237,8 @@ class LoginViewController: UIViewController {
     
     
     @available(iOS 13.0, *)
-    @objc func handleTappedAppleLoginButton(_ sender: ASAuthorizationAppleIDButton) {
+    @objc
+    func handleTappedAppleLoginButton(_ sender: ASAuthorizationAppleIDButton) {
         // ランダムの文字列を生成
         let nonce = randomNonceString()
         // delegateで使用するため代入
@@ -302,7 +303,8 @@ class LoginViewController: UIViewController {
     
     
     
-    @objc func tappedConsentButton() {
+    @objc
+    func tappedConsentButton() {
         switch checked {
         
         case false:
@@ -325,7 +327,7 @@ class LoginViewController: UIViewController {
             // 未テェック画像に変更
             consentButton.setImage(UIImage(systemName: "square"), for: .normal)
             
-            //各ボタンの背景色を変え押せるようにする
+            // 各ボタンの背景色を変え押せるようにする
             appleLoginButton.isEnabled = false
             
             twitterLoginButton.isEnabled = false
@@ -339,34 +341,38 @@ class LoginViewController: UIViewController {
     }
     
     
-    @objc func twitterSignup() {
+    @objc
+    func twitterSignup() {
         // Twiiterアカウント作成ページに遷移
-        let url = NSURL(string: "https://twitter.com/?lang=ja")
-        if UIApplication.shared.canOpenURL(url! as URL){
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
+        guard let url = NSURL(string: "https://twitter.com/?lang=ja") else { return }
+        if UIApplication.shared.canOpenURL(url as URL) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
     }
     
     
     
-    @objc func toTOSPage() {
+    @objc
+    func toTOSPage() {
         let termsOfServiceViewController = TermsOfServiceViewController()
         present(termsOfServiceViewController, animated: true, completion: nil)
     }
     
     
-    @objc func pushPage() {
-        let mainTabBarController =  MainTabBarController()
+    @objc
+    func pushPage() {
+        let mainTabBarController = MainTabBarController()
         self.navigationController?.pushViewController(mainTabBarController, animated: true)
     }
     
     
     
     
-    @objc func twitterLogin() {
+    @objc
+    func twitterLogin() {
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["force_login":"true"]
+        provider?.customParameters = ["force_login": "true"]
         provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
             
             if error != nil {
@@ -376,23 +382,24 @@ class LoginViewController: UIViewController {
             
             indicater.startIndicater()
             
-            if credential != nil {
-                Auth.auth().signIn(with: credential!) { (result, error) in
+            if let credential = credential {
+                Auth.auth().signIn(with: credential) { (result, error) in
                     
                     if error != nil {
                         print("ログイン処理エラー: \(error.debugDescription)")
                         return
                     }
                     // @usernameを取得しUserDefaultsに保存
-                    if let userId = result?.additionalUserInfo?.profile!["screen_name"] as? String {
+                    guard let userInfo = result?.additionalUserInfo?.profile else { return}
+                    if let userId = userInfo["screen_name"] as? String {
                         print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
                         UserDefaults.standard.setValue(userId, forKey: "userId")
                     }
-                   
+                    
                     
                     indicater.stopIndicater()
                     
-                    let mainTabBarController =  MainTabBarController()
+                    let mainTabBarController = MainTabBarController()
                     navigationController?.pushViewController(mainTabBarController, animated: true)
                     
                 }
