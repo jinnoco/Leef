@@ -62,6 +62,8 @@ class ModalViewController: UIViewController {
         configureLoginButton()
         configureLogoImageView()
         
+        indicater.configureIndicater(to: view)
+        
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["lang": "ja"]
     }
@@ -193,8 +195,7 @@ class ModalViewController: UIViewController {
                 return
             }
             
-            //indicater.startIndicater()
-            
+            indicater.startIndicater()
             
             if let credential = credential {
                 Auth.auth().signIn(with: credential) { (result, error) in
@@ -209,7 +210,7 @@ class ModalViewController: UIViewController {
                     print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
                     UserDefaults.standard.setValue(userId, forKey: "userId")
                     
-                    //indicater.stopIndicater()
+                    indicater.stopIndicater()
                     
                     dismiss(animated: true, completion: nil)
                     
