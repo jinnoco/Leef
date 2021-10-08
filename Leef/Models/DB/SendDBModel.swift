@@ -14,16 +14,11 @@ class SendDBModel {
     var uid = String()
     var userId = String()
     var postImageData = Data()
-    var comment =  String()
+    var comment = String()
     var profileImageURLString = String()
     
-    
-    
-    let db = Firestore.firestore()
+    let database = Firestore.firestore()
     let postUsername = UserDefaults.standard.string(forKey: "userId")
-    
-    
-    //送信機能
     
     init() {
         
@@ -32,11 +27,10 @@ class SendDBModel {
     init(username: String, uid: String, postImageData: Data, comment: String, profileImageURLString: String, userId: String) {
         self.username = username
         self.uid = uid
-        self.postImageData  = postImageData
+        self.postImageData = postImageData
         self.comment = comment
         self.profileImageURLString = profileImageURLString
         self.userId = userId
-        
     }
     
     
@@ -46,7 +40,7 @@ class SendDBModel {
         let imageRef = Storage.storage().reference().child("PostImages")
             .child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
         
-        imageRef.putData(postImageData, metadata: nil) { metadata, error in
+        imageRef.putData(postImageData, metadata: nil) { _, error in
             if error != nil {
                 print("データ送信エラー: \(error.debugDescription)")
                 return
@@ -57,20 +51,21 @@ class SendDBModel {
                     return
                 }
                 
-                let dicData = ["username" : self.username,
-                               "uid" : self.uid,
-                               "postImageURLString" : url?.absoluteString as Any,
+                let dicData = ["username": self.username,
+                               "uid": self.uid,
+                               "postImageURLString": url?.absoluteString as Any,
                                "comment": self.comment,
-                               "profileImageURLString" : self.profileImageURLString,
-                               "userId" : self.userId,
-                               "postDate" : Timestamp()
+                               "profileImageURLString": self.profileImageURLString,
+                               "userId": self.userId,
+                               "postDate": Timestamp()
                 ]
                 
-                self.db.collection("post").document().setData(dicData)
+                self.database.collection("post").document().setData(dicData)
                 print("送信完了")
             }
         }
     }
+    
 }
 
 
