@@ -90,7 +90,8 @@ class FirstViewController: UIViewController {
     }
     
     
-    @objc func pushPage() {
+    @objc
+    func pushPage() {
         let loginViewController = LoginViewController()
         navigationController?.pushViewController(loginViewController, animated: true)
     }
