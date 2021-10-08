@@ -14,17 +14,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        guard let _ = (scene as? UIWindowScene) else { return }
-        
-        
-        
-        //初回起動判定
+        // 初回起動判定
         let userDefaults = UserDefaults.standard
         let firstLunchKey = "FirstLunchKeyForFirstView"
         let lunched = userDefaults.bool(forKey: firstLunchKey)
 
         if lunched {
-            //2回目以降
+            // 2回目以降
             let mainTabVC = MainTabBarController()
             
             guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -36,14 +32,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
 
             UserDefaults.standard.set(true, forKey: firstLunchKey)
-            //初回起動
+            // 初回起動
             let walkthroughViewController = WalkthroughViewController()
-            let nc = UINavigationController(rootViewController: walkthroughViewController)
+            let navigationController = UINavigationController(rootViewController: walkthroughViewController)
             
             guard let windowScene = (scene as? UIWindowScene) else { return }
             
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = nc
+            window?.rootViewController = navigationController
             window?.makeKeyAndVisible()
             
         }
