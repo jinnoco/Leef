@@ -9,10 +9,10 @@ import Photos
 
 class CheckPermission {
     
-    func showCheckPermission(){
+    func showCheckPermission() {
         PHPhotoLibrary.requestAuthorization { (status) in
             
-            switch(status){
+            switch status {
             
             case .authorized:
                 print("許可")
@@ -36,4 +36,3 @@ class CheckPermission {
     }
     
 }
-
