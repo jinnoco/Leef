@@ -15,12 +15,12 @@ class SupportPageViewController: UIViewController {
     
     var color = MainColor()
     
-    //UI
+    // UI
     var animationView = AnimationView()
-    let tosButton = SoftUIView() //利用規約
-    let privacyPolicyButton = SoftUIView() //プライバシーポリシー
-    let reportButton = SoftUIView() //通報ページ
-    let contactButton = SoftUIView() //お問い合わせ
+    let tosButton = SoftUIView() // 利用規約
+    let privacyPolicyButton = SoftUIView() // プライバシーポリシー
+    let reportButton = SoftUIView() // 通報ページ
+    let contactButton = SoftUIView() // お問い合わせ
     
     
     
@@ -43,6 +43,7 @@ class SupportPageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -70,13 +71,13 @@ class SupportPageViewController: UIViewController {
         tosButton.darkShadowColor = color.darkShadow.cgColor
         tosButton.lightShadowColor = color.lightShadow.cgColor
         tosButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         tosButton.setContentView(label)
         label.text = "利用規約"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: tosButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
@@ -91,13 +92,13 @@ class SupportPageViewController: UIViewController {
         privacyPolicyButton.darkShadowColor = color.darkShadow.cgColor
         privacyPolicyButton.lightShadowColor = color.lightShadow.cgColor
         privacyPolicyButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         privacyPolicyButton.setContentView(label)
         label.text = "プライバシーポリシー"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: privacyPolicyButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: privacyPolicyButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: privacyPolicyButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         privacyPolicyButton.addTarget(self, action: #selector(toPrivacyPolicyPage), for: .touchUpInside)
@@ -112,13 +113,13 @@ class SupportPageViewController: UIViewController {
         reportButton.darkShadowColor = color.darkShadow.cgColor
         reportButton.lightShadowColor = color.lightShadow.cgColor
         reportButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         reportButton.setContentView(label)
         label.text = "ユーザー通報"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: reportButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: reportButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: reportButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         reportButton.addTarget(self, action: #selector(toReportPage), for: .touchUpInside)
@@ -133,13 +134,13 @@ class SupportPageViewController: UIViewController {
         contactButton.darkShadowColor = color.darkShadow.cgColor
         contactButton.lightShadowColor = color.lightShadow.cgColor
         contactButton.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         contactButton.setContentView(label)
         label.text = "お問い合わせ"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: contactButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: contactButton.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: contactButton.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 14)
         label.textColor = color.darkGrayColor
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
@@ -170,7 +171,7 @@ class SupportPageViewController: UIViewController {
     func setPrivacyPolicyButton() {
         privacyPolicyButton.translatesAutoresizingMaskIntoConstraints                                       = false
         privacyPolicyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                  = true
-        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor,  constant: 20).isActive   = true
+        privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor, constant: 20).isActive   = true
         privacyPolicyButton.widthAnchor.constraint(equalToConstant: 250).isActive                           = true
         privacyPolicyButton.heightAnchor.constraint(equalToConstant: 40).isActive                           = true
     }
@@ -178,7 +179,7 @@ class SupportPageViewController: UIViewController {
     func setReportButton() {
         reportButton.translatesAutoresizingMaskIntoConstraints                                                  = false
         reportButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                             = true
-        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor,  constant: 20).isActive    = true
+        reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor, constant: 20).isActive    = true
         reportButton.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
         reportButton.heightAnchor.constraint(equalToConstant: 40).isActive                                      = true
     }
@@ -186,38 +187,41 @@ class SupportPageViewController: UIViewController {
     func setContactButton() {
         contactButton.translatesAutoresizingMaskIntoConstraints                                         = false
         contactButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
-        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor,  constant: 20).isActive  = true
+        contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor, constant: 20).isActive  = true
         contactButton.widthAnchor.constraint(equalToConstant: 250).isActive                             = true
         contactButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
     
     
     
-    //外部ブラウザに画面遷移
-    
-    @objc func toTOSPage() {
+    // 外部ブラウザに画面遷移
+    @objc
+    func toTOSPage() {
         let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
+        if UIApplication.shared.canOpenURL(url! as URL) {
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     }
     
-    @objc func toPrivacyPolicyPage() {
+    @objc
+    func toPrivacyPolicyPage() {
         let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
+        if UIApplication.shared.canOpenURL(url! as URL) {
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     }
     
-    @objc func toReportPage() {
+    @objc
+    func toReportPage() {
         let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com")
-        if UIApplication.shared.canOpenURL(url! as URL){
+        if UIApplication.shared.canOpenURL(url! as URL) {
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
         }
     }
     
-    //Twitterアカウントに遷移
-    @objc func toContactPage() {
+    // Twitterアカウントに遷移
+    @objc
+    func toContactPage() {
         let url = NSURL(string: "https://twitter.com/LeefApp_")
         if UIApplication.shared.canOpenURL(url! as URL){
             UIApplication.shared.open(url! as URL, options: [:], completionHandler: nil)
