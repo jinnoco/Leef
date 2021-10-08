@@ -15,20 +15,10 @@ class FirstViewController: UIViewController {
     var sendDBModel = SendDBModel()
     let indicater = Indicater()
     
-    //UI
+    // UI
     let titleImageView = UIImageView()
     let button = SoftUIView()
     var animationView = AnimationView()
-    
-//    
-//    override func loadView() {
-//        super.loadView()
-//        
-//        configureAnimation()
-//        configureTitleImageView()
-//        configurebutton()
-//        indicater.configureIndicater(to: view)
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +28,6 @@ class FirstViewController: UIViewController {
         configureAnimation()
         configureTitleImageView()
         configurebutton()
-        
         
     }
     
@@ -75,13 +64,13 @@ class FirstViewController: UIViewController {
         button.darkShadowColor = color.darkShadow.cgColor
         button.lightShadowColor = color.lightShadow.cgColor
         button.cornerRadius = 20
-        //Button内にLabelを配置
+        // Button内にLabelを配置
         let label = UILabel()
         button.setContentView(label)
         label.text = "はじめる"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive =  true
+        label.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
         label.font = UIFont(name: "AvenirNext-Bold", size: 13)
         label.textColor = color.darkGrayColor
         button.addTarget(self, action: #selector(pushPage), for: .touchUpInside)
@@ -92,10 +81,10 @@ class FirstViewController: UIViewController {
     
     func setTitleImageView() {
         let topConstant = view.frame.size.height * 0.13
-        titleImageView.translatesAutoresizingMaskIntoConstraints                                        = false
-        titleImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                   = true
-        titleImageView.heightAnchor.constraint(equalToConstant: 120).isActive                        = true
-        titleImageView.topAnchor.constraint(equalTo: view.topAnchor, constant:topConstant).isActive     = true
+        titleImageView.translatesAutoresizingMaskIntoConstraints                                         = false
+        titleImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
+        titleImageView.heightAnchor.constraint(equalToConstant: 120).isActive                            = true
+        titleImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: topConstant).isActive     = true
     }
     
     func  setLoginButton() {
@@ -115,6 +104,3 @@ class FirstViewController: UIViewController {
     
     
 }
-
-
-
