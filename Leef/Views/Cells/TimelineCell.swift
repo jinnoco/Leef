@@ -12,15 +12,11 @@ import SoftUIView
 
 class TimelineCell: UITableViewCell {
     
-    
-    
     let background = UIView()
     var username = UILabel()
     var profileImage = UIImageView()
-//    var timelineImageView = FlexibleHeightImageView(frame: .zero)
     var timelineImageView = UIImageView()
     var dateLabel = UILabel()
-    
     
     let sendDBModel = SendDBModel()
     let loadDBModel = LoadDBModel()
@@ -29,14 +25,11 @@ class TimelineCell: UITableViewCell {
     let timeline = TimelineViewController()
     
     
-
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-  
-        //Cell setup
-        
+        // Cell setup
+
         addSubview(background)
         addSubview(timelineImageView)
         addSubview(username)
@@ -95,13 +88,6 @@ class TimelineCell: UITableViewCell {
     
     
     func setTimelineImage() {
-//        timelineImageView.translatesAutoresizingMaskIntoConstraints                                         = false
-//        timelineImageView.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20).isActive   = true
-//        timelineImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive           = true
-//        timelineImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive        = true
-//        timelineImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -70).isActive            = true
-        
-        
         timelineImageView.translatesAutoresizingMaskIntoConstraints                                         = false
         timelineImageView.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20).isActive   = true
         timelineImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive           = true
@@ -145,4 +131,3 @@ class TimelineCell: UITableViewCell {
     }
     
 }
-
