@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C2890D027195E8B00AE38D2 /* LeefUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2890CF27195E8B00AE38D2 /* LeefUnitTests.swift */; };
 		3C2C0D9926BC1A2B00F2989C /* lf30_editor_zozlaqwf.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C2C0D9826BC1A2900F2989C /* lf30_editor_zozlaqwf.json */; };
 		3C2C0D9B26BD824400F2989C /* CheckPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2C0D9A26BD824300F2989C /* CheckPermission.swift */; };
 		3C2C0D9D26C067DB00F2989C /* lf30_editor_5wqgyqlx.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C2C0D9C26C067DB00F2989C /* lf30_editor_5wqgyqlx.json */; };
@@ -46,9 +47,22 @@
 		D71E7BA11123688C7B849710 /* libPods-Leef.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C07424DC9BE881B47FE6BA /* libPods-Leef.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3C2890D227195E8B00AE38D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3CD8F4B7268A093F00DF694B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3CD8F4BE268A093F00DF694B;
+			remoteInfo = Leef;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		00C07424DC9BE881B47FE6BA /* libPods-Leef.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Leef.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AC8706C2833D62FE83CE24E /* Pods-Leef.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leef.debug.xcconfig"; path = "Target Support Files/Pods-Leef/Pods-Leef.debug.xcconfig"; sourceTree = "<group>"; };
+		3C2890CD27195E8B00AE38D2 /* LeefUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeefUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C2890CF27195E8B00AE38D2 /* LeefUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeefUnitTests.swift; sourceTree = "<group>"; };
+		3C2890D127195E8B00AE38D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C2C0D9826BC1A2900F2989C /* lf30_editor_zozlaqwf.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lf30_editor_zozlaqwf.json; sourceTree = "<group>"; };
 		3C2C0D9A26BD824300F2989C /* CheckPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPermission.swift; sourceTree = "<group>"; };
 		3C2C0D9C26C067DB00F2989C /* lf30_editor_5wqgyqlx.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lf30_editor_5wqgyqlx.json; sourceTree = "<group>"; };
@@ -92,6 +106,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3C2890CA27195E8B00AE38D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CD8F4BC268A093F00DF694B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -109,6 +130,15 @@
 				00C07424DC9BE881B47FE6BA /* libPods-Leef.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3C2890CE27195E8B00AE38D2 /* LeefUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				3C2890CF27195E8B00AE38D2 /* LeefUnitTests.swift */,
+				3C2890D127195E8B00AE38D2 /* Info.plist */,
+			);
+			path = LeefUnitTests;
 			sourceTree = "<group>";
 		};
 		3C6C7A3126A5084B00674FBE /* Cells */ = {
@@ -183,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				3CD8F4C1268A093F00DF694B /* Leef */,
+				3C2890CE27195E8B00AE38D2 /* LeefUnitTests */,
 				3CD8F4C0268A093F00DF694B /* Products */,
 				5E7D99F81520DD8AF3DFCAAD /* Pods */,
 				3AB01729D0463445EF0D98CB /* Frameworks */,
@@ -193,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				3CD8F4BF268A093F00DF694B /* DEBUG-Leef.app */,
+				3C2890CD27195E8B00AE38D2 /* LeefUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -290,6 +322,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3C2890CC27195E8B00AE38D2 /* LeefUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C2890D427195E8B00AE38D2 /* Build configuration list for PBXNativeTarget "LeefUnitTests" */;
+			buildPhases = (
+				3C2890C927195E8B00AE38D2 /* Sources */,
+				3C2890CA27195E8B00AE38D2 /* Frameworks */,
+				3C2890CB27195E8B00AE38D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3C2890D327195E8B00AE38D2 /* PBXTargetDependency */,
+			);
+			name = LeefUnitTests;
+			productName = LeefUnitTests;
+			productReference = 3C2890CD27195E8B00AE38D2 /* LeefUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3CD8F4BE268A093F00DF694B /* Leef */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3CD8F4D3268A094E00DF694B /* Build configuration list for PBXNativeTarget "Leef" */;
@@ -316,9 +366,13 @@
 		3CD8F4B7268A093F00DF694B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					3C2890CC27195E8B00AE38D2 = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = 3CD8F4BE268A093F00DF694B;
+					};
 					3CD8F4BE268A093F00DF694B = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -338,11 +392,19 @@
 			projectRoot = "";
 			targets = (
 				3CD8F4BE268A093F00DF694B /* Leef */,
+				3C2890CC27195E8B00AE38D2 /* LeefUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3C2890CB27195E8B00AE38D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CD8F4BD268A093F00DF694B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -418,6 +480,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3C2890C927195E8B00AE38D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C2890D027195E8B00AE38D2 /* LeefUnitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3CD8F4BB268A093F00DF694B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -457,6 +527,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3C2890D327195E8B00AE38D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3CD8F4BE268A093F00DF694B /* Leef */;
+			targetProxy = 3C2890D227195E8B00AE38D2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		3C99E320270C424A00D919FB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -469,6 +547,69 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3C2890D527195E8B00AE38D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8SV798S53Y;
+				INFOPLIST_FILE = LeefUnitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jinapps.LeefUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DEBUG-Leef.app/DEBUG-Leef";
+			};
+			name = Debug;
+		};
+		3C2890D627195E8B00AE38D2 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8SV798S53Y;
+				INFOPLIST_FILE = LeefUnitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jinapps.LeefUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DEBUG-Leef.app/DEBUG-Leef";
+			};
+			name = Staging;
+		};
+		3C2890D727195E8B00AE38D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8SV798S53Y;
+				INFOPLIST_FILE = LeefUnitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Jinapps.LeefUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DEBUG-Leef.app/DEBUG-Leef";
+			};
+			name = Release;
+		};
 		3CD8F4D1268A094E00DF694B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -724,6 +865,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3C2890D427195E8B00AE38D2 /* Build configuration list for PBXNativeTarget "LeefUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C2890D527195E8B00AE38D2 /* Debug */,
+				3C2890D627195E8B00AE38D2 /* Staging */,
+				3C2890D727195E8B00AE38D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3CD8F4BA268A093F00DF694B /* Build configuration list for PBXProject "Leef" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
