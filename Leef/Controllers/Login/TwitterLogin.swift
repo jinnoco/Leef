@@ -5,4 +5,50 @@
 //  Created by J on 2021/10/18.
 //
 
-import Foundation
+import UIKit
+import Firebase
+
+class TwittreLogin: UIViewController {
+    
+    var provider: OAuthProvider?
+    let indicater = Indicater()
+    
+    @objc
+    func login() {
+        
+        self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
+        provider?.customParameters = ["force_login": "true"]
+        provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
+            
+            if error != nil {
+                print("ログイン処理エラー: \(error.debugDescription)")
+                return
+            }
+            
+            indicater.startIndicater()
+            
+            if let credential = credential {
+                Auth.auth().signIn(with: credential) { (result, error) in
+                    
+                    if error != nil {
+                        print("ログイン処理エラー: \(error.debugDescription)")
+                        return
+                    }
+                    // @usernameを取得しUserDefaultsに保存
+                    guard let userInfo = result?.additionalUserInfo?.profile else { return }
+                    if let userId = userInfo["screen_name"] as? String {
+                        print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
+                        UserDefaults.standard.setValue(userId, forKey: "userId")
+                    }
+                    
+                    indicater.stopIndicater()
+                    
+                    let mainTabBarController = MainTabBarController()
+                    navigationController?.pushViewController(mainTabBarController, animated: true)
+                    
+                }
+            }
+        })
+    }
+    
+}

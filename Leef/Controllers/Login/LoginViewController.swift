@@ -9,14 +9,11 @@ import UIKit
 import SoftUIView
 import Firebase
 import AuthenticationServices
-import CryptoKit
 import Lottie
 import NVActivityIndicatorView
 
 class LoginViewController: UIViewController {
-    
-    fileprivate var currentNonce: String?
-    
+        
     // UI
     let topLabel = UILabel()
     var imageView = UIImageView()
@@ -28,11 +25,11 @@ class LoginViewController: UIViewController {
     let consentLabel = UILabel()
     var consentButton = UIButton()
     
-    let indicater = Indicater()
+    var indicater = Indicater()
     var color = MainColor()
     var provider: OAuthProvider?
-    let loadDBModel = LoadDBModel()
-    
+    var loadDBModel = LoadDBModel()
+    var twiiterLogin = TwittreLogin()
     var appleLogin = AppleLogin()
     var openURL: OpenURL!
     
@@ -133,7 +130,7 @@ class LoginViewController: UIViewController {
         twitterLoginButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 13)
         twitterLoginButton.backgroundColor = color.darkGrayColor
         twitterLoginButton.tintColor = .white
-        twitterLoginButton.addTarget(self, action: #selector(twitterLogin), for: .touchUpInside)
+        twitterLoginButton.addTarget(self, action: #selector(twiiterLogin.login), for: .touchUpInside)
         
     }
     
@@ -236,15 +233,9 @@ class LoginViewController: UIViewController {
     }
     
     
-    
-
-    
-    
-    
     @objc
     func tappedConsentButton() {
         switch checked {
-        
         case false:
             // テェック完了画像に変更
             consentButton.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
@@ -302,48 +293,4 @@ class LoginViewController: UIViewController {
     }
     
     
-    
-    
-    @objc
-    func twitterLogin() {
-        
-        self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["force_login": "true"]
-        provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
-            
-            if error != nil {
-                print("ログイン処理エラー: \(error.debugDescription)")
-                return
-            }
-            
-            indicater.startIndicater()
-            
-            if let credential = credential {
-                Auth.auth().signIn(with: credential) { (result, error) in
-                    
-                    if error != nil {
-                        print("ログイン処理エラー: \(error.debugDescription)")
-                        return
-                    }
-                    // @usernameを取得しUserDefaultsに保存
-                    guard let userInfo = result?.additionalUserInfo?.profile else { return }
-                    if let userId = userInfo["screen_name"] as? String {
-                        print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
-                        UserDefaults.standard.setValue(userId, forKey: "userId")
-                    }
-                    
-                    
-                    indicater.stopIndicater()
-                    
-                    let mainTabBarController = MainTabBarController()
-                    navigationController?.pushViewController(mainTabBarController, animated: true)
-                    
-                }
-            }
-        })
-    }
-    
-    
-    
 }
-
