@@ -114,6 +114,7 @@ class SupportPageViewController: UIViewController {
         reportButton.lightShadowColor = color.lightShadow.cgColor
         reportButton.cornerRadius = 20
         // Button内にLabelを配置
+        setSoftUIButtonLabel(button: reportButton, labelText: "ユーザー通報")
         let label = UILabel()
         reportButton.setContentView(label)
         label.text = "ユーザー通報"
@@ -130,23 +131,30 @@ class SupportPageViewController: UIViewController {
     
     func configureContactButton() {
         view.addSubview(contactButton)
-        contactButton.mainColor = color.backColor.cgColor
-        contactButton.darkShadowColor = color.darkShadow.cgColor
-        contactButton.lightShadowColor = color.lightShadow.cgColor
+        setButtonColor(button: contactButton)
         contactButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        contactButton.setContentView(label)
-        label.text = "お問い合わせ"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: contactButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: contactButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        setSoftUIButtonLabel(button: contactButton, labelText: "お問い合わせ")  // Button内にLabelを配置
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
         setContactButton()
+        
     }
     
+    func setButtonColor(button: SoftUIView) {
+        button.mainColor = color.backColor.cgColor
+        button.darkShadowColor = color.darkShadow.cgColor
+        button.lightShadowColor = color.lightShadow.cgColor
+    }
+    
+    func setSoftUIButtonLabel(button: SoftUIView, labelText: String) {
+        let label = UILabel()
+        label.text = labelText
+        button.setContentView(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
+        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
+        label.textColor = color.darkGrayColor
+    }
     
     
     func setAnimationView() {
