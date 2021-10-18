@@ -26,9 +26,14 @@ class MyPageViewController: UIViewController, LoadDelegate {
     var loadDBModel = LoadDBModel()
     let database = Firestore.firestore()
     
+    var twitterLogin = TwittreLogin()
+    
     var userWithTwitter = Auth.auth().currentUser?.displayName
     
     var user: String?
+    
+    let withLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+    let withoutLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
     
     override func loadView() {
         super.loadView()
@@ -136,7 +141,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     func changeNavRightBar() {
         
-        
         if userWithTwitter == nil {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         } else if userWithTwitter != nil {
@@ -171,7 +175,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
         view.addSubview(loginUserImage)
         setLoginUserImage()
         
-        
         if userWithTwitter != nil {
             
             let user = Auth.auth().currentUser
@@ -185,7 +188,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
         } else if userWithTwitter == nil {
             loginUserImage.image = #imageLiteral(resourceName: "NoUser")
         }
-        
         
         loginUserImage.backgroundColor = color.lightGrayColor
         loginUserImage.clipsToBounds = true
@@ -272,10 +274,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func setView() {
-        print("setview")
-        
-        userWithTwitter = Auth.auth().currentUser?.displayName
-        
+                
         if userWithTwitter != nil {
             
             let user = Auth.auth().currentUser
@@ -283,18 +282,21 @@ class MyPageViewController: UIViewController, LoadDelegate {
                 guard let photoURL = user.photoURL else { return }
                 loginUserImage.loadImage(with: photoURL)
                 loginUsername.text = user.displayName
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+                navigationItem.rightBarButtonItem = withLogin
             } else {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+                navigationItem.rightBarButtonItem = withoutLogin
             }
             
         } else if userWithTwitter == nil {
             print("Twitter連携なしユーザー")
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+            navigationItem.rightBarButtonItem = withoutLogin
         }
         
         
     }
+    
+    
+    
     
     @objc
     func showLogoutAlert() {
@@ -302,7 +304,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
         alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
             // ログアウト処理
             self.logout()
-            
         }))
         alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
@@ -310,28 +311,20 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     func logout() {
-        let firebaseAuth = Auth.auth()
-        self.navigationController?.popViewController(animated: true)
-        do {
-            if loadDBModel.myDataSet.isEmpty == false {
-                tableView.removeFromSuperview()
-                configureAnimation()
-                configureLabel()
-            }
-            try firebaseAuth.signOut()
-            print("ログアウトしました")
-            
-            loginUsername.text = "Twitter連携を完了してください"
-            loginUserImage.image = #imageLiteral(resourceName: "NoUser")
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
-            
-        } catch let error as NSError {
-            print("ログアウトエラー: \(error.debugDescription)")
-        }
+        twitterLogin.logout()
     }
     
+    func setLogoutTableView() {
+        tableView.removeFromSuperview()
+        configureAnimation()
+        configureLabel()
+    }
     
-    
+    func setLogoutView() {
+        loginUsername.text = "Twitter連携を完了してください"
+        loginUserImage.image = #imageLiteral(resourceName: "NoUser")
+        navigationItem.rightBarButtonItem = withoutLogin
+    }
     
 }
 

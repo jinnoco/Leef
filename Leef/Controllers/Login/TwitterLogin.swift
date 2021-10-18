@@ -13,6 +13,9 @@ class TwittreLogin: UIViewController {
     var provider: OAuthProvider?
     let indicater = Indicater()
     
+    var loadDBModel = LoadDBModel()
+    var myPageViewController = MyPageViewController()
+    
     @objc
     func login() {
         
@@ -51,4 +54,26 @@ class TwittreLogin: UIViewController {
         })
     }
     
+    
+    func logout() {
+        let firebaseAuth = Auth.auth()
+        self.navigationController?.popViewController(animated: true)
+        do {
+            if loadDBModel.myDataSet.isEmpty == false {
+              
+                myPageViewController.setLogoutTableView()
+            }
+            try firebaseAuth.signOut()
+            print("ログアウトしました")
+            
+            myPageViewController.setLogoutView()
+            
+        } catch let error as NSError {
+            print("ログアウトエラー: \(error.debugDescription)")
+        }
+    }
+
+    
 }
+
+
