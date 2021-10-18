@@ -13,27 +13,25 @@ import Lottie
 class MyPageViewController: UIViewController, LoadDelegate {
     
     // UI
-    var tableView = UITableView()
-    var loginUserImage = UIImageView()
-    var loginUsername = UILabel()
-    let noPostTextlabel = UILabel()
-    var animationView = AnimationView()
+    private var tableView = UITableView()
+    private var loginUserImage = UIImageView()
+    private var loginUsername = UILabel()
+    private var noPostTextlabel = UILabel()
+    private var animationView = AnimationView()
     
-    let postedCellId = "postedCellId"
-    var profileImageString = String()
-    let indicater = Indicater()
-    var color = MainColor()
-    var loadDBModel = LoadDBModel()
-    let database = Firestore.firestore()
+    private let postedCellId = "postedCellId"
+    private var profileImageString = String()
+    private let indicater = Indicater()
+    private var color = MainColor()
+    private var loadDBModel = LoadDBModel()
+    private let database = Firestore.firestore()
     
-    var twitterLogin = TwittreLogin()
+    private var twitterLogin = TwittreLogin()
     
-    var userWithTwitter = Auth.auth().currentUser?.displayName
+    private var userWithTwitter = Auth.auth().currentUser?.displayName
     
-    var user: String?
-    
-    let withLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
-    let withoutLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+    private let withLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+    private let withoutLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
     
     override func loadView() {
         super.loadView()
@@ -77,10 +75,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        print("viewwillappear")
-        
-        userWithTwitter = Auth.auth().currentUser?.displayName
         
         if userWithTwitter != nil {
             // ログインテェック
@@ -129,7 +123,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     
-    func configureNav() {
+    private func configureNav() {
         changeNavRightBar()
         navigationItem.hidesBackButton = true
         navigationController?.navigationBar.titleTextAttributes = [ .foregroundColor: color.darkGrayColor]
@@ -139,16 +133,16 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func changeNavRightBar() {
+    private func changeNavRightBar() {
         
         if userWithTwitter == nil {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
+            navigationItem.rightBarButtonItem = withoutLogin
         } else if userWithTwitter != nil {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
+            navigationItem.rightBarButtonItem = withLogin
         }
     }
     
-    func configureAnimation() {
+    private func configureAnimation() {
         
         animationView = AnimationView(name: "lf30_editor_zozlaqwf")
         animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
@@ -161,7 +155,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func configureLabel() {
+    private func configureLabel() {
         view.addSubview(noPostTextlabel)
         setLabel()
         noPostTextlabel.text = "まだ投稿は作成されていません"
@@ -171,7 +165,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func configureLoginUserImage() {
+    private func configureLoginUserImage() {
         view.addSubview(loginUserImage)
         setLoginUserImage()
         
@@ -194,7 +188,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         loginUserImage.layer.cornerRadius = (view.frame.size.height * 0.05) / 2
     }
     
-    func configureLoginUsername() {
+    private func configureLoginUsername() {
         view.addSubview(loginUsername)
         setLoginUsername()
         loginUsername.text = Auth.auth().currentUser?.displayName ?? "Twitter連携を完了してください"
@@ -204,7 +198,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func configureTableView() {
+    private func configureTableView() {
         view.addSubview(tableView)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(PostedCell.self, forCellReuseIdentifier: postedCellId)
@@ -214,13 +208,13 @@ class MyPageViewController: UIViewController, LoadDelegate {
         configureRefreshControl()
     }
     
-    func configureRefreshControl() {
+    private func configureRefreshControl() {
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     @objc
-    func handleRefreshControl() {
+    private func handleRefreshControl() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.tableView.refreshControl?.endRefreshing()
@@ -228,7 +222,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func setLabel() {
+    private func setLabel() {
         noPostTextlabel.translatesAutoresizingMaskIntoConstraints                             = false
         noPostTextlabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive        = true
         noPostTextlabel.topAnchor.constraint(equalTo: animationView.bottomAnchor).isActive    = true
@@ -236,7 +230,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     
-    func setLoginUserImage() {
+    private func setLoginUserImage() {
         let topConstant = view.frame.size.height * 0.15
         let constant = view.frame.size.width * 0.07
         let height = view.frame.size.height * 0.05
@@ -250,14 +244,14 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     
-    func setLoginUsername() {
+    private func setLoginUsername() {
         loginUsername.translatesAutoresizingMaskIntoConstraints                                                  = false
         loginUsername.centerYAnchor.constraint(equalTo: loginUserImage.centerYAnchor).isActive                   = true
         loginUsername.leadingAnchor.constraint(equalTo: loginUserImage.trailingAnchor, constant: 15).isActive    = true
     }
     
     
-    func setTableView() {
+    private func setTableView() {
         let topConstant = view.frame.size.height * 0.2
         tableView.translatesAutoresizingMaskIntoConstraints                                         = false
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: topConstant).isActive     = true
@@ -273,8 +267,8 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func setView() {
-                
+    private func setView() {
+        
         if userWithTwitter != nil {
             
             let user = Auth.auth().currentUser
@@ -299,7 +293,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     @objc
-    func showLogoutAlert() {
+    private func showLogoutAlert() {
         let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
             // ログアウト処理
@@ -310,20 +304,47 @@ class MyPageViewController: UIViewController, LoadDelegate {
     }
     
     
-    func logout() {
+    private func logout() {
         twitterLogin.logout()
     }
     
-    func setLogoutTableView() {
+    public func setLogoutTableView() {
         tableView.removeFromSuperview()
         configureAnimation()
         configureLabel()
     }
     
-    func setLogoutView() {
+    public func setLogoutView() {
         loginUsername.text = "Twitter連携を完了してください"
         loginUserImage.image = #imageLiteral(resourceName: "NoUser")
         navigationItem.rightBarButtonItem = withoutLogin
+    }
+    
+    private func showDeleteAlert(postDocPass: String) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "投稿を削除", style: .destructive, handler: { [self] _ in
+            // didSelectRowAtで取得したDocumentIDを渡す
+            self.delete(doc: postDocPass)
+        }))
+        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
+    private func delete(doc: String) {
+        // didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
+        database.collection("post").document(doc).delete { [self] error in
+            if error != nil {
+                print("投稿削除エラー: \(error.debugDescription)")
+            } else {
+                print("削除しました")
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }
     }
     
 }
@@ -361,32 +382,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    func showDeleteAlert(postDocPass: String) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "投稿を削除", style: .destructive, handler: { [self] _ in
-            // didSelectRowAtで取得したDocumentIDを渡す
-            self.delete(doc: postDocPass)
-        }))
-        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)
-    }
     
-    
-    func delete(doc: String) {
-        // didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
-        database.collection("post").document(doc).delete { [self] error in
-            if error != nil {
-                print("投稿削除エラー: \(error.debugDescription)")
-            } else {
-                print("削除しました")
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
-            }
-        }
-    }
     
     
 }
