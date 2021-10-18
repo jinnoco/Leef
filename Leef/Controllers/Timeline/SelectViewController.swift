@@ -12,8 +12,8 @@ import ImageViewer_swift
 
 class SelectViewController: UIViewController {
     
-    let database = Firestore.firestore()
-    var color = MainColor()
+    
+   private var color = MainColor()
     var userId = String()
     
     // UI
@@ -26,7 +26,7 @@ class SelectViewController: UIViewController {
     var twitterButton = SoftUIView()
     var shareButton = SoftUIView()
     
-    
+    private var baseUI = BaseUI()
     
     let alertButton = UIButton()
     
@@ -74,7 +74,7 @@ class SelectViewController: UIViewController {
     func configureUsename() {
         view.addSubview(username)
         setUsername()
-        username.font = UIFont(name: "AvenirNext-Bold", size: 18)
+        username.font = UIFont(name: baseUI.textFont, size: 18)
         username.textColor = color.darkGrayColor
     }
     
@@ -136,7 +136,7 @@ class SelectViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: twitterButton.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: twitterButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        label.font = UIFont(name: baseUI.textFont, size: 13)
         label.textColor = color.blueColor
     }
     
@@ -159,7 +159,7 @@ class SelectViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: shareButton.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: shareButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        label.font = UIFont(name: baseUI.textFont, size: 13)
         label.textColor = color.darkGrayColor
     }
     
@@ -235,7 +235,6 @@ class SelectViewController: UIViewController {
     
     @objc
     func tappedAlertButton() {
-        print("tappedAlertButton")
         let alertController = UIAlertController(title: "不適切なコンテンツですか？", message: "", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { _ in
             self.toReportPage()
@@ -271,6 +270,7 @@ class SelectViewController: UIViewController {
     
     // 投稿非表示(削除)処理
     func removePost(postDocPass: String) {
+        let database = Firestore.firestore()
         database.collection("post").document(doc).delete { error in
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
