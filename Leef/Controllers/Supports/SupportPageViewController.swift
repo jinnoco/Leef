@@ -67,19 +67,9 @@ class SupportPageViewController: UIViewController {
     
     func configureTOSButton() {
         view.addSubview(tosButton)
-        tosButton.mainColor = color.backColor.cgColor
-        tosButton.darkShadowColor = color.darkShadow.cgColor
-        tosButton.lightShadowColor = color.lightShadow.cgColor
+        setButtonColor(button: tosButton)
         tosButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        tosButton.setContentView(label)
-        label.text = "利用規約"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: tosButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        setButtonLabel(button: tosButton, labelText: "利用規約") // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         setTOSButton()
     }
@@ -88,19 +78,9 @@ class SupportPageViewController: UIViewController {
  
     func configurePrivacyPolicyButton() {
         view.addSubview(privacyPolicyButton)
-        privacyPolicyButton.mainColor = color.backColor.cgColor
-        privacyPolicyButton.darkShadowColor = color.darkShadow.cgColor
-        privacyPolicyButton.lightShadowColor = color.lightShadow.cgColor
+        setButtonColor(button: privacyPolicyButton)
         privacyPolicyButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        privacyPolicyButton.setContentView(label)
-        label.text = "プライバシーポリシー"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: privacyPolicyButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: privacyPolicyButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        setButtonLabel(button: privacyPolicyButton, labelText: "プライバシーポリシー") // Button内にLabelを配置
         privacyPolicyButton.addTarget(self, action: #selector(toPrivacyPolicyPage), for: .touchUpInside)
         setPrivacyPolicyButton()
     }
@@ -109,20 +89,9 @@ class SupportPageViewController: UIViewController {
     
     func configureReportButton() {
         view.addSubview(reportButton)
-        reportButton.mainColor = color.backColor.cgColor
-        reportButton.darkShadowColor = color.darkShadow.cgColor
-        reportButton.lightShadowColor = color.lightShadow.cgColor
+        setButtonColor(button: reportButton)
         reportButton.cornerRadius = 20
-        // Button内にLabelを配置
-        setSoftUIButtonLabel(button: reportButton, labelText: "ユーザー通報")
-        let label = UILabel()
-        reportButton.setContentView(label)
-        label.text = "ユーザー通報"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: reportButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: reportButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        setButtonLabel(button: reportButton, labelText: "ユーザー通報") // Button内にLabelを配置
         reportButton.addTarget(self, action: #selector(toReportPage), for: .touchUpInside)
         setReportButton()
     }
@@ -133,7 +102,7 @@ class SupportPageViewController: UIViewController {
         view.addSubview(contactButton)
         setButtonColor(button: contactButton)
         contactButton.cornerRadius = 20
-        setSoftUIButtonLabel(button: contactButton, labelText: "お問い合わせ")  // Button内にLabelを配置
+        setButtonLabel(button: contactButton, labelText: "お問い合わせ")  // Button内にLabelを配置
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
         setContactButton()
         
@@ -145,7 +114,7 @@ class SupportPageViewController: UIViewController {
         button.lightShadowColor = color.lightShadow.cgColor
     }
     
-    func setSoftUIButtonLabel(button: SoftUIView, labelText: String) {
+    func setButtonLabel(button: SoftUIView, labelText: String) {
         let label = UILabel()
         label.text = labelText
         button.setContentView(label)
