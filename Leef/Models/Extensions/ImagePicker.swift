@@ -64,7 +64,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
     public func showAlert() {
         
         let user = Auth.auth().currentUser?.displayName
-        let openCamera =  UIAlertAction(title: "カメラで撮影", style: .default, handler: { _ in self.openCamera() })
+        let openCamera = UIAlertAction(title: "カメラで撮影", style: .default, handler: { _ in self.openCamera() })
         let openLibrary = UIAlertAction(title: "ライブラリから選択", style: .default, handler: { _ in self.openLibrary() })
         let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
         let done = UIAlertAction(title: "OK", style: .default, handler: nil)
