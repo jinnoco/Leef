@@ -8,7 +8,6 @@
 import UIKit
 import SoftUIView
 import Firebase
-import NVActivityIndicatorView
 
 
 class ModalViewController: UIViewController {

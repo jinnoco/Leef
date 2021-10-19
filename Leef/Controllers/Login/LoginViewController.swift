@@ -10,7 +10,6 @@ import SoftUIView
 import Firebase
 import AuthenticationServices
 import Lottie
-import NVActivityIndicatorView
 
 class LoginViewController: UIViewController {
     
@@ -96,7 +95,7 @@ class LoginViewController: UIViewController {
         setTOSButton()
         tosButton.cornerRadius = 20
         softUI.setButtonColor(button: tosButton)
-        softUI.setButtonLabel(button: tosButton, labelText: "利用規約", fontSize: 13) // Button内にLabelを配置
+        softUI.setButtonLabel(button: tosButton, labelText: "利用規約", fontSize: 13, textColor: color.darkGrayColor) // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         
     }
