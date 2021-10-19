@@ -14,16 +14,13 @@ protocol LoadDelegate: AnyObject {
 
 class LoadDBModel {
     
-    var dataSets = [DataSet]()
-    var myDataSet = [MyDataSet]()
-    let database = Firestore.firestore()
+    public var dataSets = [DataSet]()
+    public var myDataSet = [MyDataSet]()
+    public var database = Firestore.firestore()
+    public var myUid = Auth.auth().currentUser?.uid
+    public weak var loadDelegate: LoadDelegate?
     
-    var myUid = Auth.auth().currentUser?.uid
-    
-    weak var loadDelegate: LoadDelegate?
-    
-    
-    func loadPostData() {
+    public func loadPostData() {
         database.collection("post").order(by: "postDate").addSnapshotListener { [self] snapshot, error in
             
             self.dataSets = []
@@ -33,42 +30,40 @@ class LoadDBModel {
                 return
             }
             
-            if let snapshotDoc = snapshot?.documents {
+            guard let snapshotDoc = snapshot?.documents else { return }
+            
+            for doc in snapshotDoc {
                 
-                for doc in snapshotDoc {
-                    
-                    let data = doc.data()
-                    
-                    
-                    if let uid = data["uid"] as? String,
-                       let username = data["username"] as? String,
-                       let postImageData = data["postImageURLString"] as? String,
-                       let comment = data["comment"] as? String,
-                       let  profileImageURLString = data["profileImageURLString"]  as? String,
-                       let userId = data["userId"] as? String,
-                       let docId = doc.documentID as? String,
-                       let postDate = data["postDate"] as? Timestamp {
-                        
-                        
-                        let newDataSet = DataSet(uid: uid,
-                                                 username: username,
-                                                 postImageURLString: postImageData,
-                                                 comment: comment,
-                                                 profileImageURLString: profileImageURLString,
-                                                 userId: userId,
-                                                 postDate: postDate,
-                                                 docId: docId)
-                        
-                        self.dataSets.append(newDataSet)
-                        self.dataSets.reverse()
-                        self.loadDelegate?.doneLoad(check: 1)
-                        
-                    }
-                }
-                print("全体の投稿: \(dataSets.count)件")
+                let data = doc.data()
+                
+                guard let uid = data["uid"] as? String else { return }
+                guard let username = data["username"] as? String else { return }
+                guard let postImageData = data["postImageURLString"] as? String else { return }
+                guard let comment = data["comment"] as? String else { return }
+                guard let profileImageURLString = data["profileImageURLString"] as? String else { return }
+                guard let userId = data["userId"] as? String else { return }
+                guard let docId = doc.documentID as? String else { return }
+                guard let postDate = data["postDate"] as? Timestamp else { return }
+                
+                
+                let newDataSet = DataSet(uid: uid,
+                                         username: username,
+                                         postImageURLString: postImageData,
+                                         comment: comment,
+                                         profileImageURLString: profileImageURLString,
+                                         userId: userId,
+                                         postDate: postDate,
+                                         docId: docId)
+                
+                self.dataSets.append(newDataSet)
+                self.dataSets.reverse()
+                self.loadDelegate?.doneLoad(check: 1)
+                
             }
         }
+        print("全体の投稿: \(dataSets.count)件")
     }
+    
     
     
     
@@ -84,42 +79,40 @@ class LoadDBModel {
                 return
             }
             
-            if let snapshotDoc = snapshot?.documents {
+            guard let snapshotDoc = snapshot?.documents else { return }
+            
+            for doc in snapshotDoc {
                 
-                for doc in snapshotDoc {
+                let data = doc.data()
+                
+                guard let uid = data["uid"] as? String else { return }
+                guard let username = data["username"] as? String else { return }
+                guard let postImageData = data["postImageURLString"] as? String  else { return }
+                guard let comment = data["comment"] as? String else { return }
+                guard let  profileImageURLString = data["profileImageURLString"] as? String else { return }
+                guard let userId = data["userId"] as? String else { return }
+                guard let docId = doc.documentID as? String else { return }
+                guard let postDate = data["postDate"] as? Timestamp else { return }
+                
+                if myUid == uid {
                     
-                    let data = doc.data()
+                    let newMyDataSet = MyDataSet(uid: uid,
+                                                 username: username,
+                                                 postImageData: postImageData,
+                                                 comment: comment,
+                                                 profileImageURLString: profileImageURLString,
+                                                 userId: userId,
+                                                 postDate: postDate,
+                                                 docId: docId)
                     
-                    if let uid = data["uid"] as? String,
-                       let username = data["username"] as? String,
-                       let postImageData = data["postImageURLString"] as? String,
-                       let comment = data["comment"] as? String,
-                       let  profileImageURLString = data["profileImageURLString"] as? String,
-                       let userId = data["userId"] as? String,
-                       let docId = doc.documentID as? String,
-                       let postDate = data["postDate"] as? Timestamp {
-                        
-                        if myUid == uid {
-                            let newMyDataSet = MyDataSet(uid: uid,
-                                                         username: username,
-                                                         postImageData: postImageData,
-                                                         comment: comment,
-                                                         profileImageURLString: profileImageURLString,
-                                                         userId: userId,
-                                                         postDate: postDate,
-                                                         docId: docId)
-                            
-                            self.myDataSet.append(newMyDataSet)
-                            self.myDataSet.reverse()
-                            
-                        }
-                    }
+                    self.myDataSet.append(newMyDataSet)
+                    self.myDataSet.reverse()
+                    
                 }
             }
-            print("myDataSetデータ受信完了")
-            print("自分の投稿: \(myDataSet.count)件")
-            self.loadDelegate?.doneLoad(check: 2)
         }
+        print("myDataSetデータ受信完了")
+        print("自分の投稿: \(myDataSet.count)件")
+        self.loadDelegate?.doneLoad(check: 2)
     }
-    
 }
