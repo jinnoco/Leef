@@ -20,12 +20,9 @@ class MyPageViewController: UIViewController, LoadDelegate {
     private var animationView = AnimationView()
     
     private let postedCellId = "postedCellId"
-    private var profileImageString = String()
-    private let indicater = Indicater()
+    private var indicater = Indicater()
     private var color = MainColor()
     private var loadDBModel = LoadDBModel()
-    private let database = Firestore.firestore()
-    
     private var twitterLogin = TwittreLogin()
     
     private var userWithTwitter = Auth.auth().currentUser?.displayName
@@ -77,7 +74,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         super.viewWillAppear(animated)
         
         if userWithTwitter != nil {
-            // ログインテェック
+            // ログインチェック
             let userUid = Auth.auth().currentUser?.uid
             if userUid != nil {
                 loadDBModel.myUid = userUid
@@ -297,16 +294,12 @@ class MyPageViewController: UIViewController, LoadDelegate {
         let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
             // ログアウト処理
-            self.logout()
+            self.twitterLogin.logout()
         }))
         alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
-    
-    private func logout() {
-        twitterLogin.logout()
-    }
     
     public func setLogoutTableView() {
         tableView.removeFromSuperview()
@@ -333,6 +326,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     private func delete(doc: String) {
         // didSelectRowAtで取得したDocumentIDを使用して削除処理を行う
+        let database = Firestore.firestore()
         database.collection("post").document(doc).delete { [self] error in
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
@@ -378,11 +372,7 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
         // DocumentIDを取得して渡す
         let doc = loadDBModel.myDataSet[indexPath.row].docId
         showDeleteAlert(postDocPass: doc)
-        
     }
-    
-    
-    
     
     
 }
