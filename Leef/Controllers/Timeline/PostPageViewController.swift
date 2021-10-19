@@ -12,31 +12,27 @@ import NVActivityIndicatorView
 
 class PostPageViewController: UIViewController {
     
-    
-    
     // UI
-    var postImageView = UIImageView()
-    var postImage = UIImage()
-    let topLabel = UILabel()
-    let postButton = SoftUIView()
-    let cancelButton = SoftUIView()
-    let textView = UITextView()
-    let postButtonLabel = UILabel()
-    let sampleText = "コメントを入力...\n\n例)\n・写真の食材の詳細\n・廃棄までの期限\n・お店の情報、宣伝"
+    private var postImageView = UIImageView()
+    private var postImage = UIImage()
+    private var topLabel = UILabel()
+    private var postButton = SoftUIView()
+    private var cancelButton = SoftUIView()
+    private var textView = UITextView()
+    private var postButtonLabel = UILabel()
+    private let sampleText = "コメントを入力...\n\n例)\n・写真の食材の詳細\n・廃棄までの期限\n・お店の情報、宣伝"
     
-    var textViewY: CGFloat?
-    var color = MainColor()
-    let screenSize = UIScreen.main.bounds.size
-    
-    let database = Firestore.firestore()
+    private var textViewY: CGFloat?
+    private var color = MainColor()
+    private var baseUI = BaseUI()
+    private  var softUI = ConfigureSoftUIButton()
+    private let screenSize = UIScreen.main.bounds.size
     
     override func loadView() {
         super.loadView()
-        
         configureTopLabel()
         configureCancelButton()
         configurePostButton()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,21 +48,24 @@ class PostPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         view.backgroundColor = color.backColor
         textView.delegate = self
         
-        // キーボードの表示・非表示を通知
-        NotificationCenter.default.addObserver(self, selector: #selector(PostPageViewController.keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(PostPageViewController.keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        setKeyboardObserver()
         
     }
     
+    private func setKeyboardObserver() {
+        // キーボードの表示・非表示を通知
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_ :)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_ :)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
     
     @objc
-    func keyboardWillShow(_ notification: NSNotification) {
+    private func keyboardWillShow(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         let keyboardHeight = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as Any) as AnyObject).cgRectValue.height
         textViewY = textView.top // ここでtextViewの元のY位置を取得
@@ -74,7 +73,7 @@ class PostPageViewController: UIViewController {
     }
     
     @objc
-    func keyboardWillHide(_ notification: NSNotification) {
+    private func keyboardWillHide(_ notification: NSNotification) {
         if let textViewY = textViewY {
             // 取得したY位置に戻す
             textView.frame.origin.y = textViewY
@@ -87,63 +86,44 @@ class PostPageViewController: UIViewController {
     
     
     
-    func configurePostImageView() {
+    private func configurePostImageView() {
         view.addSubview(postImageView)
         setImage()
         postImageView.image = postImage
         postImageView.contentMode = .scaleAspectFit
     }
     
-    func configureTopLabel() {
+    private func configureTopLabel() {
         view.addSubview(topLabel)
         setTopLabel()
         topLabel.text = "新規投稿を作成"
-        topLabel.font = UIFont(name: "AvenirNext-Bold", size: 15)
+        topLabel.font = UIFont(name: baseUI.textFont, size: 15)
         topLabel.textColor = color.darkGrayColor
     }
     
-    func configureCancelButton() {
+    private func configureCancelButton() {
         view.addSubview(cancelButton)
         setCancelButton()
-        cancelButton.mainColor = color.backColor.cgColor
-        cancelButton.darkShadowColor = color.darkShadow.cgColor
-        cancelButton.lightShadowColor = color.lightShadow.cgColor
         let buttonHeght = view.frame.size.height * 0.05
         cancelButton.cornerRadius = buttonHeght / 2
-        // Button内にLabelを表示
-        let label = UILabel()
-        cancelButton.setContentView(label)
-        label.text = "キャンセル"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: cancelButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
-        label.textColor = color.darkGrayColor
+        softUI.setButtonColor(button: cancelButton)
+        softUI.setButtonLabel(button: cancelButton, labelText: "キャンセル", fontSize: 13) // Button内にLabelを表示
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
     }
     
-    func configurePostButton() {
+    private func configurePostButton() {
         view.addSubview(postButton)
         setPostButton()
-        postButton.mainColor = color.backColor.cgColor
-        postButton.darkShadowColor = color.darkShadow.cgColor
-        postButton.lightShadowColor = color.lightShadow.cgColor
         let buttonHeght = view.frame.size.height * 0.05
         postButton.cornerRadius = buttonHeght / 2
-        postButton.setContentView(postButtonLabel)
-        postButtonLabel.text = "投稿"
-        postButtonLabel.translatesAutoresizingMaskIntoConstraints = false
-        postButtonLabel.centerXAnchor.constraint(equalTo: postButton.centerXAnchor).isActive = true
-        postButtonLabel.centerYAnchor.constraint(equalTo: postButton.centerYAnchor).isActive = true
-        postButtonLabel.font = UIFont(name: "AvenirNext-Bold", size: 13)
-        postButtonLabel.textColor = color.blueColor
+        softUI.setButtonColor(button: postButton)
+        softUI.setButtonLabel(button: postButton, labelText: "投稿", fontSize: 13)
         postButton.addTarget(self, action: #selector(send), for: .touchUpInside)
         
     }
     
     
-    
-    func configureTextView() {
+    private func configureTextView() {
         view.addSubview(textView)
         setTextView()
         textView.backgroundColor = color.whiteColor
@@ -154,7 +134,8 @@ class PostPageViewController: UIViewController {
         textView.sizeToFit()
     }
     
-    func setImage() {
+    
+    private func setImage() {
         let imageHeight = view.frame.size.height * 0.3
         let imageWidth = imageHeight * (4 / 3)
         let constant = view.frame.size.height * 0.04
@@ -166,9 +147,7 @@ class PostPageViewController: UIViewController {
     }
     
     
-    
-    
-    func setTopLabel() {
+    private func setTopLabel() {
         let topConstant = view.frame.size.height * 0.07
         topLabel.translatesAutoresizingMaskIntoConstraints                                      = false
         topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                 = true
@@ -176,9 +155,7 @@ class PostPageViewController: UIViewController {
     }
     
     
-    
-    
-    func setCancelButton() {
+    private func setCancelButton() {
         let bottomConstant = view.frame.size.height * 0.15
         let buttonHeght = view.frame.size.height * 0.05
         let buttonWidth = buttonHeght * 6.25
@@ -190,8 +167,7 @@ class PostPageViewController: UIViewController {
     }
     
     
-    
-    func setPostButton() {
+    private func setPostButton() {
         let buttonHeght = view.frame.size.height * 0.05
         let buttonWidth = buttonHeght * 6.25
         postButton.translatesAutoresizingMaskIntoConstraints                                            = false
@@ -202,8 +178,7 @@ class PostPageViewController: UIViewController {
     }
     
     
-    
-    func setTextView() {
+    private func setTextView() {
         let height = view.frame.size.height * 0.2
         textView.translatesAutoresizingMaskIntoConstraints                                          = false
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                     = true
@@ -211,12 +186,11 @@ class PostPageViewController: UIViewController {
         textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive       = true
         textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive    = true
         textView.heightAnchor.constraint(equalToConstant: height).isActive                          = true
-        
     }
     
     
     @objc
-    func send() {
+    private func send() {
         // データのnilテェック
         if let postImageData = postImage.jpegData(compressionQuality: 1.0),
            let comment = textView.text,
@@ -229,19 +203,15 @@ class PostPageViewController: UIViewController {
             // FireStoreに送信
             sendDBModel.sendData()
         }
-        
         dismiss(animated: true, completion: nil)
-        
     }
     
     
     @objc
-    func cancel() {
+    private func cancel() {
         dismiss(animated: true, completion: nil)
         postImageView.image = nil
     }
-    
-    
     
 }
 
