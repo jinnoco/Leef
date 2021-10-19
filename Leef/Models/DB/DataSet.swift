@@ -7,26 +7,25 @@
 
 import Foundation
 import Firebase
+
 struct DataSet {
-    
-    let uid: String
-    let username: String
-    let postImageURLString: String
-    let comment: String
-    let profileImageURLString: String
-    let userId: String
-    let postDate: Timestamp
-    let docId: String
-    
+    public var uid: String
+    public var username: String
+    public var postImageURLString: String
+    public var comment: String
+    public var profileImageURLString: String
+    public var userId: String
+    public var postDate: Timestamp
+    public var docId: String
 }
 
 struct MyDataSet {
-    let uid: String
-    let username: String
-    let postImageData: String
-    let comment: String
-    let profileImageURLString: String
-    let userId: String
-    let postDate: Timestamp
-    let docId: String
+    public var uid: String
+    public var username: String
+    public var postImageData: String
+    public var comment: String
+    public var profileImageURLString: String
+    public var userId: String
+    public var postDate: Timestamp
+    public var docId: String
 }
