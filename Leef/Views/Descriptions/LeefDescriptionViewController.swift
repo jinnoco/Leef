@@ -9,8 +9,8 @@ import UIKit
 
 class LeefDescriptionViewController: UIViewController {
     
-    let tutorialImageView = UIImageView()
-    var color = MainColor()
+    private var tutorialImageView = UIImageView()
+    private var color = MainColor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,14 +20,14 @@ class LeefDescriptionViewController: UIViewController {
     
     }
     
-    func configureTutorialImageView() {
+    private func configureTutorialImageView() {
         view.addSubview(tutorialImageView)
         tutorialImageView.contentMode = .scaleAspectFit
         tutorialImageView.image = #imageLiteral(resourceName: "Leef_Description")
         setTutorialImageView()
     }
     
-    func setTutorialImageView() {
+    private func setTutorialImageView() {
         tutorialImageView.translatesAutoresizingMaskIntoConstraints                                        = false
         tutorialImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive             = true
         tutorialImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive     = true
