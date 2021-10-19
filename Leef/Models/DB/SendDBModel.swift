@@ -10,15 +10,14 @@ import Firebase
 
 class SendDBModel {
     
-    var username = String()
-    var uid = String()
-    var userId = String()
-    var postImageData = Data()
-    var comment = String()
-    var profileImageURLString = String()
-    
-    let database = Firestore.firestore()
-    let postUsername = UserDefaults.standard.string(forKey: "userId")
+    public var username = String()
+    public var uid = String()
+    public var userId = String()
+    public var postImageData = Data()
+    public var comment = String()
+    public var profileImageURLString = String()
+    public var database = Firestore.firestore()
+    public var postUsername = UserDefaults.standard.string(forKey: "userId")
     
     init() {
         
@@ -35,7 +34,7 @@ class SendDBModel {
     
     
     
-    func sendData() {
+    public func sendData() {
         
         let imageRef = Storage.storage().reference().child("PostImages")
             .child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
