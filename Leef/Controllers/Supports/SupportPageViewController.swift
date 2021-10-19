@@ -22,7 +22,11 @@ class SupportPageViewController: UIViewController {
     let reportButton = SoftUIView() // 通報ページ
     let contactButton = SoftUIView() // お問い合わせ
     
+    var openURL = OpenURL()
     
+    private var baseUI = BaseUI()
+    private var webURL = URLs()
+    private var softUI = ConfigureSoftUIButton()
     
     override func loadView() {
         super.loadView()
@@ -67,9 +71,9 @@ class SupportPageViewController: UIViewController {
     
     func configureTOSButton() {
         view.addSubview(tosButton)
-        setButtonColor(button: tosButton)
+        softUI.setButtonColor(button: tosButton)
         tosButton.cornerRadius = 20
-        setButtonLabel(button: tosButton, labelText: "利用規約") // Button内にLabelを配置
+        softUI.setButtonLabel(button: tosButton, labelText: "利用規約") // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         setTOSButton()
     }
@@ -78,9 +82,9 @@ class SupportPageViewController: UIViewController {
  
     func configurePrivacyPolicyButton() {
         view.addSubview(privacyPolicyButton)
-        setButtonColor(button: privacyPolicyButton)
+        softUI.setButtonColor(button: privacyPolicyButton)
         privacyPolicyButton.cornerRadius = 20
-        setButtonLabel(button: privacyPolicyButton, labelText: "プライバシーポリシー") // Button内にLabelを配置
+        softUI.setButtonLabel(button: privacyPolicyButton, labelText: "プライバシーポリシー") // Button内にLabelを配置
         privacyPolicyButton.addTarget(self, action: #selector(toPrivacyPolicyPage), for: .touchUpInside)
         setPrivacyPolicyButton()
     }
@@ -89,9 +93,9 @@ class SupportPageViewController: UIViewController {
     
     func configureReportButton() {
         view.addSubview(reportButton)
-        setButtonColor(button: reportButton)
+        softUI.setButtonColor(button: reportButton)
         reportButton.cornerRadius = 20
-        setButtonLabel(button: reportButton, labelText: "ユーザー通報") // Button内にLabelを配置
+        softUI.setButtonLabel(button: reportButton, labelText: "ユーザー通報") // Button内にLabelを配置
         reportButton.addTarget(self, action: #selector(toReportPage), for: .touchUpInside)
         setReportButton()
     }
@@ -100,32 +104,15 @@ class SupportPageViewController: UIViewController {
     
     func configureContactButton() {
         view.addSubview(contactButton)
-        setButtonColor(button: contactButton)
+        softUI.setButtonColor(button: contactButton)
         contactButton.cornerRadius = 20
-        setButtonLabel(button: contactButton, labelText: "お問い合わせ")  // Button内にLabelを配置
+        softUI.setButtonLabel(button: contactButton, labelText: "お問い合わせ")
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
         setContactButton()
         
     }
     
-    func setButtonColor(button: SoftUIView) {
-        button.mainColor = color.backColor.cgColor
-        button.darkShadowColor = color.darkShadow.cgColor
-        button.lightShadowColor = color.lightShadow.cgColor
-    }
-    
-    func setButtonLabel(button: SoftUIView, labelText: String) {
-        let label = UILabel()
-        label.text = labelText
-        button.setContentView(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
-    }
-    
-    
+
     func setAnimationView() {
         animationView.translatesAutoresizingMaskIntoConstraints = false
         let width = view.frame.size.width / 2
@@ -174,36 +161,27 @@ class SupportPageViewController: UIViewController {
     // 外部ブラウザに画面遷移
     @objc
     func toTOSPage() {
-        guard let url = NSURL(string: "https://site-2671642-9203-8355.mystrikingly.com") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.tosPageURL)
     }
     
+    // プライバシーポリシー
     @objc
     func toPrivacyPolicyPage() {
-        guard let url = NSURL(string: "https://site-2671642-386-3077.mystrikingly.com") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.privacyPolicyPageURL)
     }
     
+    // ユーザー通報ページ
     @objc
     func toReportPage() {
-        guard let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.reportPageURL)
     }
     
     // Twitterアカウントに遷移
     @objc
     func toContactPage() {
-        guard let url = NSURL(string: "https://twitter.com/LeefApp_") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.contactPageURL)
     }
+
     
     
 }
