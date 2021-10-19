@@ -9,10 +9,10 @@ import UIKit
 
 class TimelineTutorialViewController: UIViewController {
     
-    let tutorialImageView = UIImageView()
-    var color = MainColor()
+    private var tutorialImageView = UIImageView()
+    private var color = MainColor()
     
-    let closeButton = UIButton()
+    private var closeButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,10 +20,9 @@ class TimelineTutorialViewController: UIViewController {
         view.backgroundColor = color.backColor
         configureCloseButton()
         configureTutorialImageView()
-        
     }
     
-    func configureCloseButton() {
+    private func configureCloseButton() {
         view.addSubview(closeButton)
         closeButton.setTitle("✖️", for: .normal)
         closeButton.tintColor = color.darkGrayColor
@@ -31,25 +30,25 @@ class TimelineTutorialViewController: UIViewController {
         setCloseButton()
     }
     
-    func setCloseButton() {
+    private func setCloseButton() {
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
         closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
     }
     
     @objc
-    func close() {
+    private func close() {
         dismiss(animated: true, completion: nil)
     }
     
-    func configureTutorialImageView() {
+    private func configureTutorialImageView() {
         view.addSubview(tutorialImageView)
         tutorialImageView.contentMode = .scaleAspectFit
         tutorialImageView.image = #imageLiteral(resourceName: "TimelineTutorial")
         setTutorialImageView()
     }
     
-    func setTutorialImageView() {
+    private func setTutorialImageView() {
         tutorialImageView.translatesAutoresizingMaskIntoConstraints                                         = false
         tutorialImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive              = true
         tutorialImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive      = true
