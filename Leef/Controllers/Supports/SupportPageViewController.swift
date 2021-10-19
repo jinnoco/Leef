@@ -73,7 +73,7 @@ class SupportPageViewController: UIViewController {
         view.addSubview(tosButton)
         softUI.setButtonColor(button: tosButton)
         tosButton.cornerRadius = 20
-        softUI.setButtonLabel(button: tosButton, labelText: "利用規約") // Button内にLabelを配置
+        softUI.setButtonLabel(button: tosButton, labelText: "利用規約", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         setTOSButton()
     }
@@ -84,7 +84,7 @@ class SupportPageViewController: UIViewController {
         view.addSubview(privacyPolicyButton)
         softUI.setButtonColor(button: privacyPolicyButton)
         privacyPolicyButton.cornerRadius = 20
-        softUI.setButtonLabel(button: privacyPolicyButton, labelText: "プライバシーポリシー") // Button内にLabelを配置
+        softUI.setButtonLabel(button: privacyPolicyButton, labelText: "プライバシーポリシー", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         privacyPolicyButton.addTarget(self, action: #selector(toPrivacyPolicyPage), for: .touchUpInside)
         setPrivacyPolicyButton()
     }
@@ -95,7 +95,7 @@ class SupportPageViewController: UIViewController {
         view.addSubview(reportButton)
         softUI.setButtonColor(button: reportButton)
         reportButton.cornerRadius = 20
-        softUI.setButtonLabel(button: reportButton, labelText: "ユーザー通報") // Button内にLabelを配置
+        softUI.setButtonLabel(button: reportButton, labelText: "ユーザー通報", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         reportButton.addTarget(self, action: #selector(toReportPage), for: .touchUpInside)
         setReportButton()
     }
@@ -106,7 +106,7 @@ class SupportPageViewController: UIViewController {
         view.addSubview(contactButton)
         softUI.setButtonColor(button: contactButton)
         contactButton.cornerRadius = 20
-        softUI.setButtonLabel(button: contactButton, labelText: "お問い合わせ")
+        softUI.setButtonLabel(button: contactButton, labelText: "お問い合わせ", fontSize: 14, textColor: color.darkGrayColor)
         contactButton.addTarget(self, action: #selector(toContactPage), for: .touchUpInside)
         setContactButton()
         
