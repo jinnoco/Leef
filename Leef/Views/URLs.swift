@@ -17,9 +17,9 @@ struct URLs {
     // ユーザー報告
     let reportPageURL = "https://site-2671642-9832-2847.mystrikingly.com"
     
-    //LeefTwitterアカウント
+    // LeefTwitterアカウント
     let contactPageURL = "https://twitter.com/LeefApp_"
     
-    //Twitter
+    // Twitter
     let twitterURL = "https://twitter.com/?lang=ja"
 }
