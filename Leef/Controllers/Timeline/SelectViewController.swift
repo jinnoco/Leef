@@ -12,31 +12,25 @@ import ImageViewer_swift
 
 class SelectViewController: UIViewController {
     
-    
-    
-    
     // UI
-    var username = UILabel()
-    var profileImageView = UIImageView()
-    var profileImageString = String()
-    var imageView = UIImageView()
-    var postImageString = String()
-    var textView = UITextView()
-    var twitterButton = SoftUIView()
-    var shareButton = SoftUIView()
-    let alertButton = UIButton()
+    public var username = UILabel()
+    private var profileImageView = UIImageView()
+    private var imageView = UIImageView()
+    public var textView = UITextView()
+    private var twitterButton = SoftUIView()
+    private var shareButton = SoftUIView()
+    private let alertButton = UIButton()
     
     private var baseUI = BaseUI()
     private var softUI = ConfigureSoftUIButton()
     private var openURL = OpenURL()
     private var webURL = URLs()
     private var color = MainColor()
-    var userId = String()
     
-    
-    
-    // 投稿非表示用
-    var doc = String()
+    public var profileImageString = String()
+    public var postImageString = String()
+    public var userId = String()
+    public var doc = String() // 投稿非表示機能用
     
     
     override func loadView() {
@@ -67,7 +61,7 @@ class SelectViewController: UIViewController {
         self.navigationController?.hidesBarsOnSwipe = false // スワイプで非表示を無効
     }
     
-    func configureProfileImage() {
+    private func configureProfileImage() {
         view.addSubview(profileImageView)
         setProfileImage()
         profileImageView.clipsToBounds = true
@@ -76,7 +70,7 @@ class SelectViewController: UIViewController {
         profileImageView.loadImage(with: profileImageString)
     }
     
-    func configureUsename() {
+    private func configureUsename() {
         view.addSubview(username)
         setUsername()
         username.font = UIFont(name: baseUI.textFont, size: 18)
@@ -84,7 +78,7 @@ class SelectViewController: UIViewController {
     }
     
     
-    func configureAlertButton() {
+    private func configureAlertButton() {
         view.addSubview(alertButton)
         alertButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
         alertButton.tintColor = color.darkGrayColor
@@ -93,7 +87,7 @@ class SelectViewController: UIViewController {
     }
     
     
-    func setAlertButton() {
+    private func setAlertButton() {
         alertButton.translatesAutoresizingMaskIntoConstraints                                   = false
         alertButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive  = true
         alertButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive       = true
@@ -101,7 +95,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func configureImageView() {
+    private func configureImageView() {
         view.addSubview(imageView)
         setImageView()
         imageView.loadImage(with: postImageString)
@@ -111,7 +105,7 @@ class SelectViewController: UIViewController {
         imageView.setupImageViewer()
     }
     
-    func configureTextView() {
+    private func configureTextView() {
         view.addSubview(textView)
         setTextView()
         textView.isEditable = false
@@ -123,7 +117,7 @@ class SelectViewController: UIViewController {
         textView.backgroundColor = color.whiteColor
     }
     
-    func configureTwitterButton() {
+    private func configureTwitterButton() {
         view.addSubview(twitterButton)
         setTwitterButton()
         let buttonHeght = view.frame.size.height * 0.05
@@ -133,7 +127,7 @@ class SelectViewController: UIViewController {
         twitterButton.addTarget(self, action: #selector(toTwitterWebPage), for: .touchUpInside)
     }
     
-    func configureShareButton() {
+    private func configureShareButton() {
         view.addSubview(shareButton)
         setShareButton()
         shareButton.clipsToBounds = false
@@ -146,7 +140,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func setProfileImage() {
+    private func setProfileImage() {
         profileImageView.translatesAutoresizingMaskIntoConstraints                                      = false
         profileImageView.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -10).isActive  = true
         profileImageView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive            = true
@@ -157,7 +151,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func setUsername() {
+    private func setUsername() {
         username.translatesAutoresizingMaskIntoConstraints                                                  = false
         username.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive                 = true
         username.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 20).isActive  = true
@@ -165,7 +159,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func setImageView() {
+    private func setImageView() {
         let imageHeight = view.frame.size.height * 0.25
         let imageWidth = imageHeight * (4 / 3)
         let constant = view.frame.size.height * 0.04
@@ -177,7 +171,7 @@ class SelectViewController: UIViewController {
     }
     
     
-    func setTextView() {
+    private func setTextView() {
         textView.translatesAutoresizingMaskIntoConstraints                                          = false
         textView.widthAnchor.constraint(equalTo: twitterButton.widthAnchor).isActive                = true
         textView.heightAnchor.constraint(equalToConstant: 100).isActive                             = true
@@ -189,7 +183,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func setTwitterButton() {
+    private func setTwitterButton() {
         let buttonHeght = view.frame.size.height * 0.05
         let buttonWidth = buttonHeght * 6.25
         twitterButton.translatesAutoresizingMaskIntoConstraints                                         = false
@@ -201,7 +195,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func setShareButton() {
+    private func setShareButton() {
         let bottomConstant = view.frame.size.height * 0.20
         let buttonHeght = view.frame.size.height * 0.05
         let buttonWidth = buttonHeght * 6.25
@@ -214,7 +208,7 @@ class SelectViewController: UIViewController {
     }
     
     @objc
-    func tappedAlertButton() {
+    private func tappedAlertButton() {
         let report = UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { _ in self.toReportPage() })
         let block = UIAlertAction(title: "投稿をブロック", style: .destructive, handler: { [self] _ in self.showConfirmAlert() })
         let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
@@ -228,7 +222,7 @@ class SelectViewController: UIViewController {
     
     
     
-    func showConfirmAlert() {
+    private func showConfirmAlert() {
         let block = UIAlertAction(title: "ブロック", style: .destructive, handler: { [self] _ in self.removePost(postDocPass: doc) })
         let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
         
@@ -239,13 +233,13 @@ class SelectViewController: UIViewController {
     }
     
     // ブラウザのユーザー通報ページに遷移
-    func toReportPage() {
+    private func toReportPage() {
         openURL.toWebPage(url: webURL.reportPageURL)
     }
     
     
     // 投稿非表示(削除)処理
-    func removePost(postDocPass: String) {
+    private func removePost(postDocPass: String) {
         let database = Firestore.firestore()
         database.collection("post").document(doc).delete { error in
             if error != nil {
@@ -258,7 +252,7 @@ class SelectViewController: UIViewController {
     }
     
     @objc
-    func toTwitterWebPage() {
+    private func toTwitterWebPage() {
         // 外部ブラウザまたはTwitterアプリで投稿者のページを開く
         let userId = userId
         openURL.toWebPage(url: "https://twitter.com/\(userId)")
@@ -267,7 +261,7 @@ class SelectViewController: UIViewController {
     
     
     @objc
-    func share() {
+    private func share() {
         // ActivityViewControllerを表示しSNSにシェア
         guard let shareImage = imageView.image else { return } // 投稿された画像
         guard let text = textView.text else { return } // 投稿された文章
