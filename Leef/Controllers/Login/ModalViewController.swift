@@ -13,19 +13,24 @@ import NVActivityIndicatorView
 
 class ModalViewController: UIViewController {
     
-    let label = UILabel()
-    let logoImageView = UIImageView()
-    let loginButton = SoftUIView()
-    let signupButton = SoftUIView()
-    let cancelButton = SoftUIView()
+    // UI
+    private var label = UILabel()
+    private var logoImageView = UIImageView()
+    private var loginButton = SoftUIView()
+    private var signupButton = SoftUIView()
+    private var cancelButton = SoftUIView()
     
-    var color = MainColor()
+    private var color = MainColor()
+    private var indicater = Indicater()
+    private var twitterLogin = TwittreLogin()
+    private var baseUI = BaseUI()
+    private var softUI = ConfigureSoftUIButton()
+    private var webURL = URLs()
+    private var openURL = OpenURL()
+    private var provider: OAuthProvider?
     
-    let indicater = Indicater()
     
-    
-    var provider: OAuthProvider?
-    
+    // PresentModal遷移後にもviewWillAppearを適用させる処理
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -69,90 +74,57 @@ class ModalViewController: UIViewController {
         provider?.customParameters = ["lang": "ja"]
     }
     
-    func configureLabel() {
+   private func configureLabel() {
         view.addSubview(label)
         setLabel()
         label.text = "Twitterアカウント連携"
         label.textColor = color.darkGrayColor
-        label.font = UIFont(name: "AvenirNext-Bold", size: 17)
-        
+        label.font = UIFont(name: baseUI.textFont, size: 17)
     }
     
     
-    
-    
-    func configureCancelButton() {
+    private func configureCancelButton() {
         view.addSubview(cancelButton)
-        cancelButton.mainColor = color.backColor.cgColor
-        cancelButton.darkShadowColor = color.darkShadow.cgColor
-        cancelButton.lightShadowColor = color.lightShadow.cgColor
+        softUI.setButtonColor(button: cancelButton)
         cancelButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        cancelButton.setContentView(label)
-        label.text = "キャンセル"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: cancelButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        softUI.setButtonLabel(button: cancelButton, labelText: "キャンセル", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         setCancelButton()
     }
     
-    func configureSignupButton() {
+    private func configureSignupButton() {
         view.addSubview(signupButton)
-        signupButton.mainColor = color.backColor.cgColor
-        signupButton.darkShadowColor = color.darkShadow.cgColor
-        signupButton.lightShadowColor = color.lightShadow.cgColor
+        softUI.setButtonColor(button: signupButton)
         signupButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        signupButton.setContentView(label)
-        label.text = "アカウントを作成"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: signupButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: signupButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.darkGrayColor
+        softUI.setButtonLabel(button: signupButton, labelText: "アカウントを作成", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         signupButton.addTarget(self, action: #selector(toSignupPage), for: .touchUpInside)
         setSignupButton()
     }
     
-    func configureLoginButton() {
+    private func configureLoginButton() {
         view.addSubview(loginButton)
-        loginButton.mainColor = color.backColor.cgColor
-        loginButton.darkShadowColor = color.darkShadow.cgColor
-        loginButton.lightShadowColor = color.lightShadow.cgColor
+        softUI.setButtonColor(button: loginButton)
         loginButton.cornerRadius = 20
-        // Button内にLabelを配置
-        let label = UILabel()
-        loginButton.setContentView(label)
-        label.text = "Twitterにログイン"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 14)
-        label.textColor = color.blueColor
+        softUI.setButtonLabel(button: loginButton, labelText: "Twitterにログイン", fontSize: 14, textColor: color.blueColor) // Button内にLabelを配置
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         setLoginButton()
     }
     
-    func configureLogoImageView() {
+    private func configureLogoImageView() {
         view.addSubview(logoImageView)
         setLogoimageView()
         logoImageView.image = #imageLiteral(resourceName: "LeefAppIcon")
         logoImageView.contentMode = .scaleAspectFit
-        
+
     }
     
-    func setLabel() {
+    private func setLabel() {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
         label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    func setCancelButton() {
+    private func setCancelButton() {
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80).isActive = true
         cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -160,7 +132,7 @@ class ModalViewController: UIViewController {
         cancelButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
     
-    func setSignupButton() {
+    private func setSignupButton() {
         signupButton.translatesAutoresizingMaskIntoConstraints = false
         signupButton.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -20).isActive = true
         signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -168,7 +140,7 @@ class ModalViewController: UIViewController {
         signupButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
     
-    func setLoginButton() {
+    private func setLoginButton() {
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.bottomAnchor.constraint(equalTo: signupButton.topAnchor, constant: -20).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -176,7 +148,7 @@ class ModalViewController: UIViewController {
         loginButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
     
-    func setLogoimageView() {
+    private func setLogoimageView() {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         logoImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
@@ -185,56 +157,18 @@ class ModalViewController: UIViewController {
     }
     
     @objc
-    func login() {
-        
-        self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
-        provider?.customParameters = ["force_login": "true"]
-        provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
-            
-            if error != nil {
-                print("ログイン処理エラー: \(error.debugDescription)")
-                return
-            }
-            
-            indicater.startIndicater()
-            
-            if let credential = credential {
-                Auth.auth().signIn(with: credential) { (result, error) in
-                    
-                    if error != nil {
-                        print("ログイン処理エラー: \(error.debugDescription)")
-                        return
-                    }
-                    // @usernameを取得しUserDefaultsに保存
-                    guard let userInfo = result?.additionalUserInfo?.profile else { return }
-                    let userId = userInfo["screen_name"] as? String
-                    print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
-                    UserDefaults.standard.setValue(userId, forKey: "userId")
-                    
-                    indicater.stopIndicater()
-                    
-                    dismiss(animated: true, completion: nil)
-                    
-                }
-            }
-            
-        })
-        
-        
-        
+    private func login() {
+        twitterLogin.login()
     }
     
     @objc
-    func toSignupPage() {
+    private func toSignupPage() {
         // Twiiterアカウント作成ページに遷移
-        guard let url = NSURL(string: "https://twitter.com/?lang=ja") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.twitterURL)
     }
     
     @objc
-    func cancel() {
+    private func cancel() {
         dismiss(animated: true, completion: nil)
     }
     
