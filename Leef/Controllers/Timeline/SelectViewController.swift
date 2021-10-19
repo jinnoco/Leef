@@ -123,7 +123,7 @@ class SelectViewController: UIViewController {
         let buttonHeght = view.frame.size.height * 0.05
         twitterButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: twitterButton)
-        softUI.setButtonLabel(button: twitterButton, labelText: "問い合わせる", fontSize: 13) // Button内にLabelを配置
+        softUI.setButtonLabel(button: twitterButton, labelText: "問い合わせる", fontSize: 13, textColor: color.blueColor) // Button内にLabelを配置
         twitterButton.addTarget(self, action: #selector(toTwitterWebPage), for: .touchUpInside)
     }
     
@@ -134,7 +134,7 @@ class SelectViewController: UIViewController {
         let buttonHeght = view.frame.size.height * 0.05
         shareButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: shareButton)
-        softUI.setButtonLabel(button: shareButton, labelText: "シェアする", fontSize: 13) // Button内にLabelを配置
+        softUI.setButtonLabel(button: shareButton, labelText: "シェアする", fontSize: 13, textColor: color.darkGrayColor) // Button内にLabelを配置
         shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
     }
     
