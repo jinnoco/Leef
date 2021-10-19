@@ -14,7 +14,7 @@ class PostPageViewController: UIViewController {
     
     // UI
     private var postImageView = UIImageView()
-    private var postImage = UIImage()
+    public var postImage = UIImage()
     private var topLabel = UILabel()
     private var postButton = SoftUIView()
     private var cancelButton = SoftUIView()
@@ -107,7 +107,7 @@ class PostPageViewController: UIViewController {
         let buttonHeght = view.frame.size.height * 0.05
         cancelButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: cancelButton)
-        softUI.setButtonLabel(button: cancelButton, labelText: "キャンセル", fontSize: 13) // Button内にLabelを表示
+        softUI.setButtonLabel(button: cancelButton, labelText: "キャンセル", fontSize: 13, textColor: color.darkGrayColor) // Button内にLabelを表示
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
     }
     
@@ -117,7 +117,7 @@ class PostPageViewController: UIViewController {
         let buttonHeght = view.frame.size.height * 0.05
         postButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: postButton)
-        softUI.setButtonLabel(button: postButton, labelText: "投稿", fontSize: 13)
+        softUI.setButtonLabel(button: postButton, labelText: "投稿", fontSize: 13, textColor: color.darkGrayColor)
         postButton.addTarget(self, action: #selector(send), for: .touchUpInside)
         
     }
