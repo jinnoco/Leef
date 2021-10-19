@@ -13,8 +13,7 @@ import ImageViewer_swift
 class SelectViewController: UIViewController {
     
     
-   private var color = MainColor()
-    var userId = String()
+    
     
     // UI
     var username = UILabel()
@@ -25,14 +24,18 @@ class SelectViewController: UIViewController {
     var textView = UITextView()
     var twitterButton = SoftUIView()
     var shareButton = SoftUIView()
+    let alertButton = UIButton()
     
     private var baseUI = BaseUI()
     private var softUI = ConfigureSoftUIButton()
     private var openURL = OpenURL()
     private var webURL = URLs()
+    private var color = MainColor()
+    var userId = String()
     
-    let alertButton = UIButton()
     
+    
+    // 投稿非表示用
     var doc = String()
     
     
@@ -45,7 +48,6 @@ class SelectViewController: UIViewController {
         configureImageView()
         configureProfileImage()
         configureUsename()
-        
         configureAlertButton()
         
     }
@@ -164,7 +166,6 @@ class SelectViewController: UIViewController {
     
     
     func setImageView() {
-        
         let imageHeight = view.frame.size.height * 0.25
         let imageWidth = imageHeight * (4 / 3)
         let constant = view.frame.size.height * 0.04
@@ -214,27 +215,26 @@ class SelectViewController: UIViewController {
     
     @objc
     func tappedAlertButton() {
-        let alertController = UIAlertController(title: "不適切なコンテンツですか？", message: "", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { _ in
-            self.toReportPage()
-        }))
-        alertController.addAction(UIAlertAction(title: "投稿をブロック", style: .destructive, handler: { [self] _ in
-            self.showConfirmAlert()
-        }))
-        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        let report = UIAlertAction(title: "ユーザー通報ページへ", style: .destructive, handler: { _ in self.toReportPage() })
+        let block = UIAlertAction(title: "投稿をブロック", style: .destructive, handler: { [self] _ in self.showConfirmAlert() })
+        let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
         
+        let alertController = UIAlertController(title: "不適切なコンテンツですか？", message: "", preferredStyle: .alert)
+        alertController.addAction(report)
+        alertController.addAction(block)
+        alertController.addAction(cancel)
         present(alertController, animated: true, completion: nil)
     }
     
     
     
     func showConfirmAlert() {
-        let alertController = UIAlertController(title: "", message: "投稿をブロックしてもよろしいですか？", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "ブロック", style: .destructive, handler: { [self] _ in
-            self.removePost(postDocPass: doc)
-        }))
-        alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        let block = UIAlertAction(title: "ブロック", style: .destructive, handler: { [self] _ in self.removePost(postDocPass: doc) })
+        let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
         
+        let alertController = UIAlertController(title: "", message: "投稿をブロックしてもよろしいですか？", preferredStyle: .alert)
+        alertController.addAction(block)
+        alertController.addAction(cancel)
         present(alertController, animated: true, completion: nil)
     }
     
@@ -269,10 +269,10 @@ class SelectViewController: UIViewController {
     @objc
     func share() {
         // ActivityViewControllerを表示しSNSにシェア
-        let shareImage = imageView.image // 投稿された画像
-        let text = textView.text // 投稿された文章
+        guard let shareImage = imageView.image else { return } // 投稿された画像
+        guard let text = textView.text else { return } // 投稿された文章
         let username = userId // 投稿者のTwitterアカウント
-        let shareTextWithUsername = "\(text ?? "")\n@\(username)"
+        let shareTextWithUsername = "\(text)\n@\(username)"
         let activityItems = [shareImage as Any, shareTextWithUsername] as [Any]
         
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
