@@ -27,6 +27,9 @@ class SelectViewController: UIViewController {
     var shareButton = SoftUIView()
     
     private var baseUI = BaseUI()
+    private var softUI = ConfigureSoftUIButton()
+    private var openURL = OpenURL()
+    private var webURL = URLs()
     
     let alertButton = UIButton()
     
@@ -92,7 +95,6 @@ class SelectViewController: UIViewController {
         alertButton.translatesAutoresizingMaskIntoConstraints                                   = false
         alertButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive  = true
         alertButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive       = true
-        
     }
     
     
@@ -124,43 +126,20 @@ class SelectViewController: UIViewController {
         setTwitterButton()
         let buttonHeght = view.frame.size.height * 0.05
         twitterButton.cornerRadius = buttonHeght / 2
-        twitterButton.mainColor = color.backColor.cgColor
-        twitterButton.darkShadowColor = color.darkShadow.cgColor
-        twitterButton.lightShadowColor = color.lightShadow.cgColor
+        softUI.setButtonColor(button: twitterButton)
+        softUI.setButtonLabel(button: twitterButton, labelText: "問い合わせる", fontSize: 13) // Button内にLabelを配置
         twitterButton.addTarget(self, action: #selector(toTwitterWebPage), for: .touchUpInside)
-        
-        // Button内にLabelを配置
-        let label = UILabel()
-        twitterButton.setContentView(label)
-        label.text = "問い合わせる"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: twitterButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: twitterButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: baseUI.textFont, size: 13)
-        label.textColor = color.blueColor
     }
     
     func configureShareButton() {
-        
         view.addSubview(shareButton)
         setShareButton()
         shareButton.clipsToBounds = false
         let buttonHeght = view.frame.size.height * 0.05
         shareButton.cornerRadius = buttonHeght / 2
-        shareButton.mainColor = color.backColor.cgColor
-        shareButton.darkShadowColor = color.darkShadow.cgColor
-        shareButton.lightShadowColor = color.lightShadow.cgColor
+        softUI.setButtonColor(button: shareButton)
+        softUI.setButtonLabel(button: shareButton, labelText: "シェアする", fontSize: 13) // Button内にLabelを配置
         shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
-        
-        // Button内にLabelを配置
-        let label = UILabel()
-        shareButton.setContentView(label)
-        label.text = "シェアする"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: shareButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: shareButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: baseUI.textFont, size: 13)
-        label.textColor = color.darkGrayColor
     }
     
     
@@ -261,10 +240,7 @@ class SelectViewController: UIViewController {
     
     // ブラウザのユーザー通報ページに遷移
     func toReportPage() {
-        guard let url = NSURL(string: "https://site-2671642-9832-2847.mystrikingly.com/") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
+        openURL.toWebPage(url: webURL.reportPageURL)
     }
     
     
@@ -285,11 +261,7 @@ class SelectViewController: UIViewController {
     func toTwitterWebPage() {
         // 外部ブラウザまたはTwitterアプリで投稿者のページを開く
         let userId = userId
-        guard let url = NSURL(string: "https://twitter.com/\(userId)") else { return }
-        if UIApplication.shared.canOpenURL(url as URL) {
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
-        
+        openURL.toWebPage(url: "https://twitter.com/\(userId)")
     }
     
     
