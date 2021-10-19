@@ -55,7 +55,7 @@ class TwittreLogin: UIViewController {
     }
     
     
-    func logout() {
+     public func logout() {
         let firebaseAuth = Auth.auth()
         self.navigationController?.popViewController(animated: true)
         do {

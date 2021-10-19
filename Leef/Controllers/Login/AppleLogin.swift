@@ -11,7 +11,7 @@ import CryptoKit
 import Firebase
 
 
-fileprivate var currentNonce: String?
+private var currentNonce: String?
 
 class AppleLogin {
     
