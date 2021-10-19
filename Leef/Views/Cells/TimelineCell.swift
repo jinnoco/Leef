@@ -8,28 +8,23 @@
 import UIKit
 import Firebase
 import Nuke
-import SoftUIView
 
 class TimelineCell: UITableViewCell {
     
-    let background = UIView()
-    var username = UILabel()
-    var profileImage = UIImageView()
-    var timelineImageView = UIImageView()
-    var dateLabel = UILabel()
+    private var background = UIView()
+    public var username = UILabel()
+    public var profileImage = UIImageView()
+    public var timelineImageView = UIImageView()
+    public var dateLabel = UILabel()
     
-    let sendDBModel = SendDBModel()
-    let loadDBModel = LoadDBModel()
-    let color = MainColor()
-    let user = Auth.auth().currentUser
-    let timeline = TimelineViewController()
+    private var color = MainColor()
+    private var baseUI = BaseUI()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         // Cell setup
-
         addSubview(background)
         addSubview(timelineImageView)
         addSubview(username)
@@ -100,7 +95,7 @@ class TimelineCell: UITableViewCell {
     
     func configureUsername() {
         setUsername()
-        username.font = UIFont(name: "AvenirNext-Bold", size: 15)
+        username.font = UIFont(name: baseUI.textFont, size: 15)
         username.textColor = color.darkGrayColor
     }
 

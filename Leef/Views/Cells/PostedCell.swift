@@ -11,12 +11,12 @@ import Nuke
 
 class PostedCell: UITableViewCell {
     
-    var color = MainColor()
+    // UI
+    public var postedImageView = UIImageView()
+    private var trashButton = UIButton()
+    
+    private var color = MainColor()
     weak var delegate: UIViewController?
-    
-    var postedImageView = UIImageView()
-    var trashButton = UIButton()
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
