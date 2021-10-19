@@ -13,28 +13,30 @@ import Lottie
 import NVActivityIndicatorView
 
 class LoginViewController: UIViewController {
-        
-    // UI
-    let topLabel = UILabel()
-    var imageView = UIImageView()
-    let twitterLoginButton = UIButton()
-    let appleLoginButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
-    let tosButton = SoftUIView() // tos = terms of service: 利用規約
-    let withoutRegisterButton = UIButton()
-    let toslabel = UILabel()
-    let consentLabel = UILabel()
-    var consentButton = UIButton()
     
-    var indicater = Indicater()
-    var color = MainColor()
-    var provider: OAuthProvider?
-    var loadDBModel = LoadDBModel()
-    var twiiterLogin = TwittreLogin()
-    var appleLogin = AppleLogin()
-    var openURL: OpenURL!
+    // UI
+    private var topLabel = UILabel()
+    private var imageView = UIImageView()
+    private var twitterLoginButton = UIButton()
+    private var appleLoginButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
+    private var tosButton = SoftUIView() // tos = terms of service: 利用規約
+    private var withoutRegisterButton = UIButton()
+    private var toslabel = UILabel()
+    private var consentLabel = UILabel()
+    private var consentButton = UIButton()
+    
+    private var indicater = Indicater()
+    private var color = MainColor()
+    private var provider: OAuthProvider?
+    private var twiiterLogin = TwittreLogin()
+    private var appleLogin = AppleLogin()
+    private var openURL = OpenURL()
+    private var softUI = ConfigureSoftUIButton()
+    private var webURL = URLs()
+    private var baseUI = BaseUI()
     
     // 利用規約同意テェック判定
-    var checked = false
+    private var checked = false
     
     override func loadView() {
         super.loadView()
@@ -71,16 +73,16 @@ class LoginViewController: UIViewController {
     }
     
     
-    func configureLoginTextLabel() {
+    private func configureLoginTextLabel() {
         view.addSubview(topLabel)
         setLoginTextLabel()
         topLabel.text = "ログインまたはユーザー登録"
         topLabel.textColor = color.darkGrayColor
-        topLabel.font = UIFont(name: "AvenirNext-Bold", size: 17)
+        topLabel.font = UIFont(name: baseUI.textFont, size: 17)
     }
     
     
-    func configureImageView() {
+    private func configureImageView() {
         view.addSubview(imageView)
         setImageView()
         imageView.image = #imageLiteral(resourceName: "LeefAppIcon")
@@ -89,29 +91,18 @@ class LoginViewController: UIViewController {
     
     
     
-    func configureTOSButton() {
+    private func configureTOSButton() {
         view.addSubview(tosButton)
         setTOSButton()
-        tosButton.mainColor = color.backColor.cgColor
-        tosButton.darkShadowColor = color.darkShadow.cgColor
-        tosButton.lightShadowColor = color.lightShadow.cgColor
         tosButton.cornerRadius = 20
-        
-        // Button内にLabelを配置
-        let label = UILabel()
-        tosButton.setContentView(label)
-        label.text = "利用規約"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: tosButton.centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: tosButton.centerYAnchor).isActive = true
-        label.font = UIFont(name: "AvenirNext-Bold", size: 13)
-        label.textColor = color.darkGrayColor
+        softUI.setButtonColor(button: tosButton)
+        softUI.setButtonLabel(button: tosButton, labelText: "利用規約", fontSize: 13) // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
         
     }
     
     
-    func configureAppleLoginButton() {
+    private func configureAppleLoginButton() {
         if #available(iOS 13.0, *) {
             view.addSubview(appleLoginButton)
             setAppleLoginButton()
@@ -122,44 +113,41 @@ class LoginViewController: UIViewController {
     
     
     
-    func configureTwitterLoginButton() {
+    private func configureTwitterLoginButton() {
         view.addSubview(twitterLoginButton)
         setLoginButton()
         twitterLoginButton.layer.cornerRadius = 20
         twitterLoginButton.setTitle("Twitterでログイン", for: .normal)
-        twitterLoginButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        twitterLoginButton.titleLabel?.font = UIFont(name: baseUI.textFont, size: 13)
         twitterLoginButton.backgroundColor = color.darkGrayColor
         twitterLoginButton.tintColor = .white
         twitterLoginButton.addTarget(self, action: #selector(twiiterLogin.login), for: .touchUpInside)
-        
     }
     
     
-    func configureConsentLabel() {
+    private func configureConsentLabel() {
         view.addSubview(consentLabel)
         setConsentLabel()
         consentLabel.text = "利用規約に同意します"
         consentLabel.textColor = color.darkGrayColor
-        consentLabel.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        consentLabel.font = UIFont(name: baseUI.textFont, size: 13)
     }
     
     
-    
-    func configurecConsentButton() {
+    private func configurecConsentButton() {
         view.addSubview(consentButton)
         setConsentButton()
         consentButton.setImage(UIImage(systemName: "square"), for: .normal)
         consentButton.tintColor = color.darkGrayColor
         consentButton.addTarget(self, action: #selector(tappedConsentButton), for: .touchUpInside)
-        
     }
     
     
-    func configureWithOutRegisterButton() {
+    private func configureWithOutRegisterButton() {
         view.addSubview(withoutRegisterButton)
         withoutRegisterButton.layer.cornerRadius = 20
         withoutRegisterButton.setTitle("ユーザー登録せずにはじめる", for: .normal)
-        withoutRegisterButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        withoutRegisterButton.titleLabel?.font = UIFont(name: baseUI.textFont, size: 13)
         withoutRegisterButton.backgroundColor = color.darkGrayColor
         withoutRegisterButton.tintColor = .white
         withoutRegisterButton.addTarget(self, action: #selector(pushPage), for: .touchUpInside)
@@ -168,13 +156,14 @@ class LoginViewController: UIViewController {
     
     
     
-    func setLoginTextLabel() {
+    private func setLoginTextLabel() {
         topLabel.translatesAutoresizingMaskIntoConstraints                                = false
         topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive           = true
         topLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 75).isActive     = true
     }
     
-    func setImageView() {
+    
+    private func setImageView() {
         let height = view.frame.size.height / 5
         let width = height
         imageView.translatesAutoresizingMaskIntoConstraints                                             = false
@@ -185,7 +174,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    func setTOSButton() {
+    private func setTOSButton() {
         tosButton.translatesAutoresizingMaskIntoConstraints                                          = false
         tosButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                     = true
         tosButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 70).isActive       = true
@@ -193,19 +182,22 @@ class LoginViewController: UIViewController {
         tosButton.heightAnchor.constraint(equalToConstant: 40).isActive                              = true
     }
     
-    func setConsentButton() {
+    
+    private func setConsentButton() {
         consentButton.translatesAutoresizingMaskIntoConstraints                                                 = false
         consentButton.centerYAnchor.constraint(equalTo: consentLabel.centerYAnchor).isActive                    = true
         consentButton.leadingAnchor.constraint(equalTo: consentLabel.trailingAnchor, constant: 20).isActive     = true
     }
     
-    func setConsentLabel() {
+    
+    private func setConsentLabel() {
         consentLabel.translatesAutoresizingMaskIntoConstraints                                      = false
         consentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                 = true
         consentLabel.topAnchor.constraint(equalTo: tosButton.bottomAnchor, constant: 20).isActive   = true
     }
     
-    func setAppleLoginButton() {
+    
+    private func setAppleLoginButton() {
         appleLoginButton.translatesAutoresizingMaskIntoConstraints                                          = false
         appleLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                     = true
         appleLoginButton.topAnchor.constraint(equalTo: consentLabel.bottomAnchor, constant: 25).isActive    = true
@@ -215,7 +207,7 @@ class LoginViewController: UIViewController {
     
     
     
-    func setLoginButton() {
+    private func setLoginButton() {
         twitterLoginButton.translatesAutoresizingMaskIntoConstraints                                            = false
         twitterLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                       = true
         twitterLoginButton.topAnchor.constraint(equalTo: appleLoginButton.bottomAnchor, constant: 25).isActive  = true
@@ -224,7 +216,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    func setWithOutRegisterButton() {
+    private func setWithOutRegisterButton() {
         withoutRegisterButton.translatesAutoresizingMaskIntoConstraints                                                 = false
         withoutRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                            = true
         withoutRegisterButton.topAnchor.constraint(equalTo: twitterLoginButton.bottomAnchor, constant: 25).isActive     = true
@@ -234,7 +226,7 @@ class LoginViewController: UIViewController {
     
     
     @objc
-    func tappedConsentButton() {
+    private func tappedConsentButton() {
         switch checked {
         case false:
             // テェック完了画像に変更
@@ -271,23 +263,22 @@ class LoginViewController: UIViewController {
     
     
     @objc
-    func twitterSignup() {
+    private func twitterSignup() {
         // Twiiterアカウント作成ページに遷移
-        openURL.toWebPage(url: "https://twitter.com/?lang=ja")
-      
+        openURL.toWebPage(url: webURL.twitterURL)
     }
     
     
     
     @objc
-    func toTOSPage() {
+    private func toTOSPage() {
         let termsOfServiceViewController = TermsOfServiceViewController()
         present(termsOfServiceViewController, animated: true, completion: nil)
     }
     
     
     @objc
-    func pushPage() {
+    private func pushPage() {
         let mainTabBarController = MainTabBarController()
         self.navigationController?.pushViewController(mainTabBarController, animated: true)
     }
