@@ -17,6 +17,8 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
     
     var color = MainColor()
     
+    private var webURL = URLs()
+    
     override func loadView() {
         super.loadView()
         
@@ -51,7 +53,7 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
     }
     
     func loadURL() {
-        guard let url = URL(string: "https://site-2671642-9203-8355.mystrikingly.com/") else { return } // 利用規約ページURL
+        guard let url = URL(string: webURL.tosPageURL) else { return } // 利用規約ページURL
         let request = URLRequest(url: url)
         webView.load(request)
     }
