@@ -13,17 +13,17 @@ import SoftUIView
 
 class SupportPageViewController: UIViewController {
     
-    var color = MainColor()
+   
     
     // UI
-    var animationView = AnimationView()
-    let tosButton = SoftUIView() // 利用規約
-    let privacyPolicyButton = SoftUIView() // プライバシーポリシー
-    let reportButton = SoftUIView() // 通報ページ
-    let contactButton = SoftUIView() // お問い合わせ
+    private var animationView = AnimationView()
+    private var tosButton = SoftUIView() // 利用規約
+    private var privacyPolicyButton = SoftUIView() // プライバシーポリシー
+    private var reportButton = SoftUIView() // 通報ページ
+    private var contactButton = SoftUIView() // お問い合わせ
     
-    var openURL = OpenURL()
-    
+    private var openURL = OpenURL()
+    private var color = MainColor()
     private var baseUI = BaseUI()
     private var webURL = URLs()
     private var softUI = ConfigureSoftUIButton()
@@ -58,7 +58,7 @@ class SupportPageViewController: UIViewController {
     }
     
     
-    func configureAnimation() {
+    private func configureAnimation() {
         animationView = AnimationView(name: "41384-customer-support-animation")
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
@@ -69,7 +69,7 @@ class SupportPageViewController: UIViewController {
     }
     
     
-    func configureTOSButton() {
+    private func configureTOSButton() {
         view.addSubview(tosButton)
         softUI.setButtonColor(button: tosButton)
         tosButton.cornerRadius = 20
@@ -79,8 +79,8 @@ class SupportPageViewController: UIViewController {
     }
     
     
- 
-    func configurePrivacyPolicyButton() {
+    
+    private func configurePrivacyPolicyButton() {
         view.addSubview(privacyPolicyButton)
         softUI.setButtonColor(button: privacyPolicyButton)
         privacyPolicyButton.cornerRadius = 20
@@ -89,9 +89,9 @@ class SupportPageViewController: UIViewController {
         setPrivacyPolicyButton()
     }
     
-   
     
-    func configureReportButton() {
+    
+    private func configureReportButton() {
         view.addSubview(reportButton)
         softUI.setButtonColor(button: reportButton)
         reportButton.cornerRadius = 20
@@ -102,7 +102,7 @@ class SupportPageViewController: UIViewController {
     
     
     
-    func configureContactButton() {
+    private func configureContactButton() {
         view.addSubview(contactButton)
         softUI.setButtonColor(button: contactButton)
         contactButton.cornerRadius = 20
@@ -112,8 +112,8 @@ class SupportPageViewController: UIViewController {
         
     }
     
-
-    func setAnimationView() {
+    
+    private func setAnimationView() {
         animationView.translatesAutoresizingMaskIntoConstraints = false
         let width = view.frame.size.width / 2
         let height = view.frame.size.height / 3
@@ -124,7 +124,7 @@ class SupportPageViewController: UIViewController {
         
     }
     
-    func setTOSButton() {
+    private func setTOSButton() {
         tosButton.translatesAutoresizingMaskIntoConstraints                                         = false
         tosButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
         tosButton.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 20).isActive  = true
@@ -132,7 +132,7 @@ class SupportPageViewController: UIViewController {
         tosButton.heightAnchor.constraint(equalToConstant: 40).isActive                             = true
     }
     
-    func setPrivacyPolicyButton() {
+    private func setPrivacyPolicyButton() {
         privacyPolicyButton.translatesAutoresizingMaskIntoConstraints                                       = false
         privacyPolicyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                  = true
         privacyPolicyButton.topAnchor.constraint(equalTo: tosButton.bottomAnchor, constant: 20).isActive    = true
@@ -140,7 +140,7 @@ class SupportPageViewController: UIViewController {
         privacyPolicyButton.heightAnchor.constraint(equalToConstant: 40).isActive                           = true
     }
     
-    func setReportButton() {
+    private func setReportButton() {
         reportButton.translatesAutoresizingMaskIntoConstraints                                                  = false
         reportButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                             = true
         reportButton.topAnchor.constraint(equalTo: privacyPolicyButton.bottomAnchor, constant: 20).isActive     = true
@@ -148,7 +148,7 @@ class SupportPageViewController: UIViewController {
         reportButton.heightAnchor.constraint(equalToConstant: 40).isActive                                      = true
     }
     
-    func setContactButton() {
+    private func setContactButton() {
         contactButton.translatesAutoresizingMaskIntoConstraints                                         = false
         contactButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                    = true
         contactButton.topAnchor.constraint(equalTo: reportButton.bottomAnchor, constant: 20).isActive   = true
@@ -160,28 +160,28 @@ class SupportPageViewController: UIViewController {
     
     // 外部ブラウザに画面遷移
     @objc
-    func toTOSPage() {
+    private func toTOSPage() {
         openURL.toWebPage(url: webURL.tosPageURL)
     }
     
     // プライバシーポリシー
     @objc
-    func toPrivacyPolicyPage() {
+    private func toPrivacyPolicyPage() {
         openURL.toWebPage(url: webURL.privacyPolicyPageURL)
     }
     
     // ユーザー通報ページ
     @objc
-    func toReportPage() {
+    private func toReportPage() {
         openURL.toWebPage(url: webURL.reportPageURL)
     }
     
     // Twitterアカウントに遷移
     @objc
-    func toContactPage() {
+    private func toContactPage() {
         openURL.toWebPage(url: webURL.contactPageURL)
     }
-
+    
     
     
 }
