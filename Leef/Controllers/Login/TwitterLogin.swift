@@ -2,76 +2,53 @@
 //  TwitterLogin.swift
 //  Leef
 //
-//  Created by J on 2021/10/18.
+//  Created by J on 2021/10/26.
 //
 
 import UIKit
 import Firebase
 
-class TwittreLogin: UIViewController {
+protocol loginDelegate: AnyObject {
+    func checkLogin(check: Int)
+}
+class TwitterLogin {
     
     var provider: OAuthProvider?
-    let indicater = Indicater()
-    
-    var loadDBModel = LoadDBModel()
-    var myPageViewController = MyPageViewController()
+    weak var loginDelegate: loginDelegate?
     
     @objc
     func login() {
+        print("ログイン処理開始")
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["force_login": "true"]
-        provider?.getCredentialWith(nil, completion: { [self] (credential, error) in
+        provider?.getCredentialWith(nil, completion: { (credential, error) in
             
             if error != nil {
                 print("ログイン処理エラー: \(error.debugDescription)")
                 return
             }
             
-            indicater.startIndicater()
+            self.loginDelegate?.checkLogin(check: 1)
             
-            if let credential = credential {
-                Auth.auth().signIn(with: credential) { (result, error) in
-                    
-                    if error != nil {
-                        print("ログイン処理エラー: \(error.debugDescription)")
-                        return
-                    }
-                    // @usernameを取得しUserDefaultsに保存
-                    guard let userInfo = result?.additionalUserInfo?.profile else { return }
-                    if let userId = userInfo["screen_name"] as? String {
-                        print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
-                        UserDefaults.standard.setValue(userId, forKey: "userId")
-                    }
-                    
-                    indicater.stopIndicater()
-                    
-                    let mainTabBarController = MainTabBarController()
-                    navigationController?.pushViewController(mainTabBarController, animated: true)
-                    
+            guard let credential = credential else { return }
+            Auth.auth().signIn(with: credential) { (result, error) in
+                
+                if error != nil {
+                    print("ログイン処理エラー: \(error.debugDescription)")
+                    return
                 }
+                // @usernameを取得しUserDefaultsに保存
+                guard let userInfo = result?.additionalUserInfo?.profile else { return }
+                guard let userId = userInfo["screen_name"] as? String else { return }
+                print("result?.additionalUserInfo?.providerID -> Twitter @username: \(userId)")
+                UserDefaults.standard.setValue(userId, forKey: "userId")
+                
+                self.loginDelegate?.checkLogin(check: 2)
+                
             }
+            
         })
     }
-    
-    
-     public func logout() {
-        let firebaseAuth = Auth.auth()
-        self.navigationController?.popViewController(animated: true)
-        do {
-            if loadDBModel.myDataSet.isEmpty == false {
-              
-                myPageViewController.setLogoutTableView()
-            }
-            try firebaseAuth.signOut()
-            print("ログアウトしました")
-            
-            myPageViewController.setLogoutView()
-            
-        } catch let error as NSError {
-            print("ログアウトエラー: \(error.debugDescription)")
-        }
-    }
-
     
 }
