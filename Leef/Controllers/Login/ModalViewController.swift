@@ -10,7 +10,7 @@ import SoftUIView
 import Firebase
 
 
-class ModalViewController: UIViewController {
+class ModalViewController: UIViewController, loginDelegate {
     
     // UI
     private var label = UILabel()
@@ -20,8 +20,8 @@ class ModalViewController: UIViewController {
     private var cancelButton = SoftUIView()
     
     private var color = MainColor()
-    private var indicater = Indicater()
-    private var twitterLogin = TwittreLogin()
+    public var indicater = Indicater()
+    var twitterLogin = TwitterLogin()
     private var baseUI = BaseUI()
     private var softUI = ConfigureSoftUIButton()
     private var webURL = URLs()
@@ -60,6 +60,8 @@ class ModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        twitterLogin.loginDelegate = self
+        
         view.backgroundColor = color.backColor
         configureLabel()
         configureCancelButton()
@@ -73,12 +75,12 @@ class ModalViewController: UIViewController {
         provider?.customParameters = ["lang": "ja"]
     }
     
-   private func configureLabel() {
+    private func configureLabel() {
         view.addSubview(label)
         setLabel()
         label.text = "Twitterアカウント連携"
         label.textColor = color.darkGrayColor
-        label.font = UIFont(name: baseUI.textFont, size: 17)
+        label.font = baseUI.defaultFont(fontSise: 17)
     }
     
     
@@ -105,7 +107,7 @@ class ModalViewController: UIViewController {
         softUI.setButtonColor(button: loginButton)
         loginButton.cornerRadius = 20
         softUI.setButtonLabel(button: loginButton, labelText: "Twitterにログイン", fontSize: 14, textColor: color.blueColor) // Button内にLabelを配置
-        loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
+        loginButton.addTarget(twitterLogin, action: #selector(twitterLogin.login), for: .touchUpInside)
         setLoginButton()
     }
     
@@ -114,7 +116,7 @@ class ModalViewController: UIViewController {
         setLogoimageView()
         logoImageView.image = #imageLiteral(resourceName: "LeefAppIcon")
         logoImageView.contentMode = .scaleAspectFit
-
+        
     }
     
     private func setLabel() {
@@ -155,10 +157,17 @@ class ModalViewController: UIViewController {
         logoImageView.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -100).isActive = true
     }
     
-    @objc
-    private func login() {
-        twitterLogin.login()
+    func checkLogin(check: Int) {
+        if check == 1 {
+            indicater.startIndicater()
+        } else if check == 2 {
+            indicater.stopIndicater()
+            dismiss(animated: true, completion: nil)
+        }
+        
     }
+    
+    
     
     @objc
     private func toSignupPage() {
