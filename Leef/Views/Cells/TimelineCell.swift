@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import Nuke
 
-class TimelineCell: UITableViewCell {
+ class TimelineCell: UITableViewCell {
     
     private var background = UIView()
     public var username = UILabel()
@@ -95,7 +95,7 @@ class TimelineCell: UITableViewCell {
     
     func configureUsername() {
         setUsername()
-        username.font = UIFont(name: baseUI.textFont, size: 15)
+        username.font = baseUI.defaultFont(fontSise: 15)
         username.textColor = color.darkGrayColor
     }
 
