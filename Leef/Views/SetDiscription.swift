@@ -11,7 +11,7 @@ class SetDiscription {
     
     var imageView = UIImageView()
     
-    func setDiscription(view: UIView,discriptionImage: UIImage) {
+    func setDiscription(view: UIView, discriptionImage: UIImage) {
         view.backgroundColor = MainColor().backColor
         view.addSubview(imageView)
         imageView.contentMode = .scaleAspectFit
