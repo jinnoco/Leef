@@ -10,25 +10,23 @@ import Firebase
 import Nuke
 import Lottie
 
-class MyPageViewController: UIViewController, LoadDelegate {
+class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
+    
     
     // UI
-    private var tableView = UITableView()
+    internal var tableView = UITableView()
     private var loginUserImage = UIImageView()
     private var loginUsername = UILabel()
     private var noPostTextlabel = UILabel()
     private var animationView = AnimationView()
     
     private let postedCellId = "postedCellId"
-    private var indicater = Indicater()
     private var color = MainColor()
-    private var loadDBModel = LoadDBModel()
-    private var twitterLogin = TwittreLogin()
-    
+    var loadDBModel = LoadDBModel()
+    var twitterLogin = TwitterLogin()
+    private var baseUI = BaseUI()
     private var userWithTwitter = Auth.auth().currentUser?.displayName
     
-    private let withLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
-    private let withoutLogin = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
     
     override func loadView() {
         super.loadView()
@@ -38,7 +36,6 @@ class MyPageViewController: UIViewController, LoadDelegate {
         configureLoginUserImage()
         configureLoginUsername()
         configureNav()
-        indicater.configureIndicater(to: view)
         
     }
     
@@ -61,11 +58,11 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
+        twitterLogin.loginDelegate = self
         loadDBModel.loadDelegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        
         
     }
     
@@ -73,33 +70,29 @@ class MyPageViewController: UIViewController, LoadDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // displayName -> Twitterログイン有無チェック
+        // uid -> Firebase認証有無チェック
+        
+        userWithTwitter = Auth.auth().currentUser?.displayName
+        
         if userWithTwitter != nil {
-            // ログインチェック
+            
             let userUid = Auth.auth().currentUser?.uid
-            if userUid != nil {
-                loadDBModel.myUid = userUid
-                loadDBModel.loadMyPostData()
-            } else {
-                tableView.removeFromSuperview()
-                configureAnimation()
-                configureLabel()
-            }
+            loadDBModel.myUid = userUid
+            loadDBModel.loadMyPostData()
             
         } else if userWithTwitter == nil {
+
             tableView.removeFromSuperview()
             configureAnimation()
             configureLabel()
         }
-        
-        
-        
     }
     
     func doneLoad(check: Int) {
         // LoadDBModelの処理が完了したら実行
         if check == 2 {
             setView()
-            
             if loadDBModel.myDataSet.isEmpty {
                 configureAnimation()
                 configureLabel()
@@ -133,15 +126,15 @@ class MyPageViewController: UIViewController, LoadDelegate {
     private func changeNavRightBar() {
         
         if userWithTwitter == nil {
-            navigationItem.rightBarButtonItem = withoutLogin
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         } else if userWithTwitter != nil {
-            navigationItem.rightBarButtonItem = withLogin
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
         }
     }
     
     private func configureAnimation() {
         
-        animationView = AnimationView(name: "lf30_editor_zozlaqwf")
+        animationView = AnimationView(name: LottieAnimation().myPageAnimation)
         animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
@@ -156,7 +149,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         view.addSubview(noPostTextlabel)
         setLabel()
         noPostTextlabel.text = "まだ投稿は作成されていません"
-        noPostTextlabel.font = UIFont(name: "AvenirNext-Bold", size: 13)
+        noPostTextlabel.font = baseUI.defaultFont(fontSise: 13)
         noPostTextlabel.textColor = color.darkGrayColor
         
     }
@@ -189,7 +182,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
         view.addSubview(loginUsername)
         setLoginUsername()
         loginUsername.text = Auth.auth().currentUser?.displayName ?? "Twitter連携を完了してください"
-        loginUsername.font = UIFont(name: "AvenirNext-Bold", size: 15)
+        loginUsername.font = baseUI.defaultFont(fontSise: 13)
         loginUsername.textColor = color.darkGrayColor
         
     }
@@ -259,6 +252,7 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     @objc
     func showLoginAlert() {
+        print("ログアウトユーザー")
         let modalViewController = ModalViewController()
         present(modalViewController, animated: true, completion: nil)
     }
@@ -273,14 +267,14 @@ class MyPageViewController: UIViewController, LoadDelegate {
                 guard let photoURL = user.photoURL else { return }
                 loginUserImage.loadImage(with: photoURL)
                 loginUsername.text = user.displayName
-                navigationItem.rightBarButtonItem = withLogin
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
             } else {
-                navigationItem.rightBarButtonItem = withoutLogin
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
             }
             
         } else if userWithTwitter == nil {
             print("Twitter連携なしユーザー")
-            navigationItem.rightBarButtonItem = withoutLogin
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         }
         
         
@@ -290,7 +284,8 @@ class MyPageViewController: UIViewController, LoadDelegate {
     
     
     @objc
-    private func showLogoutAlert() {
+    func showLogoutAlert() {
+        print("ログイン済ユーザー")
         let alertController = UIAlertController(title: "連携済", message: "連携解除してもよろしいですか？", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "連携を解除", style: .default, handler: { _ in
             // ログアウト処理
@@ -306,11 +301,28 @@ class MyPageViewController: UIViewController, LoadDelegate {
         configureAnimation()
         configureLabel()
     }
+
+    
+    func checkLogin(check: Int) {
+        
+//         ログアウト後
+//         自分の投稿あり → tableView消す、文字とUserImage変更
+//         自分の投稿なし → 文字とUserImageのみ変更
+         
+        if check == 3 {
+            setLogoutTableView()
+        } else if check == 4 {
+            setLogoutTableView()
+            setLogoutView()
+        }
+    }
+    
+    
     
     public func setLogoutView() {
         loginUsername.text = "Twitter連携を完了してください"
         loginUserImage.image = #imageLiteral(resourceName: "NoUser")
-        navigationItem.rightBarButtonItem = withoutLogin
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
     }
     
     private func showDeleteAlert(postDocPass: String) {
@@ -331,12 +343,10 @@ class MyPageViewController: UIViewController, LoadDelegate {
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
             } else {
-                print("削除しました")
-                
+                print("投稿削除")
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                
             }
         }
     }
