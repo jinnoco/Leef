@@ -73,7 +73,7 @@ class SelectViewController: UIViewController {
     private func configureUsename() {
         view.addSubview(username)
         setUsername()
-        username.font = UIFont(name: baseUI.textFont, size: 18)
+        username.font = baseUI.defaultFont(fontSise: 18)
         username.textColor = color.darkGrayColor
     }
     
