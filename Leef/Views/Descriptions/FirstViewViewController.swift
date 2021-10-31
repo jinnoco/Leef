@@ -38,10 +38,9 @@ class FirstViewController: UIViewController {
         setTitleImageView()
     }
     
-    
-    
+
     private func configureAnimation() {
-        animationView = AnimationView(name: "lf30_editor_mtdla6kp")
+        animationView = AnimationView(name: LottieAnimation().firstViewAnimation)
         animationView.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height / 3)
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
@@ -59,8 +58,7 @@ class FirstViewController: UIViewController {
         button.addTarget(self, action: #selector(pushPage), for: .touchUpInside)
         setLoginButton()
     }
-    
-    
+        
     
     private func setTitleImageView() {
         let topConstant = view.frame.size.height * 0.13
