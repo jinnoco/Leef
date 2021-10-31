@@ -12,9 +12,7 @@ import SoftUIView
 
 
 class SupportPageViewController: UIViewController {
-    
-   
-    
+
     // UI
     private var animationView = AnimationView()
     private var tosButton = SoftUIView() // 利用規約
@@ -59,7 +57,7 @@ class SupportPageViewController: UIViewController {
     
     
     private func configureAnimation() {
-        animationView = AnimationView(name: "41384-customer-support-animation")
+        animationView = AnimationView(name: LottieAnimation().supportPageAnimation)
         animationView.center = self.view.center
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
