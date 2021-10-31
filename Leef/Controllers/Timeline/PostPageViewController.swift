@@ -97,7 +97,7 @@ class PostPageViewController: UIViewController {
         view.addSubview(topLabel)
         setTopLabel()
         topLabel.text = "新規投稿を作成"
-        topLabel.font = UIFont(name: baseUI.textFont, size: 15)
+        topLabel.font = baseUI.defaultFont(fontSise: 15)
         topLabel.textColor = color.darkGrayColor
     }
     
