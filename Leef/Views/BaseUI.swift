@@ -9,7 +9,10 @@ import UIKit
 import SoftUIView
 
 struct BaseUI {
-    public let textFont = "AvenirNext-Bold"
+    func defaultFont(fontSise: CGFloat) -> UIFont {
+        guard let font = UIFont(name: "AvenirNext-Bold", size: fontSise) else { return UIFont.systemFont(ofSize: fontSise) }
+        return  font
+    }
 }
 
 struct ConfigureSoftUIButton {
@@ -30,7 +33,7 @@ struct ConfigureSoftUIButton {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: button.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: button.centerYAnchor).isActive = true
-        label.font = UIFont(name: baseUI.textFont, size: fontSize)
+        label.font = baseUI.defaultFont(fontSise: fontSize)
         label.textColor = textColor
     }
 }
