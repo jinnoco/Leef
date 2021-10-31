@@ -9,7 +9,7 @@ import NVActivityIndicatorView
 
 class Indicater {
     
-   private var activityIndicaterView: NVActivityIndicatorView!
+    public var activityIndicaterView: NVActivityIndicatorView!
     
    public func configureIndicater(to superView: UIView) {
         let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
