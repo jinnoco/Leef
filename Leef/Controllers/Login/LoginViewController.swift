@@ -11,7 +11,8 @@ import Firebase
 import AuthenticationServices
 import Lottie
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, loginDelegate {
+  
     
     // UI
     private var topLabel = UILabel()
@@ -27,13 +28,14 @@ class LoginViewController: UIViewController {
     private var indicater = Indicater()
     private var color = MainColor()
     private var provider: OAuthProvider?
-    private var twiiterLogin = TwittreLogin()
-    private var appleLogin = AppleLogin()
-    private var openURL = OpenURL()
+    
+    var twitterLogin = TwitterLogin()
+
     private var softUI = ConfigureSoftUIButton()
+    private var openURL = OpenURL()
     private var webURL = URLs()
     private var baseUI = BaseUI()
-    
+        
     // 利用規約同意テェック判定
     private var checked = false
     
@@ -61,13 +63,15 @@ class LoginViewController: UIViewController {
         
         view.backgroundColor = color.backColor
         
-        // buttonhは初期状態では押せないようにする
+        // buttonは初期状態では押せないようにする
         appleLoginButton.isEnabled = false
         twitterLoginButton.isEnabled = false
         withoutRegisterButton.isEnabled = false
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
         provider?.customParameters = ["lang": "ja"]
+        
+        twitterLogin.loginDelegate = self
         
     }
     
@@ -77,7 +81,7 @@ class LoginViewController: UIViewController {
         setLoginTextLabel()
         topLabel.text = "ログインまたはユーザー登録"
         topLabel.textColor = color.darkGrayColor
-        topLabel.font = UIFont(name: baseUI.textFont, size: 17)
+        topLabel.font = baseUI.defaultFont(fontSise: 17)
     }
     
     
@@ -105,10 +109,11 @@ class LoginViewController: UIViewController {
         if #available(iOS 13.0, *) {
             view.addSubview(appleLoginButton)
             setAppleLoginButton()
-            appleLoginButton.addTarget(self, action: #selector(appleLogin.handleTappedAppleLoginButton(_:)), for: .touchUpInside)
+            appleLoginButton.addTarget(self, action: #selector(handleTappedAppleLoginButton(_:)), for: .touchUpInside)
             appleLoginButton.cornerRadius = 20
         }
     }
+
     
     
     
@@ -117,10 +122,10 @@ class LoginViewController: UIViewController {
         setLoginButton()
         twitterLoginButton.layer.cornerRadius = 20
         twitterLoginButton.setTitle("Twitterでログイン", for: .normal)
-        twitterLoginButton.titleLabel?.font = UIFont(name: baseUI.textFont, size: 13)
+        twitterLoginButton.titleLabel?.font = baseUI.defaultFont(fontSise: 13)
         twitterLoginButton.backgroundColor = color.darkGrayColor
         twitterLoginButton.tintColor = .white
-        twitterLoginButton.addTarget(self, action: #selector(twiiterLogin.login), for: .touchUpInside)
+        twitterLoginButton.addTarget(twitterLogin, action: #selector(twitterLogin.login), for: .touchUpInside)
     }
     
     
@@ -129,7 +134,7 @@ class LoginViewController: UIViewController {
         setConsentLabel()
         consentLabel.text = "利用規約に同意します"
         consentLabel.textColor = color.darkGrayColor
-        consentLabel.font = UIFont(name: baseUI.textFont, size: 13)
+        consentLabel.font = baseUI.defaultFont(fontSise: 13)
     }
     
     
@@ -146,7 +151,7 @@ class LoginViewController: UIViewController {
         view.addSubview(withoutRegisterButton)
         withoutRegisterButton.layer.cornerRadius = 20
         withoutRegisterButton.setTitle("ユーザー登録せずにはじめる", for: .normal)
-        withoutRegisterButton.titleLabel?.font = UIFont(name: baseUI.textFont, size: 13)
+        withoutRegisterButton.titleLabel?.font = baseUI.defaultFont(fontSise: 13)
         withoutRegisterButton.backgroundColor = color.darkGrayColor
         withoutRegisterButton.tintColor = .white
         withoutRegisterButton.addTarget(self, action: #selector(pushPage), for: .touchUpInside)
@@ -268,7 +273,6 @@ class LoginViewController: UIViewController {
     }
     
     
-    
     @objc
     private func toTOSPage() {
         let termsOfServiceViewController = TermsOfServiceViewController()
@@ -282,5 +286,16 @@ class LoginViewController: UIViewController {
         self.navigationController?.pushViewController(mainTabBarController, animated: true)
     }
     
+    func checkLogin(check: Int) {
+        if check == 1 {
+            indicater.startIndicater()
+        } else if check == 2 {
+            indicater.stopIndicater()
+            let mainTabBarController = MainTabBarController()
+            navigationController?.pushViewController(mainTabBarController, animated: true)
+        }
+        
+    }
     
+   
 }
