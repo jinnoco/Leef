@@ -11,20 +11,20 @@ import WebKit
 class TermsOfServiceViewController: UIViewController, WKUIDelegate {
     
     // UI
-    let label = UILabel()
-    let textView = UITextView()
-    var webView: WKWebView!
+    private var label = UILabel()
+    private var  textView = UITextView()
+    private var  webView: WKWebView!
     
-    var color = MainColor()
-    
+    private var  color = MainColor()
     private var webURL = URLs()
+    private var baseUI = BaseUI()
     
     override func loadView() {
         super.loadView()
         
         configureLabel()
         configureWebView()
-
+        
     }
     
     
@@ -34,17 +34,17 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
         loadURL()
     }
     
-    func configureLabel() {
+    private func configureLabel() {
         view.addSubview(label)
         setLabel()
         label.text = "利用規約"
         label.textColor = color.darkGrayColor
-        label.font = UIFont(name: "AvenirNext-Bold", size: 17)
+        label.font = baseUI.defaultFont(fontSise: 17)
         
     }
     
     
-    func configureWebView() {
+    private func configureWebView() {
         
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
@@ -52,20 +52,20 @@ class TermsOfServiceViewController: UIViewController, WKUIDelegate {
         view = webView
     }
     
-    func loadURL() {
+    private func loadURL() {
         guard let url = URL(string: webURL.tosPageURL) else { return } // 利用規約ページURL
         let request = URLRequest(url: url)
         webView.load(request)
     }
     
     
-    func setLabel() {
+    private func setLabel() {
         label.translatesAutoresizingMaskIntoConstraints                                = false
         label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive           = true
         label.topAnchor.constraint(equalTo: view.topAnchor, constant: 35).isActive     = true
     }
     
-    func setWebView() {
+    private func setWebView() {
         webView.translatesAutoresizingMaskIntoConstraints                                           = false
         webView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 70).isActive            = true
         webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive        = true
