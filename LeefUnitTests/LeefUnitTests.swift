@@ -6,27 +6,49 @@
 //
 
 import XCTest
+import Firebase
+import UIKit
+@testable import Leef
 
-class LeefUnitTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+class LeefUnitTest: XCTestCase {
+    
+    override class func setUp() {
+        super.setUp()
+        FirebaseApp.configure()
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    
+    func testLoadSample() throws {
+        let docRef = Firestore.firestore().collection("post").document("Al5UreEcHDV7h1otEAfZ")
+        docRef.getDocument { snapshot, _ in
+            if let data = snapshot?.data() {
+                if let uid = data["uid"] as? String {
+                    print("uid: ", uid)
+                    XCTAssertEqual(uid, "SxSsncfbWjhflcbHN3Z8KFlOSVz1")
+                }
+            }
         }
     }
+    
+    
+    func testPostPageTextView() throws {
+        let postPage = PostPageViewController()
+        let button = postPage.postButton
+        let textView = postPage.textView
+        textView.text = "sample"
+        XCTAssertTrue(button.isEnabled)
+    }
+    
+    
 
+    
+    func testTwitterWeb() throws {
+        let selectVC = SelectViewController()
+        selectVC.userId = "LeefApp_"
+        XCTAssertEqual(selectVC.toTwitterWebPage(), "https://twitter.com/LeefApp_")
+        
+        selectVC.userId = "NotLeef"
+        XCTAssertNotEqual(selectVC.toTwitterWebPage(), "https://twitter.com/Leef")
+    }
+    
 }
