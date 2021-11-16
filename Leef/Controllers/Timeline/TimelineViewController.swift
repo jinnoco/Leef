@@ -183,7 +183,7 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
         let postDateValue = postDate.dateValue()
         let  formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateFormat = "MM/dd  HH:mm" // 1月1日 12:00
+        formatter.dateFormat = "MM/dd  HH:mm" // 表示例) 1月1日 12:00
         // String型に変換
         let dateString = formatter.string(from: postDateValue)
         return dateString
