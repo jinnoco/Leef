@@ -16,14 +16,12 @@ class LoadDBModel {
     
     public var dataSets = [DataSet]()
     public var myDataSet = [MyDataSet]()
-    
-    var db = Firestore.firestore()
-    
-    public var myUid = Auth.auth().currentUser?.uid
+        
     public weak var loadDelegate: LoadDelegate?
     
+    
     func loadPostData() {
-        db.collection("post").order(by: "postDate").addSnapshotListener { [self] snapshot, error in
+        Firestore.firestore().collection("post").order(by: "postDate").addSnapshotListener { [self] snapshot, error in
             
             self.dataSets = []
             
@@ -62,9 +60,9 @@ class LoadDBModel {
     }
     
     
-    func loadMyPostData() {
-        
-        db.collection("post").order(by: "postDate").addSnapshotListener { [self]snapshot, error in
+    func loadMyPostData(myUid: String) {
+   
+        Firestore.firestore().collection("post").order(by: "postDate").addSnapshotListener { [self]snapshot, error in
             
             self.myDataSet = []
             
@@ -86,11 +84,11 @@ class LoadDBModel {
                        let  profileImageURLString = data["profileImageURLString"] as? String,
                        let userId = data["userId"] as? String,
                        let docId = doc.documentID as? String,
-                       let postDate = data["postDate"] as? Timestamp
-                    {
+                       let postDate = data["postDate"] as? Timestamp {
                         
                         if myUid == uid {
-                            let newMyDataSet = MyDataSet(uid: uid, username: username, postImageData: postImageData, comment: comment, profileImageURLString: profileImageURLString, userId: userId, postDate: postDate, docId: docId)
+                            
+                           let newMyDataSet = MyDataSet(uid: uid, username: username, postImageData: postImageData, comment: comment, profileImageURLString: profileImageURLString, userId: userId, postDate: postDate, docId: docId)
                             
                             self.myDataSet.append(newMyDataSet)
                             self.myDataSet.reverse()
@@ -104,5 +102,7 @@ class LoadDBModel {
             self.loadDelegate?.doneLoad(check: 2)
         }
     }
+    
+    
     
 }
