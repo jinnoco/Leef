@@ -10,6 +10,8 @@ import SoftUIView
 import Firebase
 import AuthenticationServices
 import Lottie
+import CryptoKit
+
 
 class LoginViewController: UIViewController, loginDelegate {
   
@@ -105,6 +107,7 @@ class LoginViewController: UIViewController, loginDelegate {
     }
     
     
+    
     private func configureAppleLoginButton() {
         if #available(iOS 13.0, *) {
             view.addSubview(appleLoginButton)
@@ -114,8 +117,33 @@ class LoginViewController: UIViewController, loginDelegate {
         }
     }
 
+
+    @available(iOS 13.0, *)
+    @objc
+   public func handleTappedAppleLoginButton(_ sender: ASAuthorizationAppleIDButton) {
+        // ランダムの文字列を生成
+        let nonce = randomNonceString()
+        // delegateで使用するため代入
+        currentNonce = nonce
+        // requestを作成
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        // sha256で変換したnonceをrequestのnonceにセット
+        request.nonce = sha256(nonce)
+        // controllerをインスタンス化する(delegateで使用するcontroller)
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
+    }
     
-    
+    @available(iOS 13, *)
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap { return String(format: "%02x", $0) }.joined()
+
+        return hashString
+    }
     
     private func configureTwitterLoginButton() {
         view.addSubview(twitterLoginButton)
