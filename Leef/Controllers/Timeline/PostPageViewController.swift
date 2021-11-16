@@ -16,9 +16,9 @@ class PostPageViewController: UIViewController {
     private var postImageView = UIImageView()
     public var postImage = UIImage()
     private var topLabel = UILabel()
-    private var postButton = SoftUIView()
+    var postButton = SoftUIView()
     private var cancelButton = SoftUIView()
-    private var textView = UITextView()
+    var textView = UITextView()
     private var postButtonLabel = UILabel()
     private let sampleText = "コメントを入力...\n\n例)\n・写真の食材の詳細\n・廃棄までの期限\n・お店の情報、宣伝"
     
