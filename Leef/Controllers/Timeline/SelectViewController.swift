@@ -252,10 +252,13 @@ class SelectViewController: UIViewController {
     }
     
     @objc
-    private func toTwitterWebPage() {
+    internal func toTwitterWebPage() -> String {
         // 外部ブラウザまたはTwitterアプリで投稿者のページを開く
         let userId = userId
-        openURL.toWebPage(url: "https://twitter.com/\(userId)")
+        let urlString = "https://twitter.com/\(userId)"
+        openURL.toWebPage(url: urlString)
+        
+        return urlString
     }
     
     
