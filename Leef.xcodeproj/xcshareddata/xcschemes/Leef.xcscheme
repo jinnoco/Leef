@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3CD8F4BE268A093F00DF694B"
-               BuildableName = "-Leef.app"
+               BuildableName = "Leef.app"
                BlueprintName = "Leef"
                ReferencedContainer = "container:Leef.xcodeproj">
             </BuildableReference>
@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Leef.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C0CDE232743747400D7408F"
+               BuildableName = "LeefUITests.xctest"
+               BlueprintName = "LeefUITests"
+               ReferencedContainer = "container:Leef.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -55,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3CD8F4BE268A093F00DF694B"
-            BuildableName = "-Leef.app"
+            BuildableName = "Leef.app"
             BlueprintName = "Leef"
             ReferencedContainer = "container:Leef.xcodeproj">
          </BuildableReference>
@@ -72,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3CD8F4BE268A093F00DF694B"
-            BuildableName = "-Leef.app"
+            BuildableName = "Leef.app"
             BlueprintName = "Leef"
             ReferencedContainer = "container:Leef.xcodeproj">
          </BuildableReference>

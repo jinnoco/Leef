@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '14.5'
 
 def install_pods
 
@@ -20,3 +20,13 @@ target 'Leef' do
 install_pods
 end
 
+
+target 'LeefUnitTests' do
+inherit! :search_paths
+install_pods
+end
+
+target 'LeefUITests' do
+inherit! :search_paths
+install_pods
+end
