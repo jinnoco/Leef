@@ -17,7 +17,7 @@ class TwitterLogin {
     weak var loginDelegate: loginDelegate?
     
     @objc
-    func login() {
+    public func login() {
         print("ログイン処理開始")
         
         self.provider = OAuthProvider(providerID: TwitterAuthProviderID)
@@ -49,6 +49,25 @@ class TwitterLogin {
             }
             
         })
+    }
+    
+    public func logout() {
+        let loadDBModel = LoadDBModel()
+        let firebaseAuth = Auth.auth()
+        
+        do {
+            // 自分の投稿あり → tableViewRemove処理
+            if loadDBModel.myDataSet.isEmpty == false {
+                self.loginDelegate?.checkLogin(check: 3)
+            }
+            
+            self.loginDelegate?.checkLogin(check: 4)
+            
+            try firebaseAuth.signOut()
+            print("ログアウト完了")
+        } catch let error as NSError {
+            print("ログアウトエラー: \(error.debugDescription)")
+        }
     }
     
 }
