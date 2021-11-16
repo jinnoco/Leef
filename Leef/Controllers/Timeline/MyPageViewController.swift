@@ -22,10 +22,10 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
     
     private let postedCellId = "postedCellId"
     private var color = MainColor()
-    var loadDBModel = LoadDBModel()
-    var twitterLogin = TwitterLogin()
+    private var loadDBModel = LoadDBModel()
+    private var twitterLogin = TwitterLogin()
     private var baseUI = BaseUI()
-    private var userWithTwitter = Auth.auth().currentUser?.displayName
+    var userWithTwitter = Auth.auth().currentUser?.displayName
     
     
     override func loadView() {
@@ -58,11 +58,13 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         twitterLogin.loginDelegate = self
         loadDBModel.loadDelegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        
+      
         
     }
     
@@ -77,12 +79,11 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         
         if userWithTwitter != nil {
             
-            let userUid = Auth.auth().currentUser?.uid
-            loadDBModel.myUid = userUid
-            loadDBModel.loadMyPostData()
+            guard let userUid = Auth.auth().currentUser?.uid else { return }
+            loadDBModel.loadMyPostData(myUid: userUid)
             
         } else if userWithTwitter == nil {
-
+            
             tableView.removeFromSuperview()
             configureAnimation()
             configureLabel()
@@ -123,13 +124,14 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
     }
     
     
-    private func changeNavRightBar() {
+    func changeNavRightBar() {
         
         if userWithTwitter == nil {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLoginAlert))
         } else if userWithTwitter != nil {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Twitter連携", style: .plain, target: self, action: #selector(showLogoutAlert))
         }
+        
     }
     
     private func configureAnimation() {
@@ -252,7 +254,6 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
     
     @objc
     func showLoginAlert() {
-        print("ログアウトユーザー")
         let modalViewController = ModalViewController()
         present(modalViewController, animated: true, completion: nil)
     }
@@ -301,14 +302,12 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         configureAnimation()
         configureLabel()
     }
-
+    
     
     func checkLogin(check: Int) {
-        
-//         ログアウト後
-//         自分の投稿あり → tableView消す、文字とUserImage変更
-//         自分の投稿なし → 文字とUserImageのみ変更
-         
+        // ログアウト後
+        // 自分の投稿あり → tableView消す、文字とUserImage変更
+        // 自分の投稿なし → 文字とUserImageのみ変更
         if check == 3 {
             setLogoutTableView()
         } else if check == 4 {
@@ -342,6 +341,11 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         database.collection("post").document(doc).delete { [self] error in
             if error != nil {
                 print("投稿削除エラー: \(error.debugDescription)")
+                let alert = UIAlertController(title: "エラー", message: "投稿の削除に失敗しました", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                present(alert, animated: true, completion: nil)
+                
             } else {
                 print("投稿削除")
                 DispatchQueue.main.async {
