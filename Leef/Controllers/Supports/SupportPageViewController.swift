@@ -73,6 +73,7 @@ class SupportPageViewController: UIViewController {
         tosButton.cornerRadius = 20
         softUI.setButtonLabel(button: tosButton, labelText: "利用規約", fontSize: 14, textColor: color.darkGrayColor) // Button内にLabelを配置
         tosButton.addTarget(self, action: #selector(toTOSPage), for: .touchUpInside)
+        tosButton.accessibilityIdentifier = "tosButton"
         setTOSButton()
     }
     
