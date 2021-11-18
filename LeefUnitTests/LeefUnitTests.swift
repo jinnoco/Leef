@@ -31,16 +31,6 @@ class LeefUnitTest: XCTestCase {
     }
     
     
-    func testPostPageTextView() throws {
-        let postPage = PostPageViewController()
-        let button = postPage.postButton
-        let textView = postPage.textView
-        textView.text = "sample"
-        XCTAssertTrue(button.isEnabled)
-    }
-    
-    
-
     
     func testTwitterWeb() throws {
         let selectVC = SelectViewController()
