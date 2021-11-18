@@ -64,8 +64,6 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-      
-        
     }
     
     
@@ -121,6 +119,7 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         navigationController?.navigationBar.barTintColor = color.backColor
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = color.darkGrayColor
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "navigationItem"
     }
     
     
@@ -153,7 +152,7 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         noPostTextlabel.text = "まだ投稿は作成されていません"
         noPostTextlabel.font = baseUI.defaultFont(fontSise: 13)
         noPostTextlabel.textColor = color.darkGrayColor
-        
+        noPostTextlabel.accessibilityIdentifier = "noPostTextlabel"
     }
     
     
@@ -186,7 +185,7 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         loginUsername.text = Auth.auth().currentUser?.displayName ?? "Twitter連携を完了してください"
         loginUsername.font = baseUI.defaultFont(fontSise: 13)
         loginUsername.textColor = color.darkGrayColor
-        
+        loginUsername.accessibilityIdentifier = "username"
     }
     
     
@@ -294,6 +293,8 @@ class MyPageViewController: UIViewController, LoadDelegate, loginDelegate {
         }))
         alertController.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
+        
+        alertController.view.accessibilityIdentifier = "logoutAlert"
     }
     
     
