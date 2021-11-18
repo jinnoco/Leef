@@ -82,6 +82,7 @@ class SelectViewController: UIViewController {
         view.addSubview(alertButton)
         alertButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
         alertButton.tintColor = color.darkGrayColor
+        alertButton.accessibilityIdentifier = "alertButton"
         alertButton.addTarget(self, action: #selector(tappedAlertButton), for: .touchUpInside)
         setAlertButton()
     }
@@ -115,6 +116,7 @@ class SelectViewController: UIViewController {
         textView.textColor = color.darkGrayColor
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.backgroundColor = color.whiteColor
+        
     }
     
     private func configureTwitterButton() {
@@ -135,6 +137,7 @@ class SelectViewController: UIViewController {
         shareButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: shareButton)
         softUI.setButtonLabel(button: shareButton, labelText: "シェアする", fontSize: 13, textColor: color.darkGrayColor) // Button内にLabelを配置
+        shareButton.accessibilityIdentifier = "shreButton"
         shareButton.addTarget(self, action: #selector(share), for: .touchUpInside)
     }
     
@@ -218,6 +221,7 @@ class SelectViewController: UIViewController {
         alertController.addAction(block)
         alertController.addAction(cancel)
         present(alertController, animated: true, completion: nil)
+        alertController.view.accessibilityIdentifier = "reportAlert"
     }
     
     
@@ -230,6 +234,8 @@ class SelectViewController: UIViewController {
         alertController.addAction(block)
         alertController.addAction(cancel)
         present(alertController, animated: true, completion: nil)
+        
+        alertController.view.accessibilityIdentifier = "confirmBlockAlert"
     }
     
     // ブラウザのユーザー通報ページに遷移
@@ -274,6 +280,8 @@ class SelectViewController: UIViewController {
         
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
+        
+        activityViewController.view.accessibilityIdentifier = "activityViewController"
     }
     
     
