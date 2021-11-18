@@ -84,6 +84,7 @@ class TimelineViewController: UIViewController, LoadDelegate {
         navigationController?.setNavigationBarHidden(false, animated: true)
         // rightBarButtonItem(投稿作成)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAlert))
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "createPostButton"
         // titleに画像をセット
         let image = #imageLiteral(resourceName: "navigationBarTitleImage")
         titleImage.image = image
@@ -169,7 +170,6 @@ extension TimelineViewController: UITableViewDelegate, UITableViewDataSource {
             cell.dateLabel.text = dateFormatForDateLabel(postDate: loadDBModel.dataSets[indexPath.row].postDate)
             
             cell.selectionStyle = .none
-            
             return cell
         } else {
             return UITableViewCell()
