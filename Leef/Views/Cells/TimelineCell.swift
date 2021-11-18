@@ -37,7 +37,7 @@ import Nuke
         configureTimelineImageView()
         configureDateLabel()
         
-        
+        self.accessibilityIdentifier = "timelineCell"
     }
     
     required init?(coder: NSCoder) {
