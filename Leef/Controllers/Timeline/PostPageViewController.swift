@@ -51,7 +51,7 @@ class PostPageViewController: UIViewController {
         
         view.backgroundColor = color.backColor
         textView.delegate = self
-        
+    
         setKeyboardObserver()
         
     }
@@ -97,6 +97,7 @@ class PostPageViewController: UIViewController {
         view.addSubview(topLabel)
         setTopLabel()
         topLabel.text = "新規投稿を作成"
+        topLabel.accessibilityIdentifier = "topLabel"
         topLabel.font = baseUI.defaultFont(fontSise: 15)
         topLabel.textColor = color.darkGrayColor
     }
@@ -117,7 +118,19 @@ class PostPageViewController: UIViewController {
         let buttonHeght = view.frame.size.height * 0.05
         postButton.cornerRadius = buttonHeght / 2
         softUI.setButtonColor(button: postButton)
-        softUI.setButtonLabel(button: postButton, labelText: "投稿", fontSize: 13, textColor: color.darkGrayColor)
+       
+        
+        postButton.setContentView(postButtonLabel)
+        postButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        postButtonLabel.centerXAnchor.constraint(equalTo: postButton.centerXAnchor).isActive = true
+        postButtonLabel.centerYAnchor.constraint(equalTo: postButton.centerYAnchor).isActive = true
+        postButtonLabel.font = baseUI.defaultFont(fontSise: 13)
+        postButtonLabel.text = "投稿"
+        
+        // UITest
+        postButton.accessibilityIdentifier = "postButton"
+
+        
         postButton.addTarget(self, action: #selector(send), for: .touchUpInside)
         
     }
@@ -130,6 +143,7 @@ class PostPageViewController: UIViewController {
         textView.text = sampleText
         textView.textColor = .lightGray // placeholderの色
         textView.layer.cornerRadius = 15
+        textView.accessibilityIdentifier = "commentTextView"
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // 内側に余白をつける
         textView.sizeToFit()
     }
