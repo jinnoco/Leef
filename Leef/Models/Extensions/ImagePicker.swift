@@ -16,7 +16,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             
             let cameraPicker = UIImagePickerController()
-            cameraPicker.allowsEditing = true
+            cameraPicker.allowsEditing = false
             cameraPicker.sourceType = sourceType
             cameraPicker.delegate = self
             self.present(cameraPicker, animated: true, completion: nil)
@@ -30,7 +30,7 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             
             let cameraPicker = UIImagePickerController()
-            cameraPicker.allowsEditing = true
+            cameraPicker.allowsEditing = false
             cameraPicker.sourceType = sourceType
             cameraPicker.delegate = self
             self.present(cameraPicker, animated: true, completion: nil)
@@ -70,16 +70,22 @@ extension TimelineViewController: UIImagePickerControllerDelegate, UINavigationC
         let done = UIAlertAction(title: "OK", style: .default, handler: nil)
         
         if user != nil {
-            let alertController = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
-            alertController.addAction(openCamera)
-            alertController.addAction(openLibrary)
-            alertController.addAction(cancel)
-            present(alertController, animated: true, completion: nil)
+            let actionSheet = UIAlertController(title: "新しい投稿を作成します", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
+            actionSheet.addAction(openCamera)
+            actionSheet.addAction(openLibrary)
+            actionSheet.addAction(cancel)
+            present(actionSheet, animated: true, completion: nil)
+            
+            // UITest
+            actionSheet.view.accessibilityIdentifier = "createPostAlert"
+            openLibrary.accessibilityIdentifier = "openLibrary"
             
         } else if user == nil {
             let alertController = UIAlertController(title: "確認", message: "投稿機能を利用するにはTwitterアカウントを連携してください", preferredStyle: .alert)
             alertController.addAction(done)
             present(alertController, animated: true, completion: nil)
+            
+            alertController.view.accessibilityIdentifier = "confirmAlert"
         }
         
         
