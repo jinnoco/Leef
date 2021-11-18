@@ -21,8 +21,13 @@ class MainTabBarController: NeumorphismTabBarController {
         guard let infoIcon = UIImage(systemName: "info.circle") else { return }
         
         let timeline = NeumorphismTabBarItem(icon: newspaperIcon, title: "")
+        timeline.accessibilityIdentifier = "timelinePageTabBarButton"
+        
         let myPage = NeumorphismTabBarItem(icon: personIcon, title: "")
+        myPage.accessibilityIdentifier = "myPageTabBarButton"
+        
         let supportPage = NeumorphismTabBarItem(icon: infoIcon, title: "")
+        supportPage.accessibilityIdentifier = "supportPageTabBarButton"
         
         view.backgroundColor = color.backColor
         
